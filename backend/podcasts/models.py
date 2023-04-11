@@ -14,6 +14,7 @@ class Podcast(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, unique='publish')
     description = models.TextField(blank=True)
+
     cover_image = models.ImageField(upload_to=get_image_upload_path, blank=True)
 
     category = models.CharField(max_length=255, blank=True)
@@ -41,6 +42,7 @@ class Episode(models.Model):
     description = models.TextField(blank=True)
 
     audio_file = models.FileField(upload_to=get_audio_upload_path, blank=True)
+    
     audio_duration = models.PositiveIntegerField(null=True, blank=True)
     audio_size = models.PositiveIntegerField(null=True, blank=True)
 
