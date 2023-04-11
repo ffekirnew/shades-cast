@@ -31,8 +31,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', # added in the rest framework
-    'api.apps.ApiConfig', # added the api app
-    'podcast.apps.PodcastConfig', # added the podcast app
+    'podcasts.apps.PodcastsConfig', # added the podcast app
 ]
 
 MIDDLEWARE = [
@@ -117,3 +116,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Media file storage
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+
+# Pydub settings
+FFMPEG_PATH = '/path/to/ffmpeg'
