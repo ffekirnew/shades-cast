@@ -4,3 +4,6 @@ pyyaml
 requests
 django-cors-headers
 python-dotenv
+pillow
+autopep8
+pydub
