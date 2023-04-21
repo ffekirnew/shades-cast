@@ -33,9 +33,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework', # added in the rest framework
-    'podcasts.apps.PodcastsConfig', # added the podcast app
+
+    # 3rd party
+    'rest_framework',  # added in the rest framework
+
+    # Local Apps
+    'podcasts.apps.PodcastsConfig',  # added the podcast app
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',
+    ]
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
