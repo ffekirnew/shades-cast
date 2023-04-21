@@ -1,0 +1,16 @@
+{% extends 'podcasts/base.html' %}
+
+{% block title %}Podcasts List{% endblock %}
+
+{% block content %}
+{% for podcast in podcasts %}
+<div>
+    <a href="{{ podcast.get_absolute_url }}"><h4>{{ podcast.title }} - Created on: {{ podcast.created }}</h4></a>
+    <p>
+        {{ podcast.description|truncatewords:30|linebreaks }}
+    </p>
+</div>
+{% endfor %}
+
+
+{% endblock %}

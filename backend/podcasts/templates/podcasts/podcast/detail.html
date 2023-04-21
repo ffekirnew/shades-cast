@@ -1,0 +1,21 @@
+{% extends 'podcasts/base.html' %}
+
+{% block title %}
+{{ podcast.title }}
+{% endblock %}
+
+{% block content %}
+<div>
+    <h4>{{ podcast.title }} - Created on: {{ podcast.created }}</h4>
+    <p>
+        {{ podcast.description }}
+    </p>
+
+    <ul>
+        {% for episode in episodes %}
+        <li>{{ episode.title }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

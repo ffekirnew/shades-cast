@@ -1,8 +1,11 @@
 from django.urls import path, include
 from . import views
-from . import api
 
-app_name = "podcast"
+app_name = "podcasts"
 urlpatterns = [
-    path("api/", include("podcasts.api.urls", namespace='api')),
+    path('', views.podcast_list, name='podcast_list'),
+    path('<slug:podcast_slug>/',
+         views.podcast_detail,
+         name='podcast_detail'),
+    path('api/', include("podcasts.api.urls", namespace='api')),
 ]
