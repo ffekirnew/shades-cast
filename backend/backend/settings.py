@@ -20,6 +20,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'fikernewapi.pythonanywhere.com',
+    'localhost'
 ]
 
 
