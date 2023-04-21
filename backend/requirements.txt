@@ -4,6 +4,8 @@ django-cors-headers
 dj-rest-auth
 django-allauth
 pyyaml
+coreapi
+django-rest-swagger
 requests
 python-dotenv
 pillow
