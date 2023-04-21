@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     # 3rd party
     'rest_framework',  # added in the rest framework
     'rest_framework.authtoken',  # added platform to add token authentication
+    'rest_framework_swagger',
+    'drf_yasg',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -56,6 +58,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication', # Session auth for debugging purposes
         'rest_framework.authentication.TokenAuthentication'
     ],
 }
