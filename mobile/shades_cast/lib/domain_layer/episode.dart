@@ -1,3 +1,4 @@
+//this class defines the domain of the Episode entity
 class Episode {
   final String id;
   final String title;
