@@ -1,14 +1,16 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
 
 from .models import Podcast
 from .serializers import PodcastSerializer
+from .permissions import IsCreaterOrReadOnly
 
 
-class PodcastListView(generics.ListAPIView):
+class PodcastListView(generics.ListCreateAPIView):
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
 
 
-class PodcastDetailView(generics.RetrieveAPIView):
+class PodcastDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsCreaterOrReadOnly, )
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer

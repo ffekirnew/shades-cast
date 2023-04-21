@@ -33,18 +33,31 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # 3rd party
     'rest_framework',  # added in the rest framework
+    'rest_framework.authtoken',  # added platform to add token authentication
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
 
     # Local Apps
     'podcasts.apps.PodcastsConfig',  # added the podcast app
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+SITE_ID = 1
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
-    ]
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication'
+    ],
 }
 
 MIDDLEWARE = [
