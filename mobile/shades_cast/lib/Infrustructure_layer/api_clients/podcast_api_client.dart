@@ -15,7 +15,7 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       return "no data";
     }
-    return jsonDecode(response.body).join(", ");
+    return jsonDecode(response.body).toString();
   }
 
   //
