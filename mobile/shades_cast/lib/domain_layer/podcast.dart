@@ -14,12 +14,3 @@ class Podcast {
       required this.imageUrl,
       required this.categories});
 }
-
-// Podcast({
-//     required this.id,
-//     required this.title,
-//     required this.author,
-//     required this.description,
-//     required this.imageUrl,
-//     required this.categories,
-//   });
