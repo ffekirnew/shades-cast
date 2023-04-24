@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # Local Apps
     'podcasts.apps.PodcastsConfig',  # added the podcast app
+    'profiles.apps.ProfilesConfig',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

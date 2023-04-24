@@ -5,7 +5,10 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-API_TITLE = 'Blog API'  
+from django.conf import settings
+from django.conf.urls.static import static
+
+API_TITLE = 'Blog API'
 API_DESCRIPTION = 'A Web API for creating and editing blog posts.'
 
 schema_view = get_schema_view(
@@ -18,12 +21,12 @@ schema_view = get_schema_view(
         license=openapi.License(name="MIT License"),
     ),
     public=True,
-    permission_classes=(permissions.AllowAny,),
+    permission_classes=([permissions.AllowAny, ]),
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('podcasts.urls', namespace='podcasts')),
+    path('api/', include('api.urls', namespace='podcasts')),
 
     # section for Adding log in to the browsable API - nothing fancy really
     path('api-auth/', include('rest_framework.urls')),
@@ -34,4 +37,10 @@ urlpatterns = [
 
     # to handle documentation and api schema views
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+
+    # to handle account issues
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
