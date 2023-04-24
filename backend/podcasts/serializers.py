@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from .models import Podcast, Episode
+from podcasts.models import Podcast, Episode
 
 
 class EpisodeSerializer(serializers.ModelSerializer):
