@@ -20,14 +20,25 @@ class PodcastApiClient {
     return jsonDecode(response.body);
   }
 
-  //method to handle
-  Future<List<Podcast>> searchPodcasts(String query) async {
+  //method to handle searching of a podcast
+  Future<List<dynamic>> searchPodcasts(String query) async {
     final response = await httpClient.get(Uri.parse('$api/search?q=$query'));
     if (response.statusCode == 200) {
       final podcastsJson = json.decode(response.body)['results'];
       return podcastsJson.map<Podcast>((json)).toList();
     } else {
       throw Exception('Failed to load podcasts');
+    }
+  }
+
+  //method to handle the delation of a specific podcast by using its ID
+  Future<void> deletePodcastById(String podcastId) async {
+    final url = '$api/podcasts/$podcastId';
+
+    final response = await http.delete(Uri.parse(url));
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to delete podcast with ID $podcastId');
     }
   }
 }

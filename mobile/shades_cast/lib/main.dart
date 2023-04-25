@@ -35,8 +35,12 @@ class MyApp extends StatelessWidget {
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      title: Text(podcasts[index]["episodes"].toString()),
-                    );
+                        title: Text(podcasts[index]["cover_image"]),
+                        subtitle: CircleAvatar(
+                            radius: 50,
+                            backgroundImage: NetworkImage(
+                              podcasts[index]["cover_image"],
+                            )));
                   },
                 );
               } else if (snapshot.hasError) {
