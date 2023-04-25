@@ -24,16 +24,18 @@ class MyApp extends StatelessWidget {
           title: Text('Podcasts'),
         ),
         body: Center(
-          child: FutureBuilder<String>(
+          child: FutureBuilder<List<dynamic>>(
             future: podcastApiClient.getPodcasts(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+            builder:
+                (BuildContext context, AsyncSnapshot<List<dynamic>> snapshot) {
               if (snapshot.hasData) {
+                // print(snapshot.data.runtimeType);
                 final podcasts = snapshot.data!;
                 return ListView.builder(
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return ListTile(
-                      title: Text(podcasts),
+                      title: Text(podcasts[index]["episodes"].toString()),
                     );
                   },
                 );
