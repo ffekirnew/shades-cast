@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Podcast, Episode, Subscription, Playback, Following
+from .models import Podcast, Episode, Subscription, Playback
 
 
 @admin.register(Podcast)
@@ -17,8 +17,3 @@ class EpisodeAdmin(admin.ModelAdmin):
     # raw_id_fields = ('podcast',)
     # date_hierarchy = 'publish'
     # ordering = ('status', 'publish')
-
-
-@admin.register(Following)
-class PodcastAdmin(admin.ModelAdmin):
-    list_display = ('user_from', 'user_to', 'created')

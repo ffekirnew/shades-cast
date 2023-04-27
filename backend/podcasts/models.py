@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.text import slugify
 
 from .utils import get_audio_duration_and_size, get_audio_upload_path, get_image_upload_path
 
-from profiles.models import Profile
 
 class Podcast(models.Model):
     STATUS_CHOICES = [
@@ -14,7 +13,7 @@ class Podcast(models.Model):
         ('public', 'Public')
     ]
 
-    creator = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='podcasts_created')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='podcasts_created')
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, unique='publish')
     description = models.TextField(blank=True)
@@ -81,36 +80,11 @@ class Episode(models.Model):
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     podcast = models.ForeignKey(Podcast, on_delete=models.CASCADE)
 
 
 class Playback(models.Model):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     episode = models.ForeignKey(Episode, on_delete=models.CASCADE)
     position = models.PositiveIntegerField(default=0)
-
-
-class Following(models.Model):
-    user_from = models.ForeignKey('auth.User',
-                                  related_name='rel_from_set',
-                                  on_delete=models.CASCADE)
-    user_to = models.ForeignKey('auth.User',
-                                related_name='rel_to_set',
-                                on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True,
-                                   db_index=True)
-
-    class Meta:
-        ordering = ('-created',)
-
-    def __str__(self):
-        return f'{self.user_from} follows {self.user_to}'
-
-
-user_model = get_user_model()
-user_model.add_to_class('following',
-                        models.ManyToManyField('self',
-                                               through=Following,
-                                               related_name='followers',
-                                               symmetrical=False))
