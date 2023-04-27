@@ -22,9 +22,9 @@ class PodcastViewSet(viewsets.ModelViewSet):
 #     serializer_class = PodcastSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = get_user_model().objects.all()
+#     serializer_class = UserSerializer
 
 
 # class UserListView(generics.ListCreateAPIView):
