@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/homepage.dart';
 // import 'test_screen.dart';
 // import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +15,21 @@ class MyApp extends StatelessWidget {
   final PodcastApiClient podcastApiClient = PodcastApiClient(
     httpClient: http.Client(),
   );
+
+  @override
+  Widget build(BuildContext context) {
+    return homepage();
+  }
+}
+
+//the widget i used to test the services i wrote
+class testWidget extends StatelessWidget {
+  const testWidget({
+    super.key,
+    required this.podcastApiClient,
+  });
+
+  final PodcastApiClient podcastApiClient;
 
   @override
   Widget build(BuildContext context) {
