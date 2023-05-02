@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:http/http.dart' as http;
+import 'settings.dart';
+import 'myPodcasts.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -20,52 +22,238 @@ class homepage extends StatelessWidget {
           ),
         ),
         child: Scaffold(
-          body: Padding(
-            padding: EdgeInsets.all(30.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Image(
-                      image: AssetImage(
-                          'assets/logo.png'), // add the image asset here
-                      height: 50, // set the height here
-                      width: 50, // set the width here
-                      fit: BoxFit.contain, // set the BoxFit property here
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      color: Colors.white, // add the menu icon here
-                      onPressed: () {
-                        print("it was pressed");
-                        // add the onPressed callback here
-                      },
-                    )
-                  ],
-                ),
-                searchBox(),
-                funFact(),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Listen Podcasts",
-                    style: TextStyle(
-                      color: Colors.grey[100],
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25.0,
+          drawer: sideMenu(),
+          body: Builder(
+            builder: (context) => Padding(
+              padding: EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image(
+                        image: AssetImage(
+                            'assets/logo.png'), // add the image asset here
+                        height: 50, // set the height here
+                        width: 50, // set the width here
+                        fit: BoxFit.contain, // set the BoxFit property here
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.menu),
+                        color: Colors.white, // add the menu icon here
+                        onPressed: () {
+                          print("it was pressed");
+                          Scaffold.of(context).openDrawer();
+                          // add the onPressed callback here
+                        },
+                      )
+                    ],
+                  ),
+                  searchBox(),
+                  funFact(),
+                  Container(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Listen Podcasts",
+                      style: TextStyle(
+                        color: Colors.grey[100],
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25.0,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: podcastList(
-                    podcastApiClient: podcastApiClient,
-                  ),
-                )
-              ],
+                  Expanded(
+                    child: podcastList(
+                      podcastApiClient: podcastApiClient,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class sideMenu extends StatelessWidget {
+  const sideMenu({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      backgroundColor: Color(0xFF081624),
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Color(0xFF040a11),
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              child: Row(children: [
+                Column(children: [
+                  Row(children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 20.0, 0, 0),
+                      child: Text(
+                        'Hello,',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(3.0, 20.0, 0, 0),
+                      child: Text(
+                        "Friend",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      ),
+                    )
+                  ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Image(
+                        image: AssetImage(
+                            'assets/logo.png'), // add the image asset here
+                        height: 50, // set the height here
+                        width: 50, // set the width here
+                        fit: BoxFit.contain, // set the BoxFit property here
+                      ),
+                      SizedBox(
+                        width: 40.0,
+                      ),
+                      Text(
+                        "followers",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 20.0,
+                      ),
+                      Text(
+                        "following",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 110.0,
+                      ),
+                      Text(
+                        "100",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      SizedBox(
+                        width: 20.0,
+                      ),
+                      Text(
+                        "19",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  )
+                ]),
+                Divider(
+                  thickness: 2.0,
+                  color: Colors.white,
+                )
+              ]),
+            ),
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
+          Divider(
+            thickness: 2.0,
+            color: Color(0xFF040a11),
+          ),
+
+          ListTile(
+            leading: Icon(
+              Icons.mic,
+              color: Color(0xFF999EA3),
+            ),
+            title: Text(
+              'My Podcasts',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF999EA3)),
+            ),
+            onTap: () {
+              // handle item 1 tap
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyPodcastsPage()),
+              );
+            },
+          ),
+          Divider(
+            thickness: 1.0,
+            color: Color(0xFF040a11),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.favorite,
+              color: Color(0xFF999EA3),
+            ),
+            title: Text(
+              'Favourites',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF999EA3)),
+            ),
+            onTap: () {
+              // handle item 2 tap
+            },
+          ),
+          Divider(
+            thickness: 2.0,
+            color: Color(0xFF040a11),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.settings,
+              color: Color(0xFF999EA3),
+            ),
+            title: Text(
+              'Account Settings',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF999EA3)),
+            ),
+            onTap: () {
+              // handle item 2 tap
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => AccountSettingsScreen()),
+              );
+            },
+          ),
+          Divider(
+            thickness: 2.0,
+            color: Color(0xFF040a11),
+          ),
+          SizedBox(
+            height: 325.0,
+          ),
+          FloatingActionButton(
+              onPressed: () {
+                print("logout button pressed");
+                // Log user out
+              },
+              backgroundColor: Colors.blue[600],
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                "Logout",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              )),
+          // add more items as needed
+        ],
       ),
     );
   }
@@ -81,7 +269,6 @@ class podcastList extends StatefulWidget {
 
 class _podcastListState extends State<podcastList> {
   List<dynamic> podcasts = [];
-  late final PodcastApiClient podcastApiClient;
 
   @override
   void initState() {
@@ -98,21 +285,54 @@ class _podcastListState extends State<podcastList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: podcasts.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(podcasts[index]["cover_image"]),
-          ),
-          title: Text(podcasts[index]["title"]),
-          subtitle: Text(podcasts[index]["slug"]),
-          onTap: () {
-            // Navigate to the podcast details screen
-          },
-        );
-      },
-    );
+    if (podcasts.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    } else {
+      return ListTileTheme(
+        textColor: Colors.white,
+        selectedColor: Colors.blue,
+        tileColor: Color(0xFF040a11),
+        selectedTileColor: Colors.grey.shade200,
+        iconColor: Colors.grey,
+        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: ListView.separated(
+            separatorBuilder: (BuildContext context, int index) =>
+                Divider(height: 25.0),
+            itemCount: podcasts.length,
+            itemBuilder: (BuildContext context, int index) {
+              dynamic podcast = podcasts[index];
+              return Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  // borderRadius: BorderRadius.circular(10.0),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0),
+                      spreadRadius: 5,
+                      blurRadius: 15,
+                      offset: Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: ListTile(
+                  leading: Image.network(podcast["cover_image"]),
+                  title: Text(podcast["title"]),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Author: ${podcast["author"]}'),
+                      Text('Category: ${podcast["category"]}'),
+                      Text('Episodes: ${podcast["episodes"].length}'),
+                    ],
+                  ),
+                  onTap: () {
+                    // Navigate to the podcast detail page
+                  },
+                ),
+              );
+            }),
+      );
+    }
   }
 }
 
@@ -171,3 +391,4 @@ class searchBox extends StatelessWidget {
   }
 }
 // Color(0xFF081624)
+
