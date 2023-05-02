@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/screens/myPodcasts.dart';
 import 'screens/homepage.dart';
-// import 'test_screen.dart';
-// import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'Infrustructure_layer/api_clients/podcast_api_client.dart';
-
-// import 'constants.dart';
-// import 'podcast_api_client.dart';
+import 'screens/addEpisode.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return homepage();
+    return AddEpisodeScreen();
   }
 }
 
