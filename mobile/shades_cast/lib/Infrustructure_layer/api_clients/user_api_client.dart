@@ -6,7 +6,7 @@ class UserApiClient {
   UserApiClient();
 
   Future<void> signUp({required String email, required String password}) async {
-    final url = '$api/signup';
+    final url = '$api/api/auth/signup';
 
     final response = await http.post(
       Uri.parse(url),
@@ -21,7 +21,7 @@ class UserApiClient {
 
   Future<String> login(
       {required String email, required String password}) async {
-    final url = '$api/login';
+    final url = '$api/api/auth/login';
 
     final response = await http.post(
       Uri.parse(url),
@@ -31,7 +31,7 @@ class UserApiClient {
 
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
-      final token = responseBody['token'];
+      final token = responseBody['key'];
       return token;
     } else {
       throw Exception('Failed to login user with email $email');
