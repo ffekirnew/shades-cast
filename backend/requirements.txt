@@ -11,3 +11,5 @@ python-dotenv
 pillow
 autopep8
 pydub
+drf_yasg
+django_taggit
