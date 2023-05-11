@@ -15,10 +15,12 @@ class PodcastSerializer(TaggitSerializer, serializers.ModelSerializer):
                   'cover_image', 'categories', 'publish', 'status']
 
 
-class EpisodeSerializer(serializers.ModelSerializer):
+class EpisodeSerializer(TaggitSerializer, serializers.ModelSerializer):
+    tags = TagListSerializerField()
+
     class Meta:
         model = Episode
         fields = ['id', 'title', 'audio_file', 'audio_duration',
-                  'audio_size', 'podcast', 'tags_list', 'publish', 'description', 'status']
+                  'audio_size', 'podcast', 'tags', 'publish', 'description', 'status']
 
 

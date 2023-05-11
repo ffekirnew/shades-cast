@@ -10,6 +10,8 @@ from .models import Podcast, Episode
 from podcasts.serializers import PodcastSerializer, EpisodeSerializer
 from podcasts.permissions import IsEpisodeCreatorOrReadOnly, IsPodcastCreatorOrReadOnly
 
+# Podcast and related views
+
 
 class PodcastViewSet(viewsets.ModelViewSet):
     permission_classes = (IsPodcastCreatorOrReadOnly,)
@@ -17,25 +19,11 @@ class PodcastViewSet(viewsets.ModelViewSet):
     serializer_class = PodcastSerializer
 
     def perform_create(self, serializer):
+        print(serializer.validated_data['categories'])
         serializer.validated_data['creator'] = self.request.user
         serializer.validated_data['categories'] = serializer.validated_data['categories'][0].split(
             ", ")
         serializer.save()
-
-
-@api_view(['GET'])
-def podcast_list_by_categories(request, tag_slug):
-    if tag_slug:
-        tag = get_object_or_404(Tag, slug=tag_slug)
-        podcasts = Podcast.objects.filter(categories__in=[tag])
-        serializer = PodcastSerializer(podcasts, many=True)
-        return Response(serializer.data)
-
-
-class EpisodeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsEpisodeCreatorOrReadOnly,)
-    queryset = Episode.objects.all()
-    serializer_class = EpisodeSerializer
 
 
 class PodcastEpisodesListView(generics.ListCreateAPIView):
@@ -43,15 +31,46 @@ class PodcastEpisodesListView(generics.ListCreateAPIView):
     serializer_class = EpisodeSerializer
 
     def get_queryset(self):
-        podcast_id = self.kwargs['podcast_id']
+        id = self.kwargs['id']
         try:
-            podcast = Podcast.objects.get(id=podcast_id)
+            podcast = Podcast.objects.get(id=id)
         except Podcast.DoesNotExist:
             raise NotFound('Podcast does not exist.')
 
         return podcast.episodes.all()
 
-    def get(self, request, podcast_id, *args, **kwargs):
+    def get(self, request, id, *args, **kwargs):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
+def podcast_list_by_categories(request, category_slug):
+    if category_slug:
+        tag = get_object_or_404(Tag, slug=category_slug)
+        podcasts = Podcast.objects.filter(categories__in=[tag])
+        serializer = PodcastSerializer(podcasts, many=True)
+        return Response(serializer.data)
+
+
+# Episodes and related views
+class EpisodeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsEpisodeCreatorOrReadOnly,)
+    queryset = Episode.objects.all()
+    serializer_class = EpisodeSerializer
+
+    def perform_create(self, serializer):
+        print(serializer.validated_data['tags'])
+        serializer.validated_data['tags'] = serializer.validated_data['tags'][0].split(
+            ", ")
+        serializer.save()
+
+
+@api_view(['GET'])
+def episode_list_by_tags(request, tag_slug):
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        episodes = Episode.objects.filter(tags__in=[tag])
+        serializer = EpisodeSerializer(episodes, many=True)
         return Response(serializer.data)

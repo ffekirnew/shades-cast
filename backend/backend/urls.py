@@ -37,8 +37,6 @@ urlpatterns = [
 
     # to handle documentation and api schema views
     path('api/v2/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-
-    # to handle account issues
 ]
 
 if settings.DEBUG:

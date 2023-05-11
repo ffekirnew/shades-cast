@@ -1,6 +1,8 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Profile(models.Model):
@@ -38,3 +40,8 @@ user_model.add_to_class('following',
                                                through=Contact,
                                                related_name='followers',
                                                symmetrical=False))
+
+@receiver(post_save, sender=user_model)
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)

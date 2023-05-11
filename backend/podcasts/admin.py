@@ -10,7 +10,7 @@ class PodcastAdmin(admin.ModelAdmin):
 
 @admin.register(Episode)
 class EpisodeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'podcast', 'audio_duration', 'audio_size', 'publish')
+    list_display = ('title', 'podcast', 'tags', 'audio_duration', 'audio_size', 'publish')
     list_filter = ('status', 'created', 'publish', 'podcast')
     # search_fields = ('title', 'body')
     prepopulated_fields = {'slug': ('title',)}

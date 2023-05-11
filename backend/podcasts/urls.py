@@ -13,6 +13,7 @@ router.register('episodes', views.EpisodeViewSet, basename='episodes')
 urlpatterns = router.urls
 
 urlpatterns.extend([
-    path('podcasts/<int:podcast_id>/episodes', views.PodcastEpisodesListView.as_view(), name='podcast_episodes'),
-    path('podcasts/categories/<slug:tag_slug>', views.podcast_list_by_categories, name='podcast_tags'),
+    path('podcasts/<int:id>/episodes', views.PodcastEpisodesListView.as_view(), name='podcast_episodes'),
+    path('podcasts/categories/<slug:category_slug>', views.podcast_list_by_categories, name='podcast_categories'),
+    path('episodes/tags/<slug:tag_slug>', views.episode_list_by_tags, name='episode_tags'),
 ])
