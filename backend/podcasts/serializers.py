@@ -12,15 +12,7 @@ class EpisodeSerializer(serializers.ModelSerializer):
 
 
 class PodcastSerializer(serializers.ModelSerializer):
-    episodes = EpisodeSerializer(many=True, read_only=True)
-
     class Meta:
         model = Podcast
-        fields = ['id', 'creator',  'title', 'slug', 'description',
-                  'cover_image', 'category', 'publish', 'status', 'episodes']
-
-
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = get_user_model()
-        fields = ['id', 'username']
+        fields = ['id', 'creator', 'title', 'slug', 'description',
+                  'cover_image', 'category', 'publish', 'status']

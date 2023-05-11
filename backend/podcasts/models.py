@@ -3,6 +3,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.urls import reverse
 from django.utils.text import slugify
+from taggit.managers import TaggableManager
 
 from .utils import get_audio_duration_and_size, get_audio_upload_path, get_image_upload_path
 
@@ -21,7 +22,7 @@ class Podcast(models.Model):
     cover_image = models.ImageField(
         upload_to=get_image_upload_path, blank=True)
 
-    category = models.CharField(max_length=255, blank=True)
+    category = TaggableManager()
 
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
@@ -54,6 +55,17 @@ class Episode(models.Model):
     slug = models.SlugField(max_length=250, unique_for_date='publish')
     description = models.TextField(blank=True)
 
+    publish = models.DateTimeField(default=timezone.now)
+    created = models.DateTimeField(default=timezone.now)
+    updated = models.DateTimeField(auto_now=True)
+
+    podcast = models.ForeignKey(
+        Podcast, on_delete=models.CASCADE, related_name='episodes')
+    tags = TaggableManager()
+
+    status = models.CharField(
+        max_length=9, choices=STATUS_CHOICES, default='draft')
+
     audio_file = models.FileField(upload_to=get_audio_upload_path, blank=True)
 
     audio_duration = models.PositiveIntegerField(null=True, blank=True)
@@ -64,16 +76,6 @@ class Episode(models.Model):
             self.audio_duration, self.audio_size = get_audio_duration_and_size(
                 self.audio_file)
         super().clean()
-
-    publish = models.DateTimeField(default=timezone.now)
-    created = models.DateTimeField(default=timezone.now)
-    updated = models.DateTimeField(auto_now=True)
-
-    podcast = models.ForeignKey(
-        Podcast, on_delete=models.CASCADE, related_name='episodes')
-
-    status = models.CharField(
-        max_length=9, choices=STATUS_CHOICES, default='draft')
 
     def __str__(self) -> str:
         return f"{self.podcast} - {self.title}"
