@@ -3,16 +3,24 @@ from rest_framework import serializers
 
 from podcasts.models import Podcast, Episode
 
+from rest_framework import serializers
+from taggit.serializers import TagListSerializerField, TaggitSerializer
+from .models import Podcast
+
+class PodcastSerializer(TaggitSerializer, serializers.ModelSerializer):
+    categories = TagListSerializerField()
+    creator = serializers.StringRelatedField()
+
+    class Meta:
+        model = Podcast
+        fields = ['id', 'creator', 'title', 'description',
+                  'cover_image', 'categories', 'publish', 'status']
+
 
 class EpisodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Episode
-        fields = ['id', 'title', 'slug', 'audio_file', 'audio_duration',
-                  'audio_size', 'podcast', 'publish', 'description', 'status']
+        fields = ['id', 'title', 'audio_file', 'audio_duration',
+                  'audio_size', 'podcast', 'tags_list', 'publish', 'description', 'status']
 
 
-class PodcastSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Podcast
-        fields = ['id', 'creator', 'title', 'slug', 'description',
-                  'cover_image', 'category', 'publish', 'status']

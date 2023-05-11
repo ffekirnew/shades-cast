@@ -4,7 +4,7 @@ from .models import Podcast, Episode, Subscription, Playback
 
 @admin.register(Podcast)
 class PodcastAdmin(admin.ModelAdmin):
-    list_display = ('title', 'creator', 'category')
+    list_display = ('title', 'creator', 'categories')
     prepopulated_fields = {'slug': ('title',)}
 
 

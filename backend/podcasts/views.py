@@ -4,17 +4,27 @@ from rest_framework.response import Response
 
 from .models import Podcast, Episode
 from podcasts.serializers import PodcastSerializer, EpisodeSerializer
-from podcasts.permissions import IsCreatorOrReadOnly
+from podcasts.permissions import IsEpisodeCreatorOrReadOnly, IsPodcastCreatorOrReadOnly
 
 
 class PodcastViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsCreatorOrReadOnly,)
+    permission_classes = (IsPodcastCreatorOrReadOnly,)
     queryset = Podcast.objects.all()
     serializer_class = PodcastSerializer
 
+    def perform_create(self, serializer):
+        serializer.validated_data['creator'] = self.request.user
+        serializer.save()
+
+
+class EpisodeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsEpisodeCreatorOrReadOnly,)
+    queryset = Episode.objects.all()
+    serializer_class = EpisodeSerializer
+
 
 class PodcastEpisodesListView(generics.ListCreateAPIView):
-    permission_classes = (IsCreatorOrReadOnly,)
+    permission_classes = (IsPodcastCreatorOrReadOnly,)
     serializer_class = EpisodeSerializer
 
     def get_queryset(self):
@@ -30,8 +40,3 @@ class PodcastEpisodesListView(generics.ListCreateAPIView):
         queryset = self.get_queryset()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
-
-
-class EpisodeViewSet(viewsets.ModelViewSet):
-    queryset = Episode.objects.all()
-    serializer_class = EpisodeSerializer
