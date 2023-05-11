@@ -1,6 +1,10 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, generics
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
+
+from taggit.models import Tag
 
 from .models import Podcast, Episode
 from podcasts.serializers import PodcastSerializer, EpisodeSerializer
@@ -14,7 +18,18 @@ class PodcastViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.validated_data['creator'] = self.request.user
+        serializer.validated_data['categories'] = serializer.validated_data['categories'][0].split(
+            ", ")
         serializer.save()
+
+
+@api_view(['GET'])
+def podcast_list_by_categories(request, tag_slug):
+    if tag_slug:
+        tag = get_object_or_404(Tag, slug=tag_slug)
+        podcasts = Podcast.objects.filter(categories__in=[tag])
+        serializer = PodcastSerializer(podcasts, many=True)
+        return Response(serializer.data)
 
 
 class EpisodeViewSet(viewsets.ModelViewSet):

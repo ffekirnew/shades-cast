@@ -12,6 +12,7 @@ router.register('episodes', views.EpisodeViewSet, basename='episodes')
 
 urlpatterns = router.urls
 
-urlpatterns.append(
-    path('podcasts/<int:podcast_id>/episodes', views.PodcastEpisodesListView.as_view(), name='podcast_episodes')
-)
+urlpatterns.extend([
+    path('podcasts/<int:podcast_id>/episodes', views.PodcastEpisodesListView.as_view(), name='podcast_episodes'),
+    path('podcasts/categories/<slug:tag_slug>', views.podcast_list_by_categories, name='podcast_tags'),
+])

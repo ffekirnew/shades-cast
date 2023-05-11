@@ -63,6 +63,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication', # Session auth for debugging purposes
         'rest_framework.authentication.TokenAuthentication'
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
 }
 
 MIDDLEWARE = [

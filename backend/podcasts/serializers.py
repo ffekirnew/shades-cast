@@ -2,9 +2,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from podcasts.models import Podcast, Episode
-
-from rest_framework import serializers
-from taggit.serializers import TagListSerializerField, TaggitSerializer
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 from .models import Podcast
 
 class PodcastSerializer(TaggitSerializer, serializers.ModelSerializer):
