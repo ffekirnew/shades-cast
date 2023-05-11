@@ -45,9 +45,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'dj_rest_auth',
     'dj_rest_auth.registration',
+    'taggit',
 
     # Local Apps
     'podcasts.apps.PodcastsConfig',  # added the podcast app
+    'user_accounts.apps.UserAccountsConfig',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -61,6 +63,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication', # Session auth for debugging purposes
         'rest_framework.authentication.TokenAuthentication'
     ],
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
 }
 
 MIDDLEWARE = [
