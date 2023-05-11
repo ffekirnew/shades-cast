@@ -1,21 +1,19 @@
-from django.urls import path, include
-from rest_framework import routers
-
+from django.urls import path
+from rest_framework.routers import SimpleRouter
 from . import views
 
-app_name = "podcasts"
+app_name = 'podcasts'
 
-router = routers.SimpleRouter()
+
+
+router = SimpleRouter()
 router.register('podcasts', views.PodcastViewSet, basename='podcasts')
-router.register('users', views.UserViewSet, basename='users')
 router.register('episodes', views.EpisodeViewSet, basename='episodes')
 
 urlpatterns = router.urls
 
-
-# urlpatterns = [
-#     path('podcasts/', views.PodcastListView.as_view(), name='podcast_list'),
-#     path('podcasts/<pk>/', views.PodcastDetailView.as_view(), name='podcast_detail'),
-#     path('users/', views.UserListView.as_view(), name='user_list'),
-#     path('users/<pk>/', views.UserDetailView.as_view(), name='user_detail'),
-# ]
+urlpatterns.extend([
+    path('podcasts/<int:id>/episodes', views.PodcastEpisodesListView.as_view(), name='podcast_episodes'),
+    path('podcasts/categories/<slug:category_slug>', views.podcast_list_by_categories, name='podcast_categories'),
+    path('episodes/tags/<slug:tag_slug>', views.episode_list_by_tags, name='episode_tags'),
+])
