@@ -16,13 +16,13 @@ class Podcast(models.Model):
 
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='podcasts_created')
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=250, unique='publish')
+    slug = models.SlugField(max_length=250, unique=True, blank=True)
     description = models.TextField(blank=True)
 
     cover_image = models.ImageField(
         upload_to=get_image_upload_path, blank=True)
 
-    category = TaggableManager()
+    categories = TaggableManager()
 
     publish = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
@@ -35,6 +35,7 @@ class Podcast(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.title)
+
         super().save(*args, **kwargs)
 
     def __str__(self) -> str:
@@ -52,7 +53,7 @@ class Episode(models.Model):
     ]
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=250, unique_for_date='publish')
+    slug = models.SlugField(max_length=250, unique_for_date='publish', blank=True)
     description = models.TextField(blank=True)
 
     publish = models.DateTimeField(default=timezone.now)
@@ -71,11 +72,22 @@ class Episode(models.Model):
     audio_duration = models.PositiveIntegerField(null=True, blank=True)
     audio_size = models.PositiveIntegerField(null=True, blank=True)
 
+
+    
+    @property
+    def tags_list(self):
+        return list(self.tags.values_list('name', flat=True))
+
     def clean(self):
         if self.audio_file:
             self.audio_duration, self.audio_size = get_audio_duration_and_size(
                 self.audio_file)
         super().clean()
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f"{self.podcast} - {self.title}"
