@@ -1,14 +1,14 @@
-from rest_framework import generics
+from django.shortcuts import get_object_or_404
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from django.contrib.auth import get_user_model
 
-from .serializers import UserSerializer, ContactSerializer
-from .permissions import IsOwnerOrReadOnly, IsFollowerOrReadOnly
-from .models import Contact
+from .serializers import UserSerializer, ProfileSerializer
+from .permissions import IsOwnerOrReadOnly
 
 from podcasts.serializers import PodcastSerializer
 
@@ -39,6 +39,14 @@ class UserDetailView(generics.RetrieveUpdateAPIView):
 
         serializer = self.serializer_class(queryset)
         return Response(serializer.data)
+
+@api_view(['GET', 'POST', 'PATCH', 'PUT'])
+def user_profile_view(request, id):
+    user = get_object_or_404(get_user_model(), id=id)
+    
+    profile = user.profile
+    serializer = ProfileSerializer(profile)
+    return Response(serializer.data)
 
 
 class UserFollowersAPIView(generics.ListAPIView):
