@@ -10,6 +10,8 @@ from .models import Podcast, Episode
 from podcasts.serializers import PodcastSerializer, EpisodeSerializer
 from podcasts.permissions import IsEpisodeCreatorOrReadOnly, IsPodcastCreatorOrReadOnly
 
+from user_accounts.serializers import UserSerializer
+
 # Podcast and related views
 
 
@@ -52,6 +54,24 @@ def podcast_list_by_categories(request, category_slug):
         podcasts = Podcast.objects.filter(categories__in=[tag])
         serializer = PodcastSerializer(podcasts, many=True)
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+def podcast_add_favorite(request, id):
+    podcast = get_object_or_404(Podcast, id=id)
+    podcast.favorited_by.add(request.user)
+
+    return Response({'status': 'ok'})
+
+
+@api_view(['GET'])
+def podcast_favorited_by(request, id):
+    podcast = get_object_or_404(Podcast, id=id)
+    favorited_by = podcast.favorited_by
+    print(favorited_by)
+    serializer = UserSerializer(favorited_by, many=True)
+
+    return Response(serializer.data)
 
 
 # Episodes and related views

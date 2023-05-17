@@ -15,6 +15,7 @@ class Podcast(models.Model):
     ]
 
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='podcasts_created')
+    favorited_by = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='favorites')
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=250, unique=True, blank=True)
     description = models.TextField(blank=True)
@@ -72,8 +73,6 @@ class Episode(models.Model):
     audio_duration = models.PositiveIntegerField(null=True, blank=True)
     audio_size = models.PositiveIntegerField(null=True, blank=True)
 
-
-    
     @property
     def tags_list(self):
         return list(self.tags.values_list('name', flat=True))
