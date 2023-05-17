@@ -26,7 +26,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v2/', include('api.urls', namespace='podcasts')),
+    path('api/', include('api.urls', namespace='podcasts')),
 
     # section for Adding log in to the browsable API - nothing fancy really
     path('api-auth/', include('rest_framework.urls')),
