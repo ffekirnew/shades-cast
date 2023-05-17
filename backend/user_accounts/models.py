@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from podcasts.models import Podcast, Episode
+
 
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
@@ -33,6 +35,23 @@ class Contact(models.Model):
         return f'{self.user_from} follows {self.user_to}'
 
 
+class FavoritePodcast(models.Model):
+    user = models.ForeignKey('auth.User',
+                             related_name='rel_to_favorite',
+                             on_delete=models.CASCADE)
+    podcast = models.ForeignKey(Podcast,
+                                related_name='rel_to_favorite',
+                                on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True,
+                                   db_index=True)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return f'{self.user} favorites {self.podcast}'
+
+
 # Add following field to User dynamically
 user_model = get_user_model()
 user_model.add_to_class('following',
@@ -40,6 +59,7 @@ user_model.add_to_class('following',
                                                through=Contact,
                                                related_name='followers',
                                                symmetrical=False))
+
 
 @receiver(post_save, sender=user_model)
 def create_profile(sender, instance, created, **kwargs):

@@ -14,7 +14,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        fields = ['id', 'username', 'email', 'profile',]
+        fields = ['id', 'username', 'email', 'profile', ]
 
 
 class ContactSerializer(serializers.ModelSerializer):
