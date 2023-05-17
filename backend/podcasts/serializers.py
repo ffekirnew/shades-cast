@@ -5,6 +5,7 @@ from podcasts.models import Podcast, Episode
 from taggit.serializers import TaggitSerializer, TagListSerializerField
 from .models import Podcast
 
+
 class PodcastSerializer(TaggitSerializer, serializers.ModelSerializer):
     categories = TagListSerializerField()
     creator = serializers.StringRelatedField()
@@ -22,5 +23,3 @@ class EpisodeSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Episode
         fields = ['id', 'title', 'audio_file', 'audio_duration',
                   'audio_size', 'podcast', 'tags', 'publish', 'description', 'status']
-
-

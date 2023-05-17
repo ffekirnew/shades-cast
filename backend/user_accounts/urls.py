@@ -1,14 +1,19 @@
 from django.urls import path
 from . import views
+from rest_framework.routers import SimpleRouter
 
+router = SimpleRouter()
+router.register('', views.UserViewSet, basename='users')
+
+urlpatterns = router.urls
 
 app_name = 'user_accounts'
-urlpatterns = [
-    path('', views.UserListView.as_view()),
-    # path('<int:pk>/', views.UserDetailView.as_view()),
-    path('<str:username>/', views.UserDetailView.as_view(), name='user_detail'),
-    path('<str:username>/followers/', views.UserFollowersAPIView.as_view(), name='user_followers'),
-    path('<str:username>/following/', views.UserFollowingAPIView.as_view(), name='user_following'),
-    path('<str:username>/podcasts/', views.UserPodcastsAPIView.as_view(), name='user_podcasts'),
-    path('<int:id>/profile', views.user_profile_view, name='user_profile'),
-]
+
+urlpatterns.extend([
+    path('<int:id>/followers/', views.UserFollowersAPIView.as_view(), name='user_followers'),
+    path('<int:id>/following/', views.UserFollowingAPIView.as_view(), name='user_following'),
+    path('<int:id>/podcasts/', views.UserPodcastsAPIView.as_view(), name='user_podcasts'),
+    path('<int:id>/favorite-podcasts/', views.UserFavoritePodcastsAPIView.as_view(), name='user_favorite_podcasts'),
+    path('<int:id>/profile/', views.UserProfileDetailView.as_view(), name='user_profile'),
+    path('<int:id>/add-follow/', views.user_add_follow_view, name='user_add_follow'),
+])
