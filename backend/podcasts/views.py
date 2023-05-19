@@ -1,16 +1,22 @@
 from django.shortcuts import get_object_or_404
+
+from django.contrib.postgres.search import SearchVector, SearchQuery, SearchRank, TrigramSimilarity
+
 from rest_framework import viewsets, generics
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from taggit.models import Tag
+from taggit.serializers import TaggitSerializer
 
 from .models import Podcast, Episode
 from podcasts.serializers import PodcastSerializer, EpisodeSerializer
 from podcasts.permissions import IsEpisodeCreatorOrReadOnly, IsPodcastCreatorOrReadOnly
 
 from user_accounts.serializers import UserSerializer
+
+from taggit.models import Tag
+
 
 # Podcast and related views
 
