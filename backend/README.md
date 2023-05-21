@@ -38,7 +38,9 @@ Exit the PostgreSQL prompt by typing \q and pressing Enter.
 
     \q
 
-### 4. Create and start a virtual environment to contain python and packages of the project:
+### 4. Create and start a virtual environment in the backend folder to contain python and packages of the project:
+    cd backend
+
     python3 -m venv venv
     source venv/bin/activate
 
