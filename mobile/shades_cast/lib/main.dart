@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/screens/addPodcast.dart';
 import 'package:shades_cast/screens/myPodcasts.dart';
 import 'screens/homepage.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AddEpisodeScreen();
+    return addPodcasts();
   }
 }
 

@@ -63,92 +63,96 @@ class _addPodcastsState extends State<addPodcasts> {
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(
-        scaffoldBackgroundColor: Color(0xFF081624),
-        textTheme: TextTheme(
-          bodyMedium: TextStyle(color: Colors.white), // set the text color here
+    return MaterialApp(
+      home: Theme(
+        data: ThemeData(
+          scaffoldBackgroundColor: Color(0xFF081624),
+          textTheme: TextTheme(
+            bodyMedium:
+                TextStyle(color: Colors.white), // set the text color here
+          ),
         ),
-      ),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Add Podcast"),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 60.0,
-                      backgroundImage: _imageFile.image,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("Add Podcast"),
+          ),
+          body: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 60.0,
+                        backgroundImage: _imageFile.image,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Center(
-                  child: TextButton(
-                    onPressed: _pickImage,
-                    child: Text("Change Profile Picture"),
+                  SizedBox(height: 16.0),
+                  Center(
+                    child: TextButton(
+                      onPressed: _pickImage,
+                      child: Text("Change Profile Picture"),
+                    ),
                   ),
-                ),
-                SizedBox(height: 32.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 32.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                      labelText: "Title",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                  controller: _firstNameController,
-                  decoration: InputDecoration(
-                    labelText: "Title",
-                    fillColor: Colors.blue,
-                    labelStyle: TextStyle(color: Colors.blue),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                      labelText: "Description",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: "Category",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                  controller: _lastNameController,
-                  decoration: InputDecoration(
-                    labelText: "Description",
-                    labelStyle: TextStyle(color: Colors.blue),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    decoration: InputDecoration(
+                      fillColor:
+                          Colors.blue, // sets the background color to blue
+                      labelStyle: TextStyle(color: Colors.blue),
+                      labelText: "Email",
+                    ),
+                    controller: _emailController,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 16.0),
+                  SizedBox(height: 32.0),
+                  ElevatedButton(
+                    onPressed: _submitForm,
+                    child: Text("create Podcast"),
                   ),
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    labelText: "Category",
-                    labelStyle: TextStyle(color: Colors.blue),
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
-                  ),
-                  decoration: InputDecoration(
-                    fillColor: Colors.blue, // sets the background color to blue
-                    labelStyle: TextStyle(color: Colors.blue),
-                    labelText: "Email",
-                  ),
-                  controller: _emailController,
-                ),
-                SizedBox(height: 16.0),
-                SizedBox(height: 32.0),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text("create Podcast"),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
