@@ -15,15 +15,16 @@ class Podcast {
       required this.categories});
 
 // <<<<<<< firaols_branch
-//   factory Podcast.fromJson(Map<String, dynamic> json) {
-//     return Podcast(
-//       id: json['id'],
-//       title: json['title'],
-//       author: json['creator'],
-//       description: json['description'],
-//       imageUrl: json['cover_image'],
-//       categories: json['categories'],
-//     );
+  factory Podcast.fromJson(Map<String, dynamic> json) {
+    return Podcast(
+      id: json['id'],
+      title: json['title'],
+      author: json['creator'],
+      description: json['description'],
+      imageUrl: json['cover_image'],
+      categories: json['categories'],
+    );
+  }
 // =======
   Map<String, dynamic> toMap() {
     return {
