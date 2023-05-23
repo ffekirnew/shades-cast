@@ -1,0 +1,16 @@
+django>=4.2.0,<4.3.0
+djangorestframework
+django-cors-headers
+dj-rest-auth
+django-allauth
+pyyaml
+coreapi
+django-rest-swagger
+requests
+python-dotenv
+pillow
+autopep8
+pydub
+drf_yasg
+django_taggit
+psycopg2-binary
