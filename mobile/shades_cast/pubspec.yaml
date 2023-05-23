@@ -37,6 +37,10 @@ dependencies:
   http: ^0.13.5
   image_picker: ^0.8.4+4
   file_picker: ^5.2.11
+  flutter_bloc:
+  bloc:
+  flutter_spinkit: ^5.1.0
+  just_audio: ^0.9.32
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +65,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - Assets/images/
     - assets/
   #   - images/a_dot_ham.jpeg
 
