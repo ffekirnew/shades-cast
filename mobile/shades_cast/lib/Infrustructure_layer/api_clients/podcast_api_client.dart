@@ -6,9 +6,7 @@ import 'package:shades_cast/domain_layer/episode.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 
 class PodcastApiClient {
-  late final httpClient;
-
-  PodcastApiClient({this.httpClient});
+  PodcastApiClient();
 
   //method to return all the podcasts
   // Future<String> getPodcasts() async {
@@ -22,13 +20,16 @@ class PodcastApiClient {
   // }
 
   //method to return all the podcasts
-  Future<List<dynamic>> getPodcasts() async {
-    final response = await httpClient.get(Uri.parse('$api/api/podcasts'));
+  Future<List> getPodcasts() async {
+    final response =
+        await http.get(Uri.parse('$api/api/v2/podcasts/?format=json'));
     //inspect the response
     if (response.statusCode != 200) {
-      throw Exception("cannot get podcasts");
+      throw Exception("cannot get podcasts here in api lient");
     }
     print(jsonDecode(response.body).runtimeType);
+    print("in pod api");
+    // print(response.body);
 
     return jsonDecode(response.body);
   }
@@ -48,7 +49,7 @@ class PodcastApiClient {
   //foraol's
   //method to handle searching of a podcast
   Future<List<dynamic>> searchPodcasts(String query) async {
-    final response = await httpClient.get(Uri.parse('$api/search?q=$query'));
+    final response = await http.get(Uri.parse('$api/search?q=$query'));
     if (response.statusCode == 200) {
       final podcastsJson = json.decode(response.body)['results'];
       return podcastsJson.map<Podcast>((json)).toList();
@@ -77,13 +78,13 @@ class PodcastApiClient {
 // import 'constants.dart';
 
 // class PodcastApiClient {
-//   late final http.Client httpClient;
+//   late final http.Client http;
 
-//   PodcastApiClient({required this.httpClient});
+//   PodcastApiClient({required this.http});
 
 //   //method to return all the podcasts
 //   Future<List<dynamic>> getPodcasts() async {
-//     final response = await httpClient.get(Uri.parse('$api/api/podcasts'));
+//     final response = await http.get(Uri.parse('$api/api/podcasts'));
 //     //inspect the response
 //     if (response.statusCode != 200) {
 //       throw Exception("cannot get podcasts");
@@ -95,7 +96,9 @@ class PodcastApiClient {
 
 //   //method to handle searching of a podcast
 //   Future<List<dynamic>> searchPodcasts(String query) async {
-//     final response = await httpClient.get(Uri.parse('$api/search?q=$query'));
+
+//     final response = await http.get(Uri.parse('$api/search?q=$query'));
+
 //     if (response.statusCode == 200) {
 //       final podcastsJson = json.decode(response.body)['results'];
 //       return podcastsJson.map<Podcast>((json)).toList();
