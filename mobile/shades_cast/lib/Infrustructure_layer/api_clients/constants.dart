@@ -1,1 +1,1 @@
-const String api = 'fikernewapi.pythonanywhere.com';
+const String api = 'https://fikernewapi.pythonanywhere.com';
