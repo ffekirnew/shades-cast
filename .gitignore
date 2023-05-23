@@ -19,3 +19,12 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+# The python virtual environment
+backend/venv
+
+# The environment variables that need to be kept secret
+backend/.env
+
+# The __pycache__ folders created by different IDEs
+__pycache__/

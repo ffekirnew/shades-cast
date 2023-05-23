@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:shades_cast/screens/myPodcasts.dart';
 import 'screens/addEpisode.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,6 +26,7 @@ void main() {
           create: (BuildContext context) => HomeBloc(),
         )
       ],
+
       child: MaterialApp(
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
@@ -38,24 +40,9 @@ void main() {
           '/addEpisode': (context) => AddEpisodeScreen(),
           '/myPodcasts': (context) => MyPodcastsPage(),
           '/settings': (context) => AccountSettingsScreen(),
+
         },
       ),
     ),
   );
 }
-
-
-// Shamil
-// screens: LoginAndSignupBloc,podcast player
-// infra: userapi
-// whole repo
-
-// biruk
-// ui: whole folder
-
-// Firaol 
-// screens: addepisode, addpodcast,homepage,
-// infra: podcastapiclient
-
-// kal
-// screens: mypodcasts,settings
