@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:shades_cast/screens/my_podcasts/ui/myPodcasts.dart';
 import 'screens/add_epsiode/ui/addEpisode.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,7 @@ void main() {
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/podcast',
+        initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => homepage(),
