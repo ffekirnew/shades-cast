@@ -45,11 +45,20 @@ class PodcastDatabase {
       ''');
   }
 
+  ////////////////////////////////
+  ///
+  ///
+  ///
+
   Future<void> savePodcast(Podcast podcast) async {
     final db = await instance.database;
     await db.insert('podcasts', podcast.toMap());
   }
 
+////////////////////////////////////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
   Future<void> savePodcasts(List<dynamic> podcasts) async {
     final db = await instance.database;
     for (Podcast podcast in podcasts) {
@@ -62,18 +71,27 @@ class PodcastDatabase {
     await db.delete('podcasts', where: 'id = ?', whereArgs: [podcastId]);
   }
 
-  Future<dynamic> getPodcastById(String podcastId) async {
+////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<Podcast?> getPodcastById(String podcastId) async {
     final db = await instance.database;
     List<Map<String, dynamic>> maps =
         await db.query('podcasts', where: 'id = ?', whereArgs: [podcastId]);
 
     if (maps.isNotEmpty) {
       return Podcast.fromMap(maps.first);
+    } else {
+      return null;
     }
-
-    return null;
   }
 
+//////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
   Future<List<Podcast>> getPodcasts() async {
     final db = await instance.database;
     final maps = await db.query('podcasts');
@@ -82,7 +100,13 @@ class PodcastDatabase {
     });
   }
 
-  Future<void> saveEpisodes(String podcastId, List<Episode> episodes) async {
+  ////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+
+  Future<void> saveEpisodes(List<Episode> episodes) async {
     final db = await instance.database;
     Batch batch = db.batch();
 
@@ -97,6 +121,12 @@ class PodcastDatabase {
     await batch.commit(noResult: true);
   }
 
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+
   Future<List<Episode>> getEpisodes(String podcastId) async {
     final db = await instance.database;
     final maps = await db
@@ -106,11 +136,20 @@ class PodcastDatabase {
     });
   }
 
+  ////////////////////////////////////////////////////////////////
+  ////
+  ///
+  ///
+
   Future<void> saveEpisode(String podcastId, Episode episode) async {
     final db = await instance.database;
     db.insert('episodes', episode.toMap());
   }
 
+////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
   Future<void> deleteEpisode(String podcastId, Episode episode) async {
     final db = await instance.database;
     db.delete('episodes', where: 'id =?', whereArgs: [episode.id]);

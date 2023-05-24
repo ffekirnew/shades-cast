@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-
-import 'package:shades_cast/screens/myPodcasts.dart';
-import 'screens/addEpisode.dart';
+import 'package:shades_cast/screens/my_podcasts/ui/myPodcasts.dart';
+import 'screens/add_epsiode/ui/addEpisode.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import './screens/login_and_signup/ui/login_and_signup.dart';
 import './screens/login_and_signup/bloc/login_and_signup_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
-import 'package:shades_cast/screens/addPodcast.dart';
-import 'package:shades_cast/screens/settings.dart';
+import 'package:shades_cast/screens/add_podcast/ui/addPodcast.dart';
+import 'package:shades_cast/screens/settings/ui/settings.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 
@@ -26,12 +25,11 @@ void main() {
           create: (BuildContext context) => HomeBloc(),
         )
       ],
-
       child: MaterialApp(
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/home',
+        initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => homepage(),
@@ -40,7 +38,6 @@ void main() {
           '/addEpisode': (context) => AddEpisodeScreen(),
           '/myPodcasts': (context) => MyPodcastsPage(),
           '/settings': (context) => AccountSettingsScreen(),
-
         },
       ),
     ),

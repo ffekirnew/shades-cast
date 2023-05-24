@@ -325,6 +325,27 @@ paths:
           description: ''
       tags:
       - api
+  /api/v2/podcasts/{id}/favorited-by:
+    get:
+      operationId: listpodcast_favorited_bys
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: ''
+      tags:
+      - api
   /api/v2/podcasts/categories/{category_slug}:
     get:
       operationId: retrievepodcast_list_by_categories
@@ -403,15 +424,15 @@ paths:
           description: ''
       tags:
       - api
-  /api/v2/users/{username}/:
+  /api/v2/users/{id}/:
     get:
       operationId: retrieveUser
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
-        description: ''
+        description: A unique integer value identifying this user.
         schema:
           type: string
       responses:
@@ -427,10 +448,10 @@ paths:
       operationId: updateUser
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
-        description: ''
+        description: A unique integer value identifying this user.
         schema:
           type: string
       requestBody:
@@ -457,10 +478,10 @@ paths:
       operationId: partialUpdateUser
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
-        description: ''
+        description: A unique integer value identifying this user.
         schema:
           type: string
       requestBody:
@@ -483,12 +504,27 @@ paths:
           description: ''
       tags:
       - api
-  /api/v2/users/{username}/followers/:
+    delete:
+      operationId: destroyUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - api
+  /api/v2/users/{id}/followers/:
     get:
       operationId: listUsers
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
         description: ''
@@ -505,12 +541,12 @@ paths:
           description: ''
       tags:
       - api
-  /api/v2/users/{username}/following/:
+  /api/v2/users/{id}/following/:
     get:
       operationId: listUsers
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
         description: ''
@@ -527,12 +563,12 @@ paths:
           description: ''
       tags:
       - api
-  /api/v2/users/{username}/podcasts/:
+  /api/v2/users/{id}/podcasts-created/:
     get:
       operationId: listPodcasts
       description: ''
       parameters:
-      - name: username
+      - name: id
         in: path
         required: true
         description: ''
@@ -546,6 +582,94 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Podcast'
+          description: ''
+      tags:
+      - api
+  /api/v2/users/{id}/favorite-podcasts/:
+    get:
+      operationId: listPodcasts
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Podcast'
+          description: ''
+      tags:
+      - api
+  /api/v2/users/{id}/profile/:
+    get:
+      operationId: listUserProfileDetails
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items: {}
+          description: ''
+      tags:
+      - api
+    put:
+      operationId: updateUserProfileDetail
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v2/search/{query}/:
+    get:
+      operationId: retrievesearch
+      description: ''
+      parameters:
+      - name: query
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
           description: ''
       tags:
       - api
@@ -689,6 +813,75 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserDetails'
+          description: ''
+      tags:
+      - api
+  /api/v2/podcasts/{id}/add-favorite:
+    post:
+      operationId: createpodcast_add_favorite
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+  /api/v2/users/{id}/add-follow/:
+    post:
+      operationId: createuser_add_follow_view
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema: {}
+          description: ''
+      tags:
+      - api
+    delete:
+      operationId: destroyuser_add_follow_view
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
           description: ''
       tags:
       - api
@@ -938,10 +1131,14 @@ components:
           format: binary
         audio_duration:
           type: integer
+          maximum: 2147483647
           nullable: true
+          minimum: 0
         audio_size:
           type: integer
+          maximum: 2147483647
           nullable: true
+          minimum: 0
         podcast:
           type: integer
         tags:
