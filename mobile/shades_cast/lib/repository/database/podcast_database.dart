@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
@@ -43,6 +46,12 @@ class PodcastDatabase {
         audioUrl TEXT
       )
       ''');
+    await db.execute('''
+      CREATE TABLE funfacts(
+        TEXT title,
+        TEXT body
+      )
+        ''');
   }
 
   ////////////////////////////////
@@ -153,5 +162,29 @@ class PodcastDatabase {
   Future<void> deleteEpisode(String podcastId, Episode episode) async {
     final db = await instance.database;
     db.delete('episodes', where: 'id =?', whereArgs: [episode.id]);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<Funfact?> getFunfact() async {
+    final db = await instance.database;
+    List<Map<String, dynamic>> result = await db.query(
+      'funfacts',
+      limit: 1, // Limit the query to retrieve only one row
+    );
+    if (result.length > 0) {
+      return Funfact.fromMap(result.first);
+    }
+    return null;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  Future<void> saveFunfact(Funfact funfact) async {
+    final db = await instance.database;
+    await db.insert('funfacts', funfact.toMap());
   }
 }
