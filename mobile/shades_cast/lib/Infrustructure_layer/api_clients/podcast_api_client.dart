@@ -3,7 +3,7 @@ import 'package:shades_cast/domain_layer/episode.dart';
 import 'dart:convert';
 import '../../domain_layer/podcast.dart';
 import 'constants.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Future<void> storeToken(String token) async {
@@ -22,6 +22,7 @@ class PodcastApiClient {
   final AuthService authService = AuthService();
 
   PodcastApiClient();
+
 
   //method to return all the podcasts
   //////////////////////////////////////////
@@ -108,8 +109,75 @@ class PodcastApiClient {
 
     if (response.statusCode != 204) {
       throw Exception('Failed to delete podcast with ID $podcastId');
+
+    }
+    return jsonDecode(response.body);
+  }
+
+
+  //////////////////Method that handles the search of episodes of a podcast
+  ///
+  ////////////
+  ///
+  ///
+
+  Future<dynamic> getEpisodes(String podcatId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $token'
+    }; //podcasts/{id}/episodes
+    final response =
+        await httpClient.get(Uri.parse("$api/podcasts/$podcatId/episodes"));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete podcast with ID $podcatId');
+    } else {
+      return json.decode(response.body);
     }
   }
+
+  //method to add a new podcast
+  //////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  Future<dynamic> addPodcast(dynamic podcast) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final response = await httpClient.post(
+      Uri.parse('$api/api/podcasts'),
+      body: podcast,
+      headers: headers,
+    );
+  }
+
+  //method to handle the deletion of a specific podcast by using its ID
+  //////////////////////////////////
+  ///
+  ///
+  ///
+  Future<void> deletePodcast(String podcastId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final response = await httpClient.delete(
+      Uri.parse('$api/api/podcasts/' + podcastId),
+      headers: headers,
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to delete podcast with ID $podcastId');
+    }
+  }
+
   ////////////////////////////////
   ///
   ///
@@ -121,6 +189,7 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
     final response = await http.post(
       Uri.parse('$api/api/episodes'),
       body: episode,
@@ -141,7 +210,9 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
     final response = await http.delete(
+
       Uri.parse('$api/api/episodes'),
       body: episode,
       headers: headers,
