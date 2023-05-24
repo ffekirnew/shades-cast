@@ -13,17 +13,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<int> favoritedIds = [];
     on<HomeEvent>((event, emit) async {
       if (event is GetPodcasts) {
-        List<Podcast> podcasts;
-        emit(PodcastSearchingState());
-        final podcastClient = PodcastApiClient();
-        final podcastRepo = PodcastRepo();
-        print("podcasts are requested from bloc");
+        // List<Podcast> podcasts;
+        // emit(PodcastSearchingState());
+        // final podcastClient = PodcastApiClient();
+        // final podcastRepo = PodcastRepo();
+        // print("podcasts are requested from bloc");
 
-        podcasts = await podcastRepo.getPodcasts(podcastClient: podcastClient);
-        currentPodcasts = podcasts;
-        print("podcasts are here in bloc");
-        emit(PodcastLoadedState(
-            podcasts: podcasts, favoritedPodcastId: favoritedIds));
+        // podcasts = await podcastRepo.getPodcasts(podcastClient: podcastClient);
+        // currentPodcasts = podcasts;
+        // print("podcasts are here in bloc");
+        // emit(PodcastLoadedState(
+        //     podcasts: podcasts, favoritedPodcastId: favoritedIds));
       } else if (event is PodcasFavorited) {
         print("Podcast favorited");
         if (!(favoritedIds.contains(event.podcastId))) {
