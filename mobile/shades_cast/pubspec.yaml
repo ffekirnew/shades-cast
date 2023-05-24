@@ -44,6 +44,7 @@ dependencies:
   just_audio: ^0.9.32
 # =======
   sqflite: ^2.2.8+4
+  shared_preferences: ^2.1.1
 # >>>>>>> master
 
 dev_dependencies:
@@ -56,6 +57,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  test: ^1.24.1
+  mockito: ^5.4.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
