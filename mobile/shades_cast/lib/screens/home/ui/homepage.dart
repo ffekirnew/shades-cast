@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:http/http.dart' as http;
-import '../../settings.dart';
-import '../../myPodcasts.dart';
+import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
+import '../../settings/ui/settings.dart';
+import '../../my_podcasts/ui/myPodcasts.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
@@ -289,45 +290,53 @@ class _podcastListState extends State<podcastList> {
       Podcast currentPodcast = widget.podcasts[index];
       podcasts.add(GestureDetector(
         onTap: () {
-          // Naviga
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      PodcastPage(podcastId: currentPodcast.id)));
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           color: Color.fromARGB(255, 0, 0, 0),
-          child: ListTile(
-            leading: Image(
-              image: NetworkImage(currentPodcast.imageUrl ??
-                  "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
-            ),
-            title: Text(
-              currentPodcast.title,
-              style: TextStyle(color: Colors.white),
-            ),
-            trailing: IconButton(
-              onPressed: () {
-                BlocProvider.of<HomeBloc>(context)
-                    .add(PodcasFavorited(podcastId: currentPodcast.id));
-              },
-              icon: Icon(
-                (widget.currentState.favoritedPodcastId
-                        .contains(currentPodcast.id))
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: Color.fromARGB(255, 71, 160, 255),
-                size: 25,
+          child: Column(
+            children: [
+              ListTile(
+                leading: Image(
+                  image: NetworkImage(currentPodcast.imageUrl ??
+                      "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
+                ),
+                title: Text(
+                  currentPodcast.title,
+                  style: TextStyle(color: Colors.white),
+                ),
+                trailing: IconButton(
+                  onPressed: () {
+                    BlocProvider.of<HomeBloc>(context)
+                        .add(PodcasFavorited(podcastId: currentPodcast.id));
+                  },
+                  icon: Icon(
+                    (widget.currentState.favoritedPodcastId
+                            .contains(currentPodcast.id))
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: Color.fromARGB(255, 71, 160, 255),
+                    size: 25,
+                  ),
+                ),
               ),
-            ),
-            subtitle: Container(
-              margin: EdgeInsets.symmetric(vertical: 5),
-              child: Text(
-                //  currentPodcast.description ?? "",
-                "some description to check how the subtitle exactly looks and if it can be used",
-                style: TextStyle(
-                    color: Color.fromARGB(145, 255, 255, 255),
-                    fontWeight: FontWeight.w200),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 5),
+                child: Text(
+                  //  currentPodcast.description ?? "",
+                  "some description to check how the subtitle exactly looks and if it can be used",
+                  style: TextStyle(
+                      color: Color.fromARGB(145, 255, 255, 255),
+                      fontWeight: FontWeight.w200),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ));

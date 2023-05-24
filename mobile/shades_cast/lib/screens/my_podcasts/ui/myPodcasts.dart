@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shades_cast/screens/addPodcast.dart';
-import 'addPodcast.dart';
+import 'package:shades_cast/screens/add_podcast/ui/addPodcast.dart';
+import '../../add_podcast/ui/addPodcast.dart';
 
 class MyPodcastsPage extends StatefulWidget {
   MyPodcastsPage();
