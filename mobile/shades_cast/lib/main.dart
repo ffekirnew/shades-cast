@@ -26,12 +26,11 @@ void main() {
           create: (BuildContext context) => HomeBloc(),
         )
       ],
-
       child: MaterialApp(
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/home',
+        initialRoute: '/podcast',
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => homepage(),
@@ -40,7 +39,6 @@ void main() {
           '/addEpisode': (context) => AddEpisodeScreen(),
           '/myPodcasts': (context) => MyPodcastsPage(),
           '/settings': (context) => AccountSettingsScreen(),
-
         },
       ),
     ),
