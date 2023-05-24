@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../../domain_layer/user.dart';
 import 'constants.dart';
 import 'authService.dart';
 
@@ -68,47 +69,28 @@ class UserApiClient {
       throw Exception('Failed to login user with email $email');
     }
   }
+
+  ////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future? updateUser(User newUser) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final response =
+        await http.put(Uri.parse("$api/api/v2/users/${newUser.id}/"));
+    if (response.statusCode != 200) {
+      throw Exception("cannot update user");
+    } else {
+      return jsonDecode(response.body);
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
 }
-
-
-
-// import 'dart:convert';
-// import 'package:http/http.dart' as http;
-// import 'constants.dart';
-
-// class UserApiClient {
-//   UserApiClient();
-
-//   Future<void> signUp({required String email, required String password}) async {
-//     final url = '$api/api/auth/signup';
-
-//     final response = await http.post(
-//       Uri.parse(url),
-//       headers: {'Content-Type': 'application/json'},
-//       body: jsonEncode({'email': email, 'password': password}),
-//     );
-
-//     if (response.statusCode != 201) {
-//       throw Exception('Failed to sign up user with email $email');
-//     }
-//   }
-
-//   Future<String> login(
-//       {required String email, required String password}) async {
-//     final url = '$api/api/auth/login';
-
-//     final response = await http.post(
-//       Uri.parse(url),
-//       headers: {'Content-Type': 'application/json'},
-//       body: jsonEncode({'email': email, 'password': password}),
-//     );
-
-//     if (response.statusCode == 200) {
-//       final responseBody = jsonDecode(response.body);
-//       final token = responseBody['key'];
-//       return token;
-//     } else {
-//       throw Exception('Failed to login user with email $email');
-//     }
-//   }
-// }
