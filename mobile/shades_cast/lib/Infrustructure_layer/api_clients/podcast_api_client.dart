@@ -3,25 +3,25 @@ import 'package:shades_cast/domain_layer/episode.dart';
 import 'dart:convert';
 import '../../domain_layer/podcast.dart';
 import 'constants.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   Future<void> storeToken(String token) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('token', token);
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.setString('token', token);
   }
 
   Future<String?> getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('token');
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // return prefs.getString('token');
   }
 }
 
 class PodcastApiClient {
-  late final http.Client httpClient;
+  // late final http.Client http;
   final AuthService authService = AuthService();
 
-  PodcastApiClient({required this.httpClient});
+  PodcastApiClient();
 
   //method to return all the podcasts
   //////////////////////////////////////////
@@ -31,7 +31,7 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> getPodcasts() async {
-    final response = await httpClient.get(Uri.parse('$api/api/podcasts'));
+    final response = await http.get(Uri.parse('$api/api/podcasts'));
     //inspect the response
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
@@ -48,7 +48,7 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> searchPodcasts(String query) async {
-    final response = await httpClient.get(Uri.parse('$api/search?q=$query'));
+    final response = await http.get(Uri.parse('$api/search?q=$query'));
     if (response.statusCode == 200) {
       final podcastsJson = json.decode(response.body)['results'];
       return podcastsJson.map<Podcast>((json)).toList();
@@ -64,7 +64,7 @@ class PodcastApiClient {
   ///
   ///
   Future<dynamic> getPodcastById(String id) async {
-    final response = await httpClient.get(Uri.parse('$api/api/podcasts/' + id));
+    final response = await http.get(Uri.parse('$api/api/podcasts/' + id));
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
@@ -83,7 +83,7 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await httpClient.post(
+    final response = await http.post(
       Uri.parse('$api/api/podcasts'),
       body: podcast,
       headers: headers,
@@ -101,7 +101,7 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await httpClient.delete(
+    final response = await http.delete(
       Uri.parse('$api/api/podcasts/' + podcastId),
       headers: headers,
     );
@@ -121,7 +121,7 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await httpClient.post(
+    final response = await http.post(
       Uri.parse('$api/api/episodes'),
       body: episode,
       headers: headers,
@@ -141,7 +141,7 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await httpClient.delete(
+    final response = await http.delete(
       Uri.parse('$api/api/episodes'),
       body: episode,
       headers: headers,
