@@ -71,6 +71,29 @@ class PodcastApiClient {
     return jsonDecode(response.body);
   }
 
+  //////////////////Method that handles the search of episodes of a podcast
+  ///
+  ////////////
+  ///
+  ///
+
+  Future<dynamic> getEpisodes(String podcatId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $token'
+    }; //podcasts/{id}/episodes
+    final response =
+        await httpClient.get(Uri.parse("$api/podcasts/$podcatId/episodes"));
+    if (response.statusCode != 200) {
+      throw Exception('Failed to delete podcast with ID $podcatId');
+    } else {
+      return json.decode(response.body);
+    }
+  }
+
   //method to add a new podcast
   //////////////////////////////////
   ///
