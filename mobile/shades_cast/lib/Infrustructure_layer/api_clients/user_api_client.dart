@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
+import 'authService.dart';
 
 class UserApiClient {
   UserApiClient();
+  final AuthService authService = AuthService();
 
   Future<String> signUp({
     required String username,
@@ -60,6 +62,7 @@ class UserApiClient {
     if (response.statusCode == 200) {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['key'];
+      authService.storeToken(token);
       return token;
     } else {
       throw Exception('Failed to login user with email $email');
