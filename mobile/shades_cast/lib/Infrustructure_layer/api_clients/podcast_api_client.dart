@@ -18,7 +18,7 @@ class AuthService {
 }
 
 class PodcastApiClient {
-  // late final http.Client http;
+  late final http.Client httpClient;
   final AuthService authService = AuthService();
 
   PodcastApiClient();
