@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
-import 'package:http/http.dart' as http;
+import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
 import '../../settings/ui/settings.dart';
 import '../../my_podcasts/ui/myPodcasts.dart';
@@ -288,6 +288,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
+      print(currentPodcast.imageUrl);
       podcasts.add(GestureDetector(
         onTap: () {
           Navigator.push(
@@ -295,6 +296,12 @@ class _podcastListState extends State<podcastList> {
               MaterialPageRoute(
                   builder: (context) =>
                       PodcastPage(podcastId: currentPodcast.id)));
+          //   BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
+          //       EpisodeItemClicked(
+          //           selectedIndex: currentPodcast.id,
+          //           podcastId: currentPodcast.id));
+          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context)
+              .add(PodcastDetailPageOpened(podcastId: currentPodcast.id));
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
@@ -327,12 +334,13 @@ class _podcastListState extends State<podcastList> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
                 child: Text(
                   //  currentPodcast.description ?? "",
                   "some description to check how the subtitle exactly looks and if it can be used",
                   style: TextStyle(
-                      color: Color.fromARGB(145, 255, 255, 255),
+                      color: Color.fromARGB(205, 255, 255, 255),
+                      fontSize: 16,
                       fontWeight: FontWeight.w200),
                 ),
               ),

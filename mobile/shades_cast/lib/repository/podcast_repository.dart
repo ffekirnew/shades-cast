@@ -4,7 +4,7 @@ import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 
 abstract class PodcastRepository {
-  Future<List<dynamic>> getPodcasts();
+  Future<List<Podcast>> getPodcasts();
 
   Future<Podcast> getPodcastById(String podcastId);
 
@@ -39,7 +39,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
       List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
         return Podcast.fromMap(remotePodcasts[index]);
       });
-      await _database.savePodcasts(remotePodcasts);
+      // await _database.savePodcasts(remotePodcasts);
       return podcasts;
     }
   }
@@ -56,9 +56,10 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return localPodcast;
     } else {
       final remotePodcast = await _apiClient.getPodcastById(podcastId);
+
       Podcast podcast = Podcast.fromMap(remotePodcast);
-      await _database.savePodcast(remotePodcast);
-      return remotePodcast;
+      // await _database.savePodcast(remotePodcast);
+      return podcast;
     }
   }
   ////////////////////////////////////////////////////////////////
@@ -125,15 +126,31 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Episode>> getEpisodes(String podcastId) async {
     final localEpisodes = await _database.getEpisodes(podcastId);
+    print("get episodes repo...");
 
-    if (localEpisodes != null) {
+    if (localEpisodes.length > 0) {
+      print(localEpisodes);
       return localEpisodes;
     } else {
+      print("get episodes repo");
       final remoteEpisodes = await _apiClient.getEpisodes(podcastId);
       List<Episode> episodes = List.generate(remoteEpisodes.length, (index) {
         return Episode.fromMap(remoteEpisodes[index]);
       });
-      await _database.saveEpisodes(episodes);
+      // await _database.saveEpisodes(episodes);
+      if (episodes.length > 0) {
+        Episode newEpisode = Episode(
+            id: 2,
+            podcastId: '1',
+            title: 'episode 2',
+            description: 'some other description',
+            audioUrl:
+                'https://fikernewapi.pythonanywhere.com/media/the-new-sho/2023/05/11/48a3737e-1076-4fab-9652-5fbb2af545d0.mp3',
+            publishedDate: '',
+            durationInSeconds: 20);
+        episodes.add(newEpisode);
+      }
+      print(episodes);
       return episodes;
     }
   }
