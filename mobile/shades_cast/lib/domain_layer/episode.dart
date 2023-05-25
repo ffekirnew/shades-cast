@@ -1,12 +1,12 @@
 //this class defines the domain of the Episode entity
 class Episode {
-  final String id;
-  final String title;
-  final String podcastId;
-  final String description;
-  final String audioUrl;
-  final DateTime publishedDate;
-  final int durationInSeconds;
+  final id;
+  final title;
+  final podcastId;
+  final description;
+  final audioUrl;
+  final publishedDate;
+  final durationInSeconds;
 
   Episode({
     required this.id,
@@ -33,12 +33,12 @@ class Episode {
   factory Episode.fromMap(Map<String, dynamic> map) {
     return Episode(
       id: map['id'],
-      podcastId: map['podcastId'],
+      podcastId: map['podcast'],
       title: map['title'],
       description: map['description'],
-      audioUrl: map['audioUrl'],
-      publishedDate: map['publishedDate'],
-      durationInSeconds: map['durationInSeconds'],
+      publishedDate: map['publish'],
+      durationInSeconds: map['audio_duration'],
+      audioUrl: map['audio_file'],
     );
   }
 }

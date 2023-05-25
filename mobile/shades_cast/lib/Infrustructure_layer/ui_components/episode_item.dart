@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
+import 'package:shades_cast/domain_layer/episode.dart';
 
 class EpisodeItem extends StatefulWidget {
-  final String name;
-  final Duration duration;
-  final myIndex;
+  late String name;
+  late Duration duration;
+  int myIndex;
   bool isSelected;
 
-  EpisodeItem(
-      {required this.name,
-      required this.duration,
-      required this.isSelected,
-      required this.myIndex});
+  EpisodeItem(Episode episode, this.isSelected, this.myIndex) {
+    this.name = episode.title;
+    this.duration = (episode.durationInSeconds != null)
+        ? Duration(seconds: episode.durationInSeconds)
+        : Duration(seconds: 0);
+  }
 
   @override
   State<EpisodeItem> createState() => _EpisodeItemState();
@@ -21,12 +23,13 @@ class EpisodeItem extends StatefulWidget {
 class _EpisodeItemState extends State<EpisodeItem> {
   @override
   Widget build(BuildContext context) {
+    print('here in podcastitem');
     return BlocBuilder<PodcastDetailsAndPlayerBloc,
         PodcastDetailsAndPlayerState>(builder: (context, state) {
       return GestureDetector(
         onTap: () {
-          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
-              EpisodeItemClicked(selectedIndex: widget.myIndex, podcastId: 1));
+          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context)
+              .add(EpisodeItemClicked(selectedIndex: widget.myIndex));
         },
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10, horizontal: 8),
@@ -48,13 +51,25 @@ class _EpisodeItemState extends State<EpisodeItem> {
               Expanded(
                 child: Text(
                   widget.name,
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
               ),
               SizedBox(width: 10),
-              Text(durationToString(widget.duration)),
+              Text(
+                durationToString(widget.duration),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+              ),
               SizedBox(width: 10),
-              Icon(Icons.play_circle_outline),
+              Icon(
+                Icons.play_circle_outline,
+                color: Colors.white,
+              ),
             ],
           ),
         ),
