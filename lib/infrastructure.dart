@@ -1,4 +1,4 @@
-//  the infrastructure will be the local database
+//  the infrastructure with the local database
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -6,10 +6,11 @@ import 'podcast.dart';
 
 class DataBase {
   List<Podcast> podcasts = [];
+  static DataBase? database;
 
-  Future<List<Podcast>> accessFavoritesTable() async {
+  Future<List<Podcast>> getFavorites() async {
     final database = await openDatabase(
-      join(await getDatabasesPath(), 'shade_casts.db'),
+      join(await getDatabasesPath(), 'podcasts.db'),
       version: 1,
     );
 
@@ -18,14 +19,23 @@ class DataBase {
 
     podcasts = favorites.map((favorite) {
       return Podcast(
-        id: favorite['id'],
-        creator: favorite['creator'],
-        title: favorite['title'],
-        status: favorite['status'],
-      );
+          id: favorite['id'],
+          author: favorite['author'],
+          title: favorite['title'],
+          categories: favorite['categories'],
+          imageUrl: favorite['imageUrl'],
+          description: favorite['description']);
     }).toList();
 
     await database.close();
     return podcasts;
+  }
+
+  Future<void> removeFavoritePodcast(int podcastId) async {
+    final db = await openDatabase(
+      join(await getDatabasesPath(), 'podcasts.db'),
+      version: 1,
+    );
+    await db.delete('favorites', where: 'id = ?', whereArgs: [podcastId]);
   }
 }
