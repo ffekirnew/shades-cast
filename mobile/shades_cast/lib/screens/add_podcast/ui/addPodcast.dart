@@ -1,14 +1,18 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 
 class addPodcasts extends StatefulWidget {
+  // late final PodcastApiClient _apiClient;
+
   addPodcasts();
   @override
   _addPodcastsState createState() => _addPodcastsState();
 }
 
 class _addPodcastsState extends State<addPodcasts> {
+  PodcastApiClient apiClient = PodcastApiClient();
   late Image _imageFile;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -40,7 +44,7 @@ class _addPodcastsState extends State<addPodcasts> {
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     // Get the image file path as a string
     final imagePath = _imageFile;
 
@@ -50,12 +54,21 @@ class _addPodcastsState extends State<addPodcasts> {
     final category = _usernameController.text;
     final email = _emailController.text;
 
+    dynamic podcast = {
+      'title': "title",
+      // 'description': description,
+      'category': "category",
+    };
+
     // Print the form data to the console
     print("Title: $title");
     print("Description: $description");
     print("Category: $category");
     print("Email: $email");
     print("Image Path: $imagePath");
+
+    // final res = await apiClient.getPodcasts();
+    // print(res);
     // TODO: Submit the updated user info to the backend
     // Make sure to validate the form data before submitting
     // Also handle errors if the submission fails
