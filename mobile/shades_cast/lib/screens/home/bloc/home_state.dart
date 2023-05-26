@@ -14,8 +14,12 @@ class FunFactLoadingState extends HomeState {}
 class PodcastLoadedState extends HomeState {
   final List<Podcast> podcasts;
   final List<int> favoritedPodcastId;
+  final Funfact funFact;
+
   PodcastLoadedState(
-      {required this.podcasts, required this.favoritedPodcastId});
+      {required this.podcasts,
+      required this.favoritedPodcastId,
+      required this.funFact});
 }
 
 // class PodcastFavoritedState extends HomeState {

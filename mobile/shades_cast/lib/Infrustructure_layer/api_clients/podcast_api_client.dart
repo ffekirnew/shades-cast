@@ -43,6 +43,26 @@ class PodcastApiClient {
     return jsonDecode(response.body);
   }
 
+  //method to return my podcasts
+  //////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  Future<List<dynamic>> getMyPodcasts(String userId) async {
+    final response = await http.get(Uri.parse('$api/api/v2/podcasts'));
+    //inspect the response
+
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception("cannot get podcasts");
+    }
+    // print(jsonDecode(response.body).runtimeType);
+
+    return jsonDecode(response.body);
+  }
+
   //method to handle searching of a podcast
   /////////////////////////////////////////////
   ///
@@ -121,15 +141,15 @@ class PodcastApiClient {
   ///
 
   Future<dynamic> getEpisodes(String podcatId) async {
-    //.....................has to be commented back...................
-    // String? token = await authService.getToken();
-    // print("in here get episodes");
-    // if (token == null) {
-    //   throw Exception("cannot get token");
-    // }
-    // Map<String, String> headers = {
-    //   'Authorization': 'Bearer $token'
-    // }; //podcasts/{id}/episodes
+    // .....................has to be commented back...................
+    String? token = await authService.getToken();
+    print("in here get episodes");
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {
+      'Authorization': 'Bearer $token'
+    }; //podcasts/{id}/episodes
     final response =
         await http.get(Uri.parse("$api/api/v2/podcasts/2/episodes"));
     print(response.body);
@@ -140,6 +160,47 @@ class PodcastApiClient {
       return json.decode(response.body);
     }
   }
+
+  Future<void> addEpisode(String podcastId, Episode episode) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.post(
+      Uri.parse('$api/api/episodes'),
+      body: episode,
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Failed to add episode with');
+    }
+  }
+
+  /////////////////////////////
+  ///
+  ///
+  ///
+  Future<void> deleteEpisode(String podcastId, Episode episode) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+
+    final response = await http.delete(
+      Uri.parse('$api/api/episodes'),
+      body: episode,
+      headers: headers,
+    );
+    if (response.statusCode != 204) {
+      throw Exception('Failed to delete episode');
+    }
+  }
+}
+
+
 
   //method to add a new podcast
   //////////////////////////////////
@@ -185,42 +246,3 @@ class PodcastApiClient {
   ///
   ///
   ///
-
-  Future<void> addEpisode(String podcastId, Episode episode) async {
-    String? token = await authService.getToken();
-    if (token == null) {
-      throw Exception("cannot get token");
-    }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.post(
-      Uri.parse('$api/api/episodes'),
-      body: episode,
-      headers: headers,
-    );
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add episode with');
-    }
-  }
-
-  /////////////////////////////
-  ///
-  ///
-  ///
-  Future<void> deleteEpisode(String podcastId, Episode episode) async {
-    String? token = await authService.getToken();
-    if (token == null) {
-      throw Exception("cannot get token");
-    }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-
-    final response = await http.delete(
-      Uri.parse('$api/api/episodes'),
-      body: episode,
-      headers: headers,
-    );
-    if (response.statusCode != 204) {
-      throw Exception('Failed to delete episode');
-    }
-  }
-}
