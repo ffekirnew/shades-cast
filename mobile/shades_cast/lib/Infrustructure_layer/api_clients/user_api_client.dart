@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import '../../domain_layer/user.dart';
 import 'constants.dart';
 import 'authService.dart';
+import 'package:path/path.dart' as path;
 
 class UserApiClient {
   UserApiClient();
@@ -52,7 +53,7 @@ class UserApiClient {
 
   Future<String> login(
       {required String email, required String password}) async {
-    final url = 'https://fikernewapi.pythonanywhere.com/api/auth/login/';
+    final url = '$api/api/auth/login/';
 
     final response = await http.post(
       Uri.parse(url),
