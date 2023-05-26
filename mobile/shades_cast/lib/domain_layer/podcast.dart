@@ -14,7 +14,6 @@ class Podcast {
       required this.imageUrl,
       required this.categories});
 
-// <<<<<<< firaols_branch
   factory Podcast.fromJson(Map<String, dynamic> json) {
     return Podcast(
       id: json['id'],
@@ -25,7 +24,6 @@ class Podcast {
       categories: json['categories'],
     );
   }
-// =======
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -39,12 +37,12 @@ class Podcast {
 
   static Podcast fromMap(Map<String, dynamic> map) {
     return Podcast(
-        id: map['id'],
-        title: map['title'],
-        description: map['description'],
-        author: map['author'],
-        imageUrl: map['imageUrl'],
-        categories: map['categories']);
-// >>>>>>> master
+      id: map['id'],
+      title: map['title'],
+      author: map['creator'],
+      description: map['description'],
+      imageUrl: map['cover_image'],
+      categories: map['categories'],
+    );
   }
 }

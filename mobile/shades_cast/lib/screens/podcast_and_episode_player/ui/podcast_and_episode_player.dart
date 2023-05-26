@@ -3,6 +3,7 @@ import 'package:shades_cast/Infrustructure_layer/ui_components/episode_player/bl
 import 'package:shades_cast/Infrustructure_layer/ui_components/episode_player/ui/episode_player.dart';
 // import 'package:shades_cast/Infrustructure_layer/ui_components/episode_lister.dart';
 import 'package:shades_cast/Infrustructure_layer/ui_components/episode_item.dart';
+import 'package:shades_cast/domain_layer/episode.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -21,13 +22,14 @@ class _PodcastPageState extends State<PodcastPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromARGB(215, 20, 20, 20),
         body: BlocBuilder<PodcastDetailsAndPlayerBloc,
             PodcastDetailsAndPlayerState>(
           builder: (context, state) {
-            return (state is PodcastLoadingState)
+            return (!(state is PodcastDetailEpisodes))
                 ? Center(
                     child: SpinKitFadingCircle(
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 37, 153, 255),
                     ),
                   )
                 : Container(
@@ -56,11 +58,11 @@ class _PodcastPageState extends State<PodcastPage> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        "Podcast Title",
+                                        state.podcast.title,
                                         style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.w400,
-                                        ),
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white),
                                       ),
                                     ),
                                     Container(
@@ -72,7 +74,9 @@ class _PodcastPageState extends State<PodcastPage> {
                                                   EdgeInsets.only(bottom: 25),
                                               child: Text(
                                                 "Creators",
-                                                style: TextStyle(fontSize: 20),
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white),
                                               )),
                                           Row(
                                             mainAxisAlignment:
@@ -85,30 +89,13 @@ class _PodcastPageState extends State<PodcastPage> {
                                                 color: Color.fromARGB(
                                                     155, 129, 107, 43),
                                                 child: Text(
-                                                  "Fkrnew Berhanu",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                ),
+                                                    state.podcast.author ?? "",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w300,
+                                                        color: Colors.white)),
                                               ),
-                                              SizedBox(
-                                                width: 20,
-                                              ),
-                                              Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 5,
-                                                    horizontal: 15),
-                                                color: Color.fromARGB(
-                                                    155, 129, 107, 43),
-                                                child: Text(
-                                                  "Firaol Ibrahim",
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.w300),
-                                                ),
-                                              )
                                             ],
                                           ),
                                         ],
@@ -122,54 +109,55 @@ class _PodcastPageState extends State<PodcastPage> {
                       Container(
                         height: 150,
                         child: EpisodePlayer(
-                            audioUrls: (state is PodcastDetailEpisodes)
-                                ? state.audioUrls
-                                : [''],
-                            currentEpisodeIndex:
-                                (state is PodcastDetailEpisodes)
-                                    ? state.currentPlayingEpisode
-                                    : 0),
+                            episodes: state.episodes,
+                            currentEpisodeIndex: state.currentPlayingEpisode),
                       ),
-
+                      Container(
+                        height: (state.podcast.description == null) ? 0 : 90,
+                        width: double.infinity,
+                        padding: EdgeInsets.only(
+                            top: 10, bottom: 10, left: 25, right: 25),
+                        child: Expanded(
+                          child: ListView(children: [
+                            Text(
+                              state.podcast.description ?? "",
+                              textAlign: TextAlign.left,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  color: Color.fromARGB(255, 255, 255, 255)),
+                            ),
+                          ]),
+                        ),
+                      ),
                       Container(
                         width: double.infinity,
-                        color: Color.fromARGB(45, 47, 47, 47),
+                        color: Color.fromARGB(44, 255, 255, 255),
                         margin: EdgeInsets.only(bottom: 5),
                         padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
                         child: Row(
                           children: [
                             Icon(
                               Icons.info,
                               size: 30,
-                              color: Color.fromARGB(255, 210, 210, 210),
+                              color: Color.fromARGB(255, 255, 255, 255),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 20),
                               child: Text(
-                                "Episode ${(state is PodcastDetailEpisodes) ? (state.currentPlayingEpisode % (state.audioUrls.length) + 1) : 1}",
-                                style: TextStyle(fontSize: 16),
+                                state.episodes[state.currentPlayingEpisode]
+                                    .title,
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
                               ),
                             )
                           ],
                         ),
                       ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                        child: Text(
-                          "The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. ",
-                          textAlign: TextAlign.left,
-                          style: TextStyle(
-                              fontSize: 15,
-                              color: Color.fromARGB(255, 170, 170, 170)),
-                        ),
-                      ),
-                      //description component,
-                      (state is PodcastDetailEpisodes)
-                          ? getEpisodes(episodes: state.episodes, state: state)
-                          : getEpisodes(
-                              episodes: [], state: state, context: context),
+                      getEpisodes(
+                          episodes: state.episodes,
+                          state: state,
+                          podcastId: widget.podcastId),
                     ]),
                   );
           },
@@ -179,13 +167,24 @@ class _PodcastPageState extends State<PodcastPage> {
   }
 }
 
-Widget getEpisodes({required List<EpisodeItem> episodes, state, context}) {
-  if (!(state is PodcastDetailEpisodes)) {
-    BlocProvider.of<PodcastDetailsAndPlayerBloc>(context)
-        .add(EpisodeItemClicked(selectedIndex: 0, podcastId: 2));
+Widget getEpisodes(
+    {required List<Episode> episodes,
+    required state,
+    context,
+    required int podcastId}) {
+  List<EpisodeItem> episodeItems = [];
+  for (int index = 0; index < episodes.length; index++) {
+    print('current....................................................');
+    print(state.currentPlayingEpisode);
+    print(index);
+    print('current....................................................');
+
+    episodeItems.add(EpisodeItem(
+        episodes[index], (state.currentPlayingEpisode == index), index));
   }
+
   return Expanded(
       child: ListView(
-    children: episodes,
+    children: episodeItems,
   ));
 }

@@ -46,12 +46,12 @@ class PodcastDatabase {
         audioUrl TEXT
       )
       ''');
-    await db.execute('''
-      CREATE TABLE funfacts(
-        TEXT title,
-        TEXT body
-      )
-        ''');
+    // await db.execute('''
+    //   CREATE TABLE funfacts(
+    //     TEXT title,
+    //     TEXT body
+    //   )
+    //     ''');
   }
 
   ////////////////////////////////

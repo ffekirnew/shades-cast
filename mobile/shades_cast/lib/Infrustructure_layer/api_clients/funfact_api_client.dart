@@ -7,6 +7,7 @@ class FunfactApiClient {
 
   Future<dynamic>? getFunfact() async {
     final response = await http.get(Uri.parse("$api/v2/fact"));
+    print(response.body);
     if (response.statusCode != 200) {
       return null;
     }
