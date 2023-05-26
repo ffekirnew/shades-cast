@@ -19,6 +19,8 @@ abstract class PodcastRepository {
 
   Future<void> addEpisode(String podcastId, List<dynamic> episode);
   Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
+
+  Future<List<Podcast>> favoritePodcasts();
 }
 
 class PodcastRepositoryImpl implements PodcastRepository {
@@ -75,6 +77,16 @@ class PodcastRepositoryImpl implements PodcastRepository {
     await _database.savePodcast(podcast);
   }
   ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+  ///
+
+  ////////////////////////////////////////////////////////////////
+  ///
   ///
   ///
   ///
@@ -157,6 +169,15 @@ class PodcastRepositoryImpl implements PodcastRepository {
     }
   }
 
+
+  @override
+  Future<List<Podcast>> favoritePodcasts() async {
+    final favourites = await _apiClient.favoritePodcasts();
+    List<Podcast> favs = List.generate(favourites.length, (index) {
+      return Podcast.fromMap(favourites[index]);
+    });
+    return favs;
+
 ////////////////////////////////////////////////
   ///
   ///
@@ -175,5 +196,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
+
   }
 }
