@@ -50,7 +50,7 @@ class PodcastApiClient {
   ///
   ///
   ///
-  Future<List<dynamic>> getMyPodcasts(String userId) async {
+  Future<List<dynamic>> getMyPodcasts() async {
     final response = await http.get(Uri.parse('$api/api/v2/podcasts'));
     //inspect the response
 

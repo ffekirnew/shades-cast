@@ -160,13 +160,13 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   ///
   @override
-  Future<List<Podcast>> getMyPodcasts(String userId) async {
+  Future<List<Podcast>> getMyPodcasts() async {
     // final localPodcasts = await _database.getPodcasts();
 
     // if (localPodcasts.isNotEmpty) {
     //   return localPodcasts;
     // } else {
-    List<dynamic> remotePodcasts = await _apiClient.getMyPodcasts(userId);
+    List<dynamic> remotePodcasts = await _apiClient.getMyPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
