@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="RESTKit_RequestSetting">
+    <option name="enablePostRequestScript" value="false" />
+    <option name="enablePreRequestScript" value="false" />
+    <option name="project" value="backend" />
+    <option name="saveRequestLog" value="false" />
+  </component>
+</project>

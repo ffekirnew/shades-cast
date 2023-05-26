@@ -16,12 +16,12 @@ class PodcastDetailsAndPlayerInitial extends PodcastDetailsAndPlayerState {
 class PodcastLoadingState extends PodcastDetailsAndPlayerState {}
 
 class PodcastDetailEpisodes extends PodcastDetailsAndPlayerState {
-  final List<EpisodeItem> episodes;
+  final List<Episode> episodes;
   final currentPlayingEpisode;
-  final audioUrls;
+  final Podcast podcast;
 
   PodcastDetailEpisodes(
       {required this.episodes,
       required this.currentPlayingEpisode,
-      this.audioUrls});
+      required this.podcast});
 }

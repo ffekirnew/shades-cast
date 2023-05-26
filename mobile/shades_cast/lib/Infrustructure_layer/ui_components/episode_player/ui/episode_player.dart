@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shades_cast/domain_layer/episode.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
 
 class EpisodePlayer extends StatefulWidget {
-  final List<String> audioUrls;
+  List<String> audioUrls = [];
+  List<Episode> episodes;
   int currentEpisodeIndex;
 
-  EpisodePlayer({required this.audioUrls, required this.currentEpisodeIndex}) {}
+  EpisodePlayer({required this.episodes, required this.currentEpisodeIndex}) {
+    for (int index = 0; index < episodes.length; index++) {
+      if (episodes[index].audioUrl != null) {
+        audioUrls.add(episodes[index].audioUrl);
+      }
+    }
+  }
 
   @override
   _EpisodePlayerState createState() => _EpisodePlayerState();
@@ -23,7 +32,6 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
 
   @override
   void initState() {
-    print('initialized');
     audioPlayer = AudioPlayer();
     currentAudioIndex = widget.currentEpisodeIndex;
     setAudio();
@@ -31,12 +39,16 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
       setState(() {
         currentDuration = position;
       });
-      super.initState();
     });
+    super.initState();
   }
 
   void setAudio() async {
     currentAudioIndex = widget.currentEpisodeIndex;
+
+    if (widget.audioUrls.length == 0) {
+      return;
+    }
     if (currentAudioIndex >= widget.audioUrls.length) {
       currentAudioIndex = 0;
     }
@@ -44,8 +56,8 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
       currentAudioIndex = widget.audioUrls.length - 1;
     }
     if ((widget.audioUrls.length > 0) & (widget.audioUrls[0] != '')) {
-      print('here hiiiiiiiiiiiiiiiii');
-      await audioPlayer.setUrl(widget.audioUrls[currentAudioIndex]);
+      await audioPlayer.setUrl(api + widget.audioUrls[currentAudioIndex]);
+      playAudio();
     }
     setState(() {
       totalDuration = audioPlayer.duration;
@@ -96,12 +108,12 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
             child: Slider(
               activeColor: Color.fromARGB(205, 246, 246, 246),
               thumbColor: Colors.white,
-              max: totalDuration?.inMilliseconds.toDouble() ?? 1,
-              value: currentDuration.inMilliseconds.toDouble(),
+              max: totalDuration?.inSeconds.toDouble() ?? 1,
+              value: currentDuration.inSeconds.toDouble(),
               onChanged: (value) {
-                audioPlayer.seek(Duration(milliseconds: value.toInt()));
+                audioPlayer.seek(Duration(seconds: value.toInt()));
                 setState(() {
-                  currentDuration = Duration(milliseconds: value.toInt());
+                  currentDuration = Duration(seconds: value.toInt());
                 });
               },
             ),
@@ -112,9 +124,12 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                child: Text((currentDuration.toString().length > 7)
-                    ? currentDuration.toString().substring(0, 7)
-                    : '0:00:00'),
+                child: Text(
+                  (currentDuration.toString().length > 7)
+                      ? currentDuration.toString().substring(0, 7)
+                      : '0:00:00',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               SizedBox(width: 26),
               IconButton(
@@ -147,9 +162,12 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
               ),
               SizedBox(width: 26),
               Container(
-                child: Text((totalDuration.toString().length > 7)
-                    ? totalDuration.toString().substring(0, 7)
-                    : '0:00:00'),
+                child: Text(
+                  (totalDuration.toString().length > 7)
+                      ? totalDuration.toString().substring(0, 7)
+                      : '0:00:00',
+                  style: TextStyle(color: Colors.white),
+                ),
               )
             ],
           ),

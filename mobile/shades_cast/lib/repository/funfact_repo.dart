@@ -10,8 +10,9 @@ abstract class FunfactRepository {
 }
 
 class FunfactRepositoryImpl extends FunfactRepository {
-  late final PodcastDatabase _database;
-  late final FunfactApiClient _apiClient;
+  final PodcastDatabase _database;
+  final FunfactApiClient _apiClient;
+  FunfactRepositoryImpl(this._database, this._apiClient);
   @override
   Future<Funfact> getFunfact() async {
     final funfact = await _database.getFunfact();
