@@ -1,41 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:shades_cast/screens/add_podcast/ui/addPodcast.dart';
-import '../../add_podcast/ui/addPodcast.dart';
-
-import 'package:flutter/material.dart';
-import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
-import '../../settings/ui/settings.dart';
-import '../../my_podcasts/ui/myPodcasts.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class MyPodcastsPage extends StatefulWidget {
-  MyPodcastsPage();
+class FavoritePodcastsPage extends StatefulWidget {
+  FavoritePodcastsPage();
 
   @override
-  _MyPodcastsPageState createState() => _MyPodcastsPageState();
+  _FavoritePodcastsPageState createState() => _FavoritePodcastsPageState();
 }
 
-class _MyPodcastsPageState extends State<MyPodcastsPage> {
+class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
   @override
-  void initState() {
+  void initState() {  
     super.initState();
-    _loadPodcasts();
-  }
-
-  void _loadPodcasts() async {
-    setState(() {});
-  }
-
-  void _navigateToAddPodcast() async {
-    final result = await Navigator.pushNamed(context, '/add_podcast');
-    if (result == true) {
-      _loadPodcasts();
-    }
   }
 
   @override
@@ -52,7 +33,7 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF081624),
-          title: Text('My Podcasts'),
+          title: Text('Favorite Podcasts'),
         ),
         body: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
@@ -68,7 +49,7 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
                     padding: EdgeInsets.all(5),
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      "My Podcasts",
+                      "Favorite Podcasts",
                       style: TextStyle(
                         color: Colors.grey[100],
                         fontWeight: FontWeight.bold,
@@ -95,104 +76,13 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => addPodcasts()),
-            );
-          },
-          child: Icon(Icons.add),
-        ),
-      ),
-    );
-  }
-}
-
-class demo extends StatelessWidget {
-  final String coverImage;
-  final String title;
-  final String category;
-  final int episodes;
-  const demo(
-      {super.key,
-      required this.coverImage,
-      required this.title,
-      required this.category,
-      required this.episodes});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(12),
-              bottomLeft: Radius.circular(12),
-            ),
-            child: Image.network(
-              "$coverImage",
-              height: 100,
-              width: 100,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 12),
-                Text(
-                  "$title",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  "$category",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.play_arrow,
-                      size: 20,
-                      color: Colors.grey,
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      "$episodes episodes",
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 12),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
 }
 
 class podcastList extends StatefulWidget {
-  List<dynamic> podcasts;
+  final List<dynamic> podcasts;
   final currentState;
 
   podcastList({required this.podcasts, required this.currentState});
@@ -232,7 +122,7 @@ class _podcastListState extends State<podcastList> {
               ListTile(
                 leading: Image(
                   image: NetworkImage(currentPodcast.imageUrl ??
-                      "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
+                      "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dumFavorite image for place holder if no image
                 ),
                 title: Text(
                   currentPodcast.title,

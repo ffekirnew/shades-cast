@@ -7,6 +7,8 @@ import '../../my_podcasts/ui/myPodcasts.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -27,6 +29,9 @@ class homepage extends StatelessWidget {
           drawer: sideMenu(),
           body: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
+              if (!(state is PodcastLoadedState)) {
+                BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+              }
               // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
               return Padding(
                 padding: EdgeInsets.only(left: 13, right: 13, top: 40),
@@ -54,7 +59,7 @@ class homepage extends StatelessWidget {
                       ],
                     ),
                     searchBox(),
-                    funFact(),
+                    funFact(state: state),
                     Container(
                       padding: EdgeInsets.all(5),
                       alignment: Alignment.centerLeft,
@@ -74,10 +79,13 @@ class homepage extends StatelessWidget {
                               currentState: state,
                             ),
                           )
-                        : ElevatedButton(
-                            onPressed: () => (BlocProvider.of<HomeBloc>(context)
-                                .add(GetPodcasts())),
-                            child: Text("Get Podcasts"))
+                        : Expanded(
+                            child: Center(
+                              child: SpinKitFadingCircle(
+                                color: Color.fromARGB(255, 37, 153, 255),
+                              ),
+                            ),
+                          ),
                   ],
                 ),
               );
@@ -110,17 +118,9 @@ class sideMenu extends StatelessWidget {
                 Column(children: [
                   Row(children: [
                     Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 20.0, 0, 0),
+                      padding: EdgeInsets.fromLTRB(100.0, 20.0, 0, 0),
                       child: Text(
-                        'Hello,',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(3.0, 20.0, 0, 0),
-                      child: Text(
-                        "Friend",
+                        "Shamil Bedru",
                         style: TextStyle(fontSize: 20.0, color: Colors.white),
                       ),
                     )
@@ -139,14 +139,14 @@ class sideMenu extends StatelessWidget {
                         width: 40.0,
                       ),
                       Text(
-                        "followers",
+                        "Followers",
                         style: TextStyle(color: Colors.white),
                       ),
                       SizedBox(
                         width: 20.0,
                       ),
                       Text(
-                        "following",
+                        "Following",
                         style: TextStyle(color: Colors.white),
                       ),
                     ],
@@ -188,12 +188,12 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.mic,
-              color: Color(0xFF999EA3),
+              color: Colors.white,
             ),
             title: Text(
               'My Podcasts',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xFF999EA3)),
+              style: TextStyle(color: Colors.white),
             ),
             onTap: () {
               // handle item 1 tap
@@ -210,15 +210,18 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.favorite,
-              color: Color(0xFF999EA3),
+              color: Colors.white,
             ),
             title: Text(
-              'Favourites',
+              'Favorites',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xFF999EA3)),
+              style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              // handle item 2 tap
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FavoritePodcastsPage()),
+              );
             },
           ),
           Divider(
@@ -228,12 +231,12 @@ class sideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(
               Icons.settings,
-              color: Color(0xFF999EA3),
+              color: Colors.white,
             ),
             title: Text(
               'Account Settings',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Color(0xFF999EA3)),
+              style: TextStyle(color: Colors.white),
             ),
             onTap: () {
               // handle item 2 tap
@@ -248,22 +251,19 @@ class sideMenu extends StatelessWidget {
             thickness: 2.0,
             color: Color(0xFF040a11),
           ),
-          SizedBox(
-            height: 325.0,
+
+          Container(
+            margin: EdgeInsets.all(20),
+            child: ElevatedButton(
+                onPressed: () {
+                  print("logout button pressed");
+                  // Log user out
+                },
+                child: Text(
+                  "Logout",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                )),
           ),
-          FloatingActionButton(
-              onPressed: () {
-                print("logout button pressed");
-                // Log user out
-              },
-              backgroundColor: Colors.blue[600],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Text(
-                "Logout",
-                style: TextStyle(fontWeight: FontWeight.bold),
-              )),
           // add more items as needed
         ],
       ),
@@ -288,7 +288,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
-      print(currentPodcast.imageUrl);
+
       podcasts.add(GestureDetector(
         onTap: () {
           Navigator.push(
@@ -361,43 +361,64 @@ class _podcastListState extends State<podcastList> {
 
 //possible place holder possibly a place to put the the funfact
 class funFact extends StatefulWidget {
+  final state;
+  funFact({required this.state});
   @override
   State<funFact> createState() => _funFactState();
 }
 
 class _funFactState extends State<funFact> {
   bool visibility = true;
+
   @override
   Widget build(BuildContext context) {
     return Visibility(
-      visible: visibility,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+        visible: visibility,
+        child: Container(
+          color: Color.fromARGB(55, 160, 160, 160),
+          margin: EdgeInsets.all(20),
+          child: Column(
             children: [
-              TextButton(
-                  onPressed: () {
-                    setState(() {
-                      visibility = !visibility;
-                    });
-                  },
-                  child: Icon(Icons.close))
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                      onPressed: () {
+                        setState(() {
+                          visibility = !visibility;
+                        });
+                      },
+                      child: Icon(Icons.close))
+                ],
+              ),
+              (widget.state is PodcastLoadedState)
+                  ? Container(
+                      margin: EdgeInsets.all(20),
+                      padding: EdgeInsets.only(bottom: 50),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.state.funFact.title,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              widget.state.funFact.body,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Container(
+                      padding: EdgeInsets.only(bottom: 10),
+                      child: SpinKitFadingCircle(
+                        color: Color.fromARGB(255, 37, 153, 255),
+                      ),
+                    )
             ],
           ),
-          Padding(
-            padding: EdgeInsets.all(20.0),
-            child: Placeholder(
-              fallbackHeight: 200.0,
-              child: Image(
-                image: AssetImage('Assets/images/podcast.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+        ));
   }
 }
 
