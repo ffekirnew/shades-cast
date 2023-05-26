@@ -169,7 +169,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     }
   }
 
-
   @override
   Future<List<Podcast>> favoritePodcasts() async {
     final favourites = await _apiClient.favoritePodcasts();
@@ -177,8 +176,9 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return Podcast.fromMap(favourites[index]);
     });
     return favs;
+  }
 
-////////////////////////////////////////////////
+  ///////////////////////////////////////////////
   ///
   ///
   ///
@@ -196,6 +196,5 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
-
   }
 }
