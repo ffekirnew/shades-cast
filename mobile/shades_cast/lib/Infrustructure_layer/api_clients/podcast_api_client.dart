@@ -51,7 +51,8 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> getMyPodcasts() async {
-    final response = await http.get(Uri.parse('$api/api/v2/podcasts'));
+    final response =
+        await http.get(Uri.parse('$api/api/v2/podcasts/podcasts-created'));
     //inspect the response
 
     print(response.statusCode);

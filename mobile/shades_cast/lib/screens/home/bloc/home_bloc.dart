@@ -34,8 +34,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
-        final List<Podcast> podcasts = await podcastRepo.getPodcasts();
-        currentPodcasts = podcasts;
+        try {
+          final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+          currentPodcasts = podcasts;
+        } catch (e) {
+          print('error occured');
+        }
 
 //------------------------ un comment for funfact fetching functionality ------------------------
         // Funfact funfact = await funFactRep.getFunfact();
@@ -44,7 +48,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
         emit(
           PodcastLoadedState(
-              podcasts: podcasts,
+              podcasts: currentPodcasts,
               favoritedPodcastId: favoritedIds,
               funFact: currentFunFact),
         );
