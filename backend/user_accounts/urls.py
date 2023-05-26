@@ -2,15 +2,11 @@ from django.urls import path
 from . import views
 from rest_framework.routers import SimpleRouter
 
-router = SimpleRouter()
-router.register('', views.UserViewSet, basename='users')
-
-urlpatterns = router.urls
-
 app_name = 'user_accounts'
 urlpatterns = []
 
 urlpatterns.extend([
+    path('', views.users_list, name='users_list'),
     path('<int:id>/followers/', views.UserFollowersAPIView.as_view(), name='user_followers'),
     path('<int:id>/following/', views.UserFollowingAPIView.as_view(), name='user_following'),
     path('<int:id>/podcasts-created/', views.UserPodcastsAPIView.as_view(), name='user_podcasts'),
