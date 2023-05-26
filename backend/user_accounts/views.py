@@ -19,12 +19,6 @@ from .permissions import IsOwnerOrReadOnly
 from podcasts.serializers import PodcastSerializer
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly,)
-    queryset = get_user_model().objects.all()
-    serializer_class = UserSerializer
-
-
 class UserProfileDetailView(views.APIView):
     permission_classes = (IsAuthenticated, IsOwnerOrReadOnly,)
 
@@ -47,7 +41,16 @@ class UserProfileDetailView(views.APIView):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated,])
+@permission_classes([IsAuthenticated, ])
+def users_list(request):
+    users = get_user_model().objects.all()
+    serializer = UserSerializer(users, many=True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, ])
 def personal_user_detail(request):
     user = get_object_or_404(get_user_model(), id=request.user.id)
     serializer = UserSerializer(user)
