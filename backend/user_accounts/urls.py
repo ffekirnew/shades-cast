@@ -8,6 +8,7 @@ router.register('', views.UserViewSet, basename='users')
 urlpatterns = router.urls
 
 app_name = 'user_accounts'
+urlpatterns = []
 
 urlpatterns.extend([
     path('<int:id>/followers/', views.UserFollowersAPIView.as_view(), name='user_followers'),
@@ -16,4 +17,5 @@ urlpatterns.extend([
     path('<int:id>/favorite-podcasts/', views.UserFavoritePodcastsAPIView.as_view(), name='user_favorite_podcasts'),
     path('<int:id>/profile/', views.UserProfileDetailView.as_view(), name='user_profile'),
     path('<int:id>/add-follow/', views.user_add_follow_view, name='user_add_follow'),
+    path('my-account/', views.personal_user_detail, name='user_account'),
 ])
