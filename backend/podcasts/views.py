@@ -80,6 +80,24 @@ def podcast_favorited_by(request, id):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+def user_podcasts_list(request):
+    podcasts = Podcast.objects.filter(creator__id=request.user.id)
+    serializer = PodcastSerializer(podcasts, many=True)
+    print(podcasts)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def user_favorite_podcasts_list(request):
+    podcasts = Podcast.objects.filter(favorited_by__in=[request.user.id])
+    serializer = PodcastSerializer(podcasts, many=True)
+    print(podcasts)
+
+    return Response(serializer.data)
+
+
+
 # Episodes and related views
 class EpisodeViewSet(viewsets.ModelViewSet):
     permission_classes = (IsEpisodeCreatorOrReadOnly,)

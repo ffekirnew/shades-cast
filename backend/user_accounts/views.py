@@ -9,6 +9,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
+from podcasts.models import Podcast
 # Local app imports
 from .models import Contact
 from .serializers import UserSerializer, ProfileSerializer, ContactSerializer
@@ -43,6 +44,15 @@ class UserProfileDetailView(views.APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,])
+def personal_user_detail(request):
+    user = get_object_or_404(get_user_model(), id=request.user.id)
+    serializer = UserSerializer(user)
+
+    return Response(serializer.data)
 
 
 class UserFollowersAPIView(generics.ListAPIView):
