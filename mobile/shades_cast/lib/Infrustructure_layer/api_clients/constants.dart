@@ -1,7 +1,11 @@
-// <<<<<<< HEAD
-const String api = 'http://192.168.0.136:8000';
+
+const String api = 'http://192.168.0.144:8000';
+
+
+
 // =======
 // const String api = 'https://197.156.86.88:8000';
+
 //fikernewapi.pythonanywhere.com/
 //http://fikernewapi.pythonanywhere.com
 //hostname -I
