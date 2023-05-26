@@ -1,5 +1,7 @@
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 
+import '../domain_layer/user.dart';
+
 class UserRepo {
   Future<String> LoginUser(
       {required String email, required String password}) async {
@@ -17,6 +19,18 @@ class UserRepo {
     }
     print("Success");
     return 'Success';
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<User> getDetails() async {
+    UserApiClient user = UserApiClient();
+
+    final details = await user.userDetails();
+    User current_user = User.fromMap(details);
+    return current_user;
   }
 
   Future<String> SignupUser({

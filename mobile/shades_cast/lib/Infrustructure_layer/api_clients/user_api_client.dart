@@ -64,6 +64,7 @@ class UserApiClient {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['key'];
       authService.storeToken(token);
+
       return token;
     } else {
       throw Exception('Failed to login user with email $email');
@@ -93,4 +94,18 @@ class UserApiClient {
   ///
   ///
   ///
+  Future<dynamic> userDetails() async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    final response = await http.get(Uri.parse('$api/api/v2/users/myaccount'),
+        headers: headers);
+    if (response.statusCode != 200) {
+      throw Exception("cannot update user");
+    } else {
+      return jsonDecode(response.body);
+    }
+  }
 }
