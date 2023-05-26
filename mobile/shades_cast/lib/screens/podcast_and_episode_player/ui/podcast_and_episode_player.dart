@@ -129,37 +129,46 @@ class _PodcastPageState extends State<PodcastPage> {
                           ]),
                         ),
                       ),
-                      Container(
-                        width: double.infinity,
-                        color: Color.fromARGB(44, 255, 255, 255),
-                        margin: EdgeInsets.only(bottom: 5),
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 25),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.info,
-                              size: 30,
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20),
-                              child: Text(
-                                state.episodes[state.currentPlayingEpisode]
-                                    .title,
-                                style: TextStyle(
-                                    fontSize: 16, color: Colors.white),
+                      (state.episodes.length > 0)
+                          ? Container(
+                              width: double.infinity,
+                              color: Color.fromARGB(44, 255, 255, 255),
+                              margin: EdgeInsets.only(bottom: 5),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 25),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.info,
+                                    size: 30,
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 20),
+                                    child: Text(
+                                      state
+                                          .episodes[state.currentPlayingEpisode]
+                                          .title,
+                                      style: TextStyle(
+                                          fontSize: 16, color: Colors.white),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
-                          ],
-                        ),
-                      ),
-                      getEpisodes(
-                          episodes: state.episodes,
-                          state: state,
-                          podcastId: widget.podcastId),
-                    ]),
-                  );
+                          : Container(),
+                      (state.episodes.length > 0)
+                          ? getEpisodes(
+                              episodes: state.episodes,
+                              state: state,
+                              podcastId: widget.podcastId)
+                          : Container(
+                              child: Center(
+                                  child: Text(
+                              "No Episodes",
+                              style: TextStyle(color: Colors.white),
+                            )))
+                    ]));
           },
         ),
       ),

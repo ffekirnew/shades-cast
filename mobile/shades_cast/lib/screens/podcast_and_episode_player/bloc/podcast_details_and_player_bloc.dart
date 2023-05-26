@@ -1,4 +1,6 @@
 import 'package:bloc/bloc.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
@@ -52,14 +54,16 @@ class PodcastDetailsAndPlayerBloc
         print('ended');
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
-            currentPlayingEpisode: currentEpisode % (currentEpisodes.length),
+            currentPlayingEpisode:
+                currentEpisode % (max(currentEpisodes.length, 1)),
             podcast: pod));
       } else if (event is SkipToNextButtonClicked) {
         currentEpisode += 1;
         print(currentEpisode);
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
-            currentPlayingEpisode: currentEpisode % (currentEpisodes.length),
+            currentPlayingEpisode:
+                currentEpisode % (max(currentEpisodes.length, 1)),
             podcast: currentPodcast));
       } else if (event is SkipToPreviousButtonClicked) {
         currentEpisode -= 1;
@@ -67,13 +71,15 @@ class PodcastDetailsAndPlayerBloc
 
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
-            currentPlayingEpisode: currentEpisode % (currentEpisodes.length),
+            currentPlayingEpisode:
+                currentEpisode % (max(currentEpisodes.length, 1)),
             podcast: currentPodcast));
       } else if (event is EpisodeItemClicked) {
         currentEpisode = event.selectedIndex;
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
-            currentPlayingEpisode: currentEpisode % (currentEpisodes.length),
+            currentPlayingEpisode:
+                currentEpisode % (max(currentEpisodes.length, 1)),
             podcast: currentPodcast));
       }
     });
