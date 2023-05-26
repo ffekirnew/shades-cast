@@ -8,6 +8,8 @@ abstract class PodcastRepository {
 
   Future<Podcast> getPodcastById(String podcastId);
 
+  Future<List<Podcast>> getMyPodcasts();
+
   Future<void> addPodcast(Podcast podcast);
 
   Future<void> deletePodcast(String podcastId);
