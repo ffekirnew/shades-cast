@@ -55,6 +55,7 @@ class UserApiClient {
       {required String email, required String password}) async {
     final url = '$api/api/auth/login/';
 
+    print('got here');
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},

@@ -22,7 +22,11 @@ ALLOWED_HOSTS = [
     'localhost',
 
     '192.168.0.144',
+# <<<<<<< HEAD
     '192.168.0.136'
+# =======
+    '196.191.60.129'
+# >>>>>>> d797754 (no changes)
 ]
 
 # Application definition

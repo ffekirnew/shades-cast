@@ -178,6 +178,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
     return favs;
   }
 
+// <<<<<<< HEAD
   ///////////////////////////////////////////////
   ///
   ///
@@ -196,5 +197,26 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
+// =======
+////////////////////////////////////////////////
+    ///
+    ///
+    ///
+    @override
+    Future<List<Podcast>> getMyPodcasts() async {
+      // final localPodcasts = await _database.getPodcasts();
+
+      // if (localPodcasts.isNotEmpty) {
+      //   return localPodcasts;
+      // } else {
+      List<dynamic> remotePodcasts = await _apiClient.getMyPodcasts();
+      List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
+        return Podcast.fromMap(remotePodcasts[index]);
+      });
+      // await _database.savePodcasts(remotePodcasts);
+      return podcasts;
+      // }
+    }
+// >>>>>>> d797754 (no changes)
   }
 }
