@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:http/http.dart' as http;
+
+import '../../../Infrustructure_layer/api_clients/authService.dart';
+import '../../../Infrustructure_layer/api_clients/podcast_api_client.dart';
 
 class AddEpisodeScreen extends StatefulWidget {
   @override
@@ -9,6 +14,8 @@ class AddEpisodeScreen extends StatefulWidget {
 }
 
 class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
+  PodcastApiClient apiClient = PodcastApiClient();
+
   late File _audioFile;
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
@@ -22,13 +29,16 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
     _descriptionController = TextEditingController(text: "description");
   }
 
-  Future<void> _pickAudio() async {
-    File? audioFile = await pickAudioFile();
-    if (audioFile != null) {
-      // Do something with the selected audio file
-      setState(() {
-        _audioFile = audioFile;
-      });
+  Future<File> _pickAudio() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+      allowMultiple: false,
+    );
+
+    if (result != null && result.files.single.path != null) {
+      return File(result.files.single.path!);
+    } else {
+      throw Exception("No audio file selected");
     }
   }
 
@@ -39,28 +49,64 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
     );
 
     if (result != null && result.files.single.path != null) {
-      return File(result.files.single.path!);
+      _audioFile = File(result.files.single.path!);
     } else {
       return null;
     }
   }
 
-  void _submitForm() {
-    if (_audioFile != null) {
-      final audioPath = _audioFile.path.toString();
-    } else {
-      final audioPath = "false";
-    }
-    // Get the form field values
-    final title = _titleController.text;
-    final description = _descriptionController.text;
+  void _submitForm() async {
+    // final AuthService authService = AuthService();
+    // String? token = await authService.getToken();
 
-    print("title: $title");
-    print("description: $description");
-    print("audio file: $_audioFile");
-    // TODO: Submit the episode info to the backend
-    // Make sure to validate the form data before submitting
-    // Also handle errors if the submission fails
+    var uri = Uri.parse('http://192.168.0.144:8000/api/v2/episodes/');
+    var request = http.MultipartRequest('POST', uri);
+
+    // request.headers['Authorization'] = 'Token $token';
+    request.fields['title'] = _titleController.text;
+    request.fields['tags'] = _descriptionController.text;
+    request.fields['podcast'] = "1";
+
+    if (_audioFile == null) {
+      await _pickAudio(); // Use await to get the selected audio file
+    }
+
+    dynamic episode = {
+      "title": _titleController.text,
+      "description": _descriptionController.text,
+      "podcast": "1",
+      "_audioFile": _audioFile,
+    };
+    apiClient.addEpisode(episode);
+
+    // if (_audioFile != null) {
+    //   var stream = http.ByteStream(_audioFile.openRead());
+    //   stream.cast();
+    //   var length = await _audioFile.length();
+
+    //   var multipartFile = http.MultipartFile(
+    //     'audio_file',
+    //     stream,
+    //     length,
+    //     filename: path.basename(_audioFile.path),
+    //   );
+
+    //   request.files.add(multipartFile);
+
+    //   try {
+    //     var response = await request.send();
+    //     if (response.statusCode != 200) {
+    //       print((response.statusCode));
+    //       print("Error sending the file");
+    //     } else {
+    //       print('Success');
+    //     }
+    //   } catch (e) {
+    //     print("Error: $e");
+    //   }
+    // } else {
+    //   print("No audio file selected");
+    // }
   }
 
   @override
