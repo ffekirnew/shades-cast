@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:path/path.dart' as path;
+
 import 'package:http/http.dart' as http;
 import 'package:shades_cast/domain_layer/episode.dart';
 import 'dart:convert';
@@ -31,8 +34,8 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> getPodcasts() async {
-
     final response = await http.get(Uri.parse('$api/api/v2/podcasts'));
+
     //inspect the response
 
     print(response.statusCode);
@@ -127,21 +130,61 @@ class PodcastApiClient {
   ///
   ///
   Future<dynamic> addPodcast(dynamic podcast) async {
+    File _imageFile = podcast["cover_image"];
+    String title = podcast["title"];
+    String description = podcast["description"];
+    String categories = podcast["categories"];
+
+    // String? token = await authService.getToken();
+    // print("api called successfully");
+    // print(token);
+    // if (token == null) {
+    //   throw Exception("cannot get token");
+    // }
+    // print(podcast);
+    // Map<String, String> headers = {'Authorization': 'Token $token'};
+    // final response = await http.post(
+    //   Uri.parse('$api/api/v2/podcasts/'),
+    //   body: podcast,
+    //   headers: headers,
+    // );
+    // print("got here");
+    // print(response.statusCode);
+    // print(jsonDecode(response.body));
+
+    final AuthService authService = AuthService();
+
+    var stream = http.ByteStream(_imageFile.openRead());
+    stream.cast();
+    var length = await _imageFile.length();
+    var uri = Uri.parse('http://192.168.0.144:8000/api/v2/podcasts/');
+    var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
-    print("api called successfully");
-    if (token == null) {
-      throw Exception("cannot get token");
-    }
-    print(podcast);
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await http.post(
-      Uri.parse('$api/api/v2/podcasts'),
-      body: podcast,
-      headers: headers,
+
+    request.headers['Authorization'] = 'Token $token';
+    request.fields['title'] = title;
+    request.fields['categories'] = categories;
+
+    var multipartFile = http.MultipartFile(
+      'cover_image',
+      stream,
+      length,
+      filename: path.basename(_imageFile.path), // Use the original filename
     );
-    print("got here");
-    print(response.statusCode);
-    print(jsonDecode(response.body));
+    request.files.add(multipartFile);
+    request.fields['cover_image'] = path.basename(_imageFile.path);
+
+    try {
+      var response = await request.send();
+      if (response.statusCode != 200) {
+        print((response.statusCode));
+        print("Error sending the file");
+      } else {
+        print('Success');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
   }
 
   //method to handle the deletion of a specific podcast by using its ID

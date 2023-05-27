@@ -23,3 +23,4 @@ class EpisodeSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = Episode
         fields = ['id', 'title', 'audio_file', 'audio_duration',
                   'audio_size', 'podcast', 'tags', 'publish', 'description', 'status']
+
