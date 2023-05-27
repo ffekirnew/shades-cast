@@ -21,27 +21,36 @@ part 'favorite_podcasts_state.dart';
 class FavoritePodcastsBloc
     extends Bloc<FavoritePodcastsEvent, FavoritePodcastsState> {
   FavoritePodcastsBloc() : super(FavoritePodcastsInitial()) {
-    on<FavoritePodcastsEvent>((event, emit) {
+    on<FavoritePodcastsEvent>((event, emit) async {
       List<int> favoritedIds = [];
       PodcastApiClient _apiClient = PodcastApiClient();
       PodcastDatabase _database = PodcastDatabase.instance;
+      List<Podcast> currentPodcasts = [];
 
-      on<FavoritePodcastsEvent>((event, emit) async {
-        if (event is GetPodcasts) {
-          emit(PodcastListerLoadingState());
-          PodcastRepository podcastRepo =
-              PodcastRepositoryImpl(_database, _apiClient);
+      if (event is GetFavPodcasts) {
+        emit(FavPodcastListerLoadingState());
+        PodcastRepository podcastRepo =
+            PodcastRepositoryImpl(_database, _apiClient);
 
-          final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+        final List<Podcast> favPodcasts = await podcastRepo.favoritePodcasts();
 
-          emit(
-            PodcastLoadedState(
-              podcasts: podcasts,
-              favoritedPodcastId: favoritedIds,
-            ),
-          );
+        currentPodcasts = favPodcasts;
+        emit(
+          FavPodcastLoadedState(
+            podcasts: favPodcasts,
+            favoritedPodcastId: favoritedIds,
+          ),
+        );
+      } else if (event is FavPodcastFavorited) {
+        if (!(favoritedIds.contains(event.podcastId))) {
+          favoritedIds.add(event.podcastId);
+        } else {
+          favoritedIds.remove(event.podcastId);
         }
-      });
+
+        emit(FavPodcastLoadedState(
+            podcasts: currentPodcasts, favoritedPodcastId: favoritedIds));
+      }
     });
   }
 }

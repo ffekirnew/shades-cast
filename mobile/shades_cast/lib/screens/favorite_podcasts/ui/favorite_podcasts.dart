@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 
 class FavoritePodcastsPage extends StatefulWidget {
   FavoritePodcastsPage();
@@ -15,7 +17,7 @@ class FavoritePodcastsPage extends StatefulWidget {
 
 class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
   @override
-  void initState() {  
+  void initState() {
     super.initState();
   }
 
@@ -35,12 +37,13 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
           backgroundColor: Color(0xFF081624),
           title: Text('Favorite Podcasts'),
         ),
-        body: BlocBuilder<HomeBloc, HomeState>(
+        body: BlocBuilder<FavoritePodcastsBloc, FavoritePodcastsState>(
           builder: (context, state) {
-            if (!(state is PodcastLoadedState)) {
-              BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+            if (!(state is FavPodcastLoadedState)) {
+              BlocProvider.of<FavoritePodcastsBloc>(context)
+                  .add(GetFavPodcasts());
             }
-            // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+            // BlocProvider.of<FavoritePodcastsBloc>(context).add(GetPodcasts());
             return Padding(
               padding: EdgeInsets.only(left: 13, right: 13, top: 40),
               child: Column(
@@ -57,7 +60,7 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
                       ),
                     ),
                   ),
-                  (state is PodcastLoadedState)
+                  (state is FavPodcastLoadedState)
                       ? Expanded(
                           child: podcastList(
                             podcasts: state.podcasts,
@@ -130,8 +133,8 @@ class _podcastListState extends State<podcastList> {
                 ),
                 trailing: IconButton(
                   onPressed: () {
-                    BlocProvider.of<HomeBloc>(context)
-                        .add(PodcasFavorited(podcastId: currentPodcast.id));
+                    BlocProvider.of<FavoritePodcastsBloc>(context)
+                        .add(FavPodcastFavorited(podcastId: currentPodcast.id));
                   },
                   icon: Icon(
                     (widget.currentState.favoritedPodcastId
