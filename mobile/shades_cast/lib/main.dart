@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/ui/myPodcasts.dart';
 import 'screens/add_epsiode/ui/addEpisode.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,6 +24,9 @@ void main() {
         ),
         BlocProvider(
           create: (BuildContext context) => HomeBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => FavoritePodcastsBloc(),
         )
       ],
       child: MaterialApp(

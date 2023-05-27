@@ -5,13 +5,13 @@ abstract class FavoritePodcastsState {}
 
 class FavoritePodcastsInitial extends FavoritePodcastsState {}
 
-class PodcastListerLoadingState extends FavoritePodcastsState {}
+class FavPodcastListerLoadingState extends FavoritePodcastsState {}
 
-class PodcastLoadedState extends FavoritePodcastsState {
+class FavPodcastLoadedState extends FavoritePodcastsState {
   final List<Podcast> podcasts;
   final List<int> favoritedPodcastId;
 
-  PodcastLoadedState({
+  FavPodcastLoadedState({
     required this.podcasts,
     required this.favoritedPodcastId,
   });

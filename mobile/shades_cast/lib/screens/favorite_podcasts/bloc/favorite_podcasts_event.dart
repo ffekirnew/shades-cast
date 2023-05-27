@@ -3,4 +3,9 @@ part of 'favorite_podcasts_bloc.dart';
 @immutable
 abstract class FavoritePodcastsEvent {}
 
-class GetPodcasts extends FavoritePodcastsEvent {}
+class GetFavPodcasts extends FavoritePodcastsEvent {}
+
+class FavPodcastFavorited extends FavoritePodcastsEvent {
+  final podcastId;
+  FavPodcastFavorited({this.podcastId});
+}

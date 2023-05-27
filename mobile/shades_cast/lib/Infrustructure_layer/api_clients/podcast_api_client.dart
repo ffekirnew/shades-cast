@@ -21,7 +21,6 @@ class AuthService {
 }
 
 class PodcastApiClient {
-  late final http.Client httpClient;
   final AuthService authService = AuthService();
 
   PodcastApiClient();
@@ -75,7 +74,7 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> searchPodcasts(String query) async {
-    final response = await httpClient.get(Uri.parse('$api/search?q=$query'));
+    final response = await http.get(Uri.parse('$api/search?q=$query'));
     if (response.statusCode == 200) {
       final podcastsJson = json.decode(response.body)['results'];
       return podcastsJson.map<Podcast>((json)).toList();
@@ -106,20 +105,21 @@ class PodcastApiClient {
   ///
   Future<dynamic> favoritePodcasts() async {
     String? token = await authService.getToken();
-    print("api called successfully");
     if (token == null) {
       throw Exception("cannot get token");
     }
 
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await httpClient.get(
-      Uri.parse('$api/api/v2/podcasts/favourited'),
+    final response = await http.get(
+      Uri.parse('$api/api/v2/podcasts/favorited'),
       headers: headers,
     );
-
+    print(response.body);
+    print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
+    print("api called successfully");
     return jsonDecode(response.body);
   }
 
