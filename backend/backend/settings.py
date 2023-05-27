@@ -15,10 +15,13 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
 ALLOWED_HOSTS = [
     'fikernewapi.pythonanywhere.com',
     'localhost',
+
+    '192.168.0.144',
     '192.168.0.136'
 ]
 
@@ -162,3 +165,6 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Pydub settings
 FFMPEG_PATH = '/path/to/ffmpeg'
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
+

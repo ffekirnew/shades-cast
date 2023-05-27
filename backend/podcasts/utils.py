@@ -3,7 +3,6 @@ import uuid
 from pydub import AudioSegment
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from django.db import models
 
 SUPPORTED_AUDIO_FORMATS = ['mp3', 'wav', 'ogg']
 
