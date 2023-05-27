@@ -8,6 +8,8 @@ abstract class PodcastRepository {
 
   Future<Podcast> getPodcastById(String podcastId);
 
+  Future<List<Podcast>> getMyPodcasts();
+
   Future<void> addPodcast(Podcast podcast);
 
   Future<void> deletePodcast(String podcastId);
@@ -167,7 +169,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     }
   }
 
-
   @override
   Future<List<Podcast>> favoritePodcasts() async {
     final favourites = await _apiClient.favoritePodcasts();
@@ -175,8 +176,9 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return Podcast.fromMap(favourites[index]);
     });
     return favs;
+  }
 
-////////////////////////////////////////////////
+  ///////////////////////////////////////////////
   ///
   ///
   ///
@@ -194,6 +196,5 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
-
   }
 }

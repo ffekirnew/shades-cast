@@ -2,6 +2,11 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:shades_cast/Infrustructure_layer/api_clients/authService.dart';
+
+import '../../../Infrustructure_layer/api_clients/constants.dart';
 
 class addPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
@@ -13,7 +18,7 @@ class addPodcasts extends StatefulWidget {
 
 class _addPodcastsState extends State<addPodcasts> {
   PodcastApiClient apiClient = PodcastApiClient();
-  late Image _imageFile;
+  late File _imageFile;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _usernameController;
@@ -25,7 +30,7 @@ class _addPodcastsState extends State<addPodcasts> {
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
-    _imageFile = Image.asset("assets/logo.png");
+    _imageFile = File('../assets/logo.png');
     _firstNameController = TextEditingController(text: "John");
     _lastNameController = TextEditingController(text: "Doe");
     _usernameController = TextEditingController(text: "johndoe");
@@ -39,39 +44,56 @@ class _addPodcastsState extends State<addPodcasts> {
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        _imageFile = Image.file(File(pickedFile.path));
+        _imageFile = File(pickedFile.path);
       }
     });
   }
 
   void _submitForm() async {
-    // Get the image file path as a string
-    final imagePath = _imageFile;
-
     // Get the form field values
-    final title = _firstNameController.text;
-    final description = _lastNameController.text;
-    final category = _usernameController.text;
-    final email = _emailController.text;
 
     dynamic podcast = {
-      'title': "title",
-      // 'description': description,
-      'category': "category",
+      "title": _firstNameController.text,
+      "description": _lastNameController.text,
+      "categories": _usernameController.text,
+      "cover_image": _imageFile
     };
 
-    // Print the form data to the console
-    print("Title: $title");
-    print("Description: $description");
-    print("Category: $category");
-    print("Email: $email");
-    print("Image Path: $imagePath");
-
-    // final res = await apiClient.getPodcasts();
+    // final res = await apiClient.addPodcast(podcast);
     // print(res);
-    // TODO: Submit the updated user info to the backend
-    // Make sure to validate the form data before submitting
-    // Also handle errors if the submission fails
+    // final AuthService authService = AuthService();
+
+    // var stream = http.ByteStream(_imageFile.openRead());
+    // stream.cast();
+    // var length = await _imageFile.length();
+    // var uri = Uri.parse('http://192.168.0.144:8000/api/v2/podcasts/');
+    // var request = http.MultipartRequest('POST', uri);
+    // String? token = await authService.getToken();
+
+    // request.headers['Authorization'] = 'Token $token';
+    // request.fields['title'] = "shamil";
+    // request.fields['categories'] = _usernameController.text;
+
+    // var multipartFile = http.MultipartFile(
+    //   'cover_image',
+    //   stream,
+    //   length,
+    //   filename: path.basename(_imageFile.path), // Use the original filename
+    // );
+    // request.files.add(multipartFile);
+    // request.fields['cover_image'] = path.basename(_imageFile.path);
+
+    // try {
+    //   var response = await request.send();
+    //   if (response.statusCode != 200) {
+    //     print((response.statusCode));
+    //     print("Error sending the file");
+    //   } else {
+    //     print('Success');
+    //   }
+    // } catch (e) {
+    //   print("Error: $e");
+    // }
   }
 
   @override
@@ -98,7 +120,6 @@ class _addPodcastsState extends State<addPodcasts> {
                     onTap: _pickImage,
                     child: CircleAvatar(
                       radius: 60.0,
-                      backgroundImage: _imageFile.image,
                     ),
                   ),
                 ),

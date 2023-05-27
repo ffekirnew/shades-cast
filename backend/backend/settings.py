@@ -15,10 +15,14 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024  # 10 MB
 
 ALLOWED_HOSTS = [
     'fikernewapi.pythonanywhere.com',
-    'localhost'
+    'localhost',
+
+    '192.168.0.144',
+    '192.168.0.136'
 ]
 
 # Application definition
@@ -61,7 +65,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # Session auth for debugging purposes
+        # Session auth for debugging purposes
+        'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication'
     ],
     'DEFAULT_RENDERER_CLASSES': [

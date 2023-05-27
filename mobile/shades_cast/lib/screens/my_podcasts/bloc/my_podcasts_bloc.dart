@@ -31,7 +31,7 @@ class MyPodcastsBloc extends Bloc<MyPodcastsEvent, MyPodcastsState> {
           PodcastRepository podcastRepo =
               PodcastRepositoryImpl(_database, _apiClient);
 
-          final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+          final List<Podcast> podcasts = await podcastRepo.getMyPodcasts();
 
           emit(
             PodcastLoadedState(
