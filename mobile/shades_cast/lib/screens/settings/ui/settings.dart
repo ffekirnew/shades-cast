@@ -2,6 +2,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 
@@ -11,7 +12,7 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  PodcastApiClient apiClient = PodcastApiClient();
+  FunfactApiClient apiClient = FunfactApiClient();
   // dynamic user;
 
   late File? _imageFile;
@@ -62,15 +63,23 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     //   "email": _emailController.text,
     //   "password": _passwordController.text
     // };
+    // if (_isImageSelected) {
+    //   dynamic profile = {
+    //     "profile_pic": _imageFile,
+    //   };
 
-    // dynamic profile = {
-    //   "profile_pic": _imageFile,
+    //   // var res = await apiClient.userDetails();
+    //   // var res = await apiClient.favoritePodcasts();
+    //   // print(res);
+
+    //   final res = await apiClient.updateProfile(profile);
+    //   print(res);
+    // }
+    // dynamic funfact = {
+    //   "title": "happy life",
+    //   "body": "it seems impossible until it's done"
     // };
-    // var res = await apiClient.userDetails();
-    var res = await apiClient.favoritePodcasts();
-    print(res);
-
-    // final res = await apiClient.updateProfile(profile);
+    // var res = await apiClient.getFunfact();
     // print(res);
   }
 
