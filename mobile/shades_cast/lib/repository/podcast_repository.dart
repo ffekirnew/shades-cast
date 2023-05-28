@@ -173,6 +173,18 @@ class PodcastRepositoryImpl implements PodcastRepository {
 
   @override
   Future<List<Podcast>> favoritePodcasts() async {
+    final localFavorites = await _database.getFavorites();
+
+    if (localFavorites != null) {
+      return localFavorites;
+    } else {
+      final remoteFavorites = await _apiClient.favoritePodcasts();
+      List<Podcast> favorites = List.generate(remoteFavorites.length, (index) {
+        return Podcast.fromMap(remoteFavorites[index]);
+      });
+      await _database.saveFavorites(favorites);
+    }
+
     final favourites = await _apiClient.favoritePodcasts();
     List<Podcast> favs = List.generate(favourites.length, (index) {
       return Podcast.fromMap(favourites[index]);

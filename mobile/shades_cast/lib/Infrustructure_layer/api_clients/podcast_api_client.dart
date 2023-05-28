@@ -109,9 +109,9 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
 
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      Uri.parse('$api/api/v2/podcasts/favorited'),
+      Uri.parse('$api/api/v2/podcasts-favorited'),
       headers: headers,
     );
     print(response.body);
