@@ -12,7 +12,7 @@ from rest_framework import status
 from taggit.models import Tag
 from podcasts.models import Episode, Podcast
 from podcasts.serializers import EpisodeSerializer, PodcastSerializer
-from user_accounts.serializers import UserSerializer
+from user_accounts.serializers import UserSerializer, ProfileSerializer
 
 from .serializers import TagSerializer
 
@@ -67,6 +67,35 @@ class UserDetailAPIView(APIView):
         user = get_object_or_404(get_user_model(), id=request.user.id)
         serializer = self.serializer_class(
             user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = ProfileSerializer
+
+    def get(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        profile = user.profile
+        serializer = ProfileSerializer(profile)
+        return Response(serializer.data)
+
+    def put(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        profile = user.profile
+        serializer = self.serializer_class(profile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        profile = user.profile
+        serializer = self.serializer_class(profile, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
