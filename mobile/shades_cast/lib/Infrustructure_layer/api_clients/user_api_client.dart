@@ -104,6 +104,8 @@ class UserApiClient {
   ///
   Future<dynamic> updateProfile(dynamic profile) async {
     File profile_pic = profile["profile_pic"];
+    // print(profile_pic);
+    // print('got here');
     // String? token = await authService.getToken();
 
     // if (token == null) {}
@@ -119,7 +121,7 @@ class UserApiClient {
 
     request.headers['Authorization'] = 'Token $token';
     // request.fields['title'] = title;
-    // request.fields['categories'] = categories;
+    request.fields['date_of_birth'] = "2020/12/10";
 
     var multipartFile = http.MultipartFile(
       'photo',
@@ -133,7 +135,7 @@ class UserApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 200) {
-        print((response.statusCode));
+        print(response.statusCode);
         print("Error sending the file");
       } else {
         print('Success');
@@ -154,9 +156,9 @@ class UserApiClient {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {'Authorization': 'Token $token'};
-    final response = await http.get(
-        Uri.parse('$api/api/v3/users/my-account/profile/'),
-        headers: headers);
+    final response =
+        await http.get(Uri.parse('$api/api/v3/my-account/'), headers: headers);
+
     if (response.statusCode != 200) {
       throw Exception("cannot update user");
     } else {
