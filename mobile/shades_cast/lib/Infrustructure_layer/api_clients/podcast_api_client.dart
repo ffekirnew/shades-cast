@@ -257,20 +257,48 @@ class PodcastApiClient {
     }
   }
 
-  Future<void> addEpisode(String podcastId, Episode episode) async {
+  Future<void> addEpisode(dynamic episode) async {
+    File _audioFile = episode["_audioFile"];
+    String title = episode["title"];
+    String description = episode["description"];
+    String id = episode["podcast"];
+    var uri = Uri.parse('$api/api/v2/episodes/');
+    var request = http.MultipartRequest('POST', uri);
+    final AuthService authService = AuthService();
     String? token = await authService.getToken();
-    if (token == null) {
-      throw Exception("cannot get token");
-    }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
-    final response = await http.post(
-      Uri.parse('$api/api/episodes'),
-      body: episode,
-      headers: headers,
-    );
-    if (response.statusCode != 200) {
-      throw Exception('Failed to add episode with');
+    request.headers['Authorization'] = 'Token $token';
+    request.fields['title'] = title;
+    request.fields['tags'] = description;
+    request.fields['podcast'] = id;
+
+    if (_audioFile != null) {
+      var stream = http.ByteStream(_audioFile.openRead());
+      stream.cast();
+      var length = await _audioFile.length();
+
+      var multipartFile = http.MultipartFile(
+        'audio_file',
+        stream,
+        length,
+        filename: path.basename(_audioFile.path),
+      );
+
+      request.files.add(multipartFile);
+
+      try {
+        var response = await request.send();
+        if (response.statusCode != 200) {
+          print((response.statusCode));
+          print("Error sending the file");
+        } else {
+          print('Success');
+        }
+      } catch (e) {
+        print("Error: $e");
+      }
+    } else {
+      print("No audio file selected");
     }
   }
 

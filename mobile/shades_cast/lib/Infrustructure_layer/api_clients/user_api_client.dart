@@ -1,5 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+
 import '../../domain_layer/user.dart';
 import 'constants.dart';
 import 'authService.dart';
@@ -78,14 +81,18 @@ class UserApiClient {
   ///
   ///
   ///
-  Future? updateUser(User newUser) async {
+  Future<dynamic> updateUser(dynamic newUser) async {
     String? token = await authService.getToken();
+
     if (token == null) {
       throw Exception("cannot get token");
     }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response =
-        await http.put(Uri.parse("$api/api/v2/users/${newUser.id}/"));
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.patch(
+      Uri.parse("$api/api/v3/my-account/"),
+      body: newUser,
+      headers: headers,
+    );
     if (response.statusCode != 200) {
       throw Exception("cannot update user");
     } else {
@@ -97,13 +104,60 @@ class UserApiClient {
   ///
   ///
   ///
+  Future<dynamic> updateProfile(dynamic profile) async {
+    File profile_pic = profile["profile_pic"];
+    // String? token = await authService.getToken();
+
+    // if (token == null) {}
+
+    final AuthService authService = AuthService();
+
+    var stream = http.ByteStream(profile_pic.openRead());
+    stream.cast();
+    var length = await profile_pic.length();
+    var uri = Uri.parse('$api/api/v3/my-account/profile/');
+    var request = http.MultipartRequest('PUT', uri);
+    String? token = await authService.getToken();
+
+    request.headers['Authorization'] = 'Token $token';
+    // request.fields['title'] = title;
+    // request.fields['categories'] = categories;
+
+    var multipartFile = http.MultipartFile(
+      'photo',
+      stream,
+      length,
+      filename: path.basename(profile_pic.path), // Use the original filename
+    );
+    request.files.add(multipartFile);
+    request.fields['photo'] = path.basename(profile_pic.path);
+
+    try {
+      var response = await request.send();
+      if (response.statusCode != 200) {
+        print((response.statusCode));
+        print("Error sending the file");
+      } else {
+        print('Success');
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
   Future<dynamic> userDetails() async {
     String? token = await authService.getToken();
+    print(token);
     if (token == null) {
       throw Exception("cannot get token");
     }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await http.get(Uri.parse('$api/api/v2/users/myaccount'),
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.get(
+        Uri.parse('$api/api/v3/users/my-account/profile/'),
         headers: headers);
     if (response.statusCode != 200) {
       throw Exception("cannot update user");

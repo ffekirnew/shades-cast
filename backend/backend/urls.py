@@ -26,7 +26,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v2/', include('api.urls', namespace='podcasts')),
+    path('api/v3/', include('api.urls', namespace='podcasts')),
 
     # section for Adding log in to the browsable API - nothing fancy really
     path('api-auth/', include('rest_framework.urls')),
@@ -36,7 +36,8 @@ urlpatterns = [
     path('api/auth/signup/', include('dj_rest_auth.registration.urls')),
 
     # to handle documentation and api schema views
-    path('api/v2/docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/v3/docs/', schema_view.with_ui('swagger',
+         cache_timeout=0), name='schema-swagger-ui'),
 ]
 
 if settings.DEBUG:
