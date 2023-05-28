@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
 import '../../settings/ui/settings.dart';
@@ -352,8 +353,9 @@ class sideMenu extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(20),
             child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print("logout button pressed");
+
                   // Log user out
                 },
                 child: Text(

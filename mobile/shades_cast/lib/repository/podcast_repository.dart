@@ -17,7 +17,7 @@ abstract class PodcastRepository {
   // Future<void> saveEpisodes(String podcastId, List<dynamic> episodes);
   Future<List<Episode>> getEpisodes(String podcastId);
 
-  Future<void> addEpisode(String podcastId, List<dynamic> episode);
+  Future<void> addEpisode(dynamic episode);
   Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
 
   Future<List<Podcast>> favoritePodcasts();
@@ -118,10 +118,10 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   ///
   @override
-  Future<void> addEpisode(String podcastId, dynamic episode) async {
+  Future<void> addEpisode(dynamic episode) async {
     Episode saved_episode = Episode.fromMap(episode as Map<String, dynamic>);
-    await _database.saveEpisode(podcastId, saved_episode);
-    await _apiClient.addEpisode(podcastId, saved_episode);
+    await _database.saveEpisode(saved_episode);
+    await _apiClient.addEpisode(saved_episode);
   }
 
   ////////////////////////////////////////////////
@@ -174,6 +174,18 @@ class PodcastRepositoryImpl implements PodcastRepository {
 
   @override
   Future<List<Podcast>> favoritePodcasts() async {
+    final localFavorites = await _database.getFavorites();
+
+    if (localFavorites != null) {
+      return localFavorites;
+    } else {
+      final remoteFavorites = await _apiClient.favoritePodcasts();
+      List<Podcast> favorites = List.generate(remoteFavorites.length, (index) {
+        return Podcast.fromMap(remoteFavorites[index]);
+      });
+      await _database.saveFavorites(favorites);
+    }
+
     final favourites = await _apiClient.favoritePodcasts();
     List<Podcast> favs = List.generate(favourites.length, (index) {
       return Podcast.fromMap(favourites[index]);

@@ -53,6 +53,18 @@ class PodcastEpisodesListView(generics.ListCreateAPIView):
         return Response(serializer.data)
 
 
+class EpisodeViewSet(viewsets.ModelViewSet):
+    permission_classes = (IsEpisodeCreatorOrReadOnly,)
+    queryset = Episode.objects.all()
+    serializer_class = EpisodeSerializer
+
+    def perform_create(self, serializer):
+        print(serializer.validated_data['tags'])
+        serializer.validated_data['tags'] = serializer.validated_data['tags'][0].split(
+            ", ")
+        serializer.save()
+
+
 @api_view(['GET'])
 def podcast_list_by_categories(request, category_slug):
     if category_slug:
@@ -81,41 +93,9 @@ def podcast_favorited_by(request, id):
 
 
 @api_view(['GET'])
-def user_podcasts_list(request):
-    podcasts = Podcast.objects.filter(creator__id=request.user.id)
-    serializer = PodcastSerializer(podcasts, many=True)
-    print(podcasts)
-
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def user_favorite_podcasts_list(request):
-    podcasts = Podcast.objects.filter(favorited_by__in=[request.user.id])
-    serializer = PodcastSerializer(podcasts, many=True)
-    print(podcasts)
-
-    return Response(serializer.data)
-
-
-
-# Episodes and related views
-class EpisodeViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsEpisodeCreatorOrReadOnly,)
-    queryset = Episode.objects.all()
-    serializer_class = EpisodeSerializer
-
-    def perform_create(self, serializer):
-        print(serializer.validated_data['tags'])
-        serializer.validated_data['tags'] = serializer.validated_data['tags'][0].split(
-            ", ")
-        serializer.save()
-
-
-@api_view(['GET'])
 def episode_list_by_tags(request, tag_slug):
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
         episodes = Episode.objects.filter(tags__in=[tag])
         serializer = EpisodeSerializer(episodes, many=True)
         return Response(serializer.data)
-
