@@ -112,6 +112,7 @@ class PodcastApiClient {
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
       Uri.parse('$api/api/v2/podcasts-favorited'),
+// <<<<<<< HEAD
       headers: headers,
     );
     if (response.statusCode != 200) {
@@ -135,6 +136,8 @@ class PodcastApiClient {
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
       Uri.parse('$api/api/v2/podcasts-created'),
+// =======
+// >>>>>>> 0fd7d43d0a0d6b29fa24ab12b9196dce0ad59cdf
       headers: headers,
     );
     if (response.statusCode != 200) {

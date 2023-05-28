@@ -37,7 +37,7 @@ void main() {
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
         debugShowCheckedModeBanner: false,
-        initialRoute: '/home',
+        initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => homepage(),

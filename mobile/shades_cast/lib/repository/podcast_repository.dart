@@ -1,5 +1,7 @@
 import 'package:shades_cast/domain_layer/episode.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
+import 'package:shades_cast/domain_layer/user.dart';
+
 import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 
