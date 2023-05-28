@@ -22,8 +22,4 @@ urlpatterns.extend([
          views.podcast_list_by_categories, name='podcast_categories'),
     path('episodes/tags/<slug:tag_slug>',
          views.episode_list_by_tags, name='episode_tags'),
-
-    path('podcasts-created/', views.user_podcasts_list, name='user_podcasts'),
-    path('podcasts-favorited/', views.user_favorite_podcasts_list,
-         name='user_favorite_podcasts'),
 ])
