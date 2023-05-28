@@ -158,23 +158,6 @@ class PodcastApiClient {
     String description = podcast["description"];
     String categories = podcast["categories"];
 
-    // String? token = await authService.getToken();
-    // print("api called successfully");
-    // print(token);
-    // if (token == null) {
-    //   throw Exception("cannot get token");
-    // }
-    // print(podcast);
-    // Map<String, String> headers = {'Authorization': 'Token $token'};
-    // final response = await http.post(
-    //   Uri.parse('$api/api/v2/podcasts/'),
-    //   body: podcast,
-    //   headers: headers,
-    // );
-    // print("got here");
-    // print(response.statusCode);
-    // print(jsonDecode(response.body));
-
     final AuthService authService = AuthService();
 
     var stream = http.ByteStream(_imageFile.openRead());
