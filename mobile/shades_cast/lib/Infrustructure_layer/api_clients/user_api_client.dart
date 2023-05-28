@@ -78,6 +78,7 @@ class UserApiClient {
   ///
   Future? updateUser(User newUser) async {
     String? token = await authService.getToken();
+
     if (token == null) {
       throw Exception("cannot get token");
     }
@@ -97,11 +98,12 @@ class UserApiClient {
   ///
   Future<dynamic> userDetails() async {
     String? token = await authService.getToken();
+    print(token);
     if (token == null) {
       throw Exception("cannot get token");
     }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
-    final response = await http.get(Uri.parse('$api/api/v2/users/myaccount'),
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.get(Uri.parse('$api/api/v2/users/my-account/'),
         headers: headers);
     if (response.statusCode != 200) {
       throw Exception("cannot update user");
