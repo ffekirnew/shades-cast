@@ -1,6 +1,8 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -9,7 +11,7 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  UserApiClient apiClient = UserApiClient();
+  PodcastApiClient apiClient = PodcastApiClient();
   // dynamic user;
 
   late File? _imageFile;
@@ -64,7 +66,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     // dynamic profile = {
     //   "profile_pic": _imageFile,
     // };
-    var res = await apiClient.userDetails();
+    // var res = await apiClient.userDetails();
+    var res = await apiClient.favoritePodcasts();
     print(res);
 
     // final res = await apiClient.updateProfile(profile);
