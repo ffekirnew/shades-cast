@@ -46,6 +46,16 @@ class PodcastDatabase {
         audioUrl TEXT
       )
       ''');
+    await db.execute('''
+    CREATE TABLE favorites(
+     id TEXT PRIMARY KEY,
+        title TEXT,
+        description TEXT,
+        author TEXT,
+        imageUrl TEXT,
+        categories TEXT
+    )
+''');
     // await db.execute('''
     //   CREATE TABLE funfacts(
     //     TEXT title,
@@ -114,6 +124,26 @@ class PodcastDatabase {
   ///
   ///
   ///
+  ///
+  ///
+  Future<List<Podcast>?> getFavorites() async {
+    final db = await instance.database;
+    final maps = await db.query('favorites');
+    return List.generate(maps.length, (index) {
+      return Podcast.fromMap(maps[index]);
+    });
+  }
+
+  ////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<void> saveFavorites(List<Podcast> favorites) async {
+    final db = await instance.database;
+    for (Podcast podcast in favorites) {
+      await db.insert('favorites', podcast.toMap());
+    }
+  }
 
   Future<void> saveEpisodes(List<Episode> episodes) async {
     final db = await instance.database;
