@@ -1,11 +1,18 @@
 from django.contrib.postgres.search import TrigramSimilarity
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import get_user_model
 
-from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 from taggit.models import Tag
 from podcasts.models import Episode, Podcast
 from podcasts.serializers import EpisodeSerializer, PodcastSerializer
+from user_accounts.serializers import UserSerializer
 
 from .serializers import TagSerializer
 
@@ -13,11 +20,13 @@ from .serializers import TagSerializer
 @api_view(['GET'])
 def search(request, query):
     podcast_results = Podcast.objects.annotate(
-        similarity=TrigramSimilarity('title', query) + TrigramSimilarity('description', query)
+        similarity=TrigramSimilarity(
+            'title', query) + TrigramSimilarity('description', query)
     ).filter(similarity__gt=0.01).order_by('-similarity')
 
     episode_results = Episode.objects.annotate(
-        similarity=TrigramSimilarity('title', query) + TrigramSimilarity('description', query)
+        similarity=TrigramSimilarity(
+            'title', query) + TrigramSimilarity('description', query)
     ).filter(similarity__gt=0.01).order_by('-similarity')
 
     tag_results = Tag.objects.annotate(
@@ -35,3 +44,47 @@ def search(request, query):
     }
 
     return Response(results)
+
+
+class UserDetailAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    def get(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    def put(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        serializer = self.serializer_class(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, format=None):
+        user = get_object_or_404(get_user_model(), id=request.user.id)
+        serializer = self.serializer_class(
+            user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserPodcastsViewset(viewsets.ModelViewSet):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PodcastSerializer
+
+    def get_queryset(self):
+        return Podcast.objects.filter(creator__id=self.request.user.id)
+
+
+@api_view(['GET'])
+def user_favorite_podcasts_list(request):
+    podcasts = Podcast.objects.filter(favorited_by__in=[request.user.id])
+    serializer = PodcastSerializer(podcasts, many=True)
+    print(podcasts)
+
+    return Response(serializer.data)
