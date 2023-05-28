@@ -1,6 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   @override
@@ -8,7 +9,10 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  late Image _imageFile;
+  UserApiClient apiClient = UserApiClient();
+
+  late File _imageFile;
+  late bool _isImageSelected = false;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _usernameController;
@@ -20,7 +24,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
-    _imageFile = Image.asset("assets/logo.png");
+    bool _isImageSelected = false;
+
+    _imageFile;
     _firstNameController = TextEditingController(text: "John");
     _lastNameController = TextEditingController(text: "Doe");
     _usernameController = TextEditingController(text: "johndoe");
@@ -34,15 +40,28 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         await ImagePicker().getImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
-        _imageFile = Image.asset("assets/logo.png");
+        _imageFile = File(pickedFile.path);
+        _isImageSelected = true;
       }
     });
   }
 
-  void _submitForm() {
+  void _submitForm() async {
     // TODO: Submit the updated user info to the backend
     // Make sure to validate the form data before submitting
     // Also handle errors if the submission fails
+    // dynamic newUser = {
+    //   "first_name": _firstNameController.text,
+    //   "last_name": _lastNameController.text,
+    //   "username": _usernameController.text,
+    //   "email": _emailController.text,
+    //   "password": _passwordController.text
+    // };
+    // dynamic profile = {
+    //   "profile_pic": _imageFile,
+    // };
+    // final res = await apiClient.updateUser(profile);
+    // print(res);
   }
 
   @override
@@ -67,7 +86,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 Center(
                   child: GestureDetector(
                     onTap: _pickImage,
-                    child: CircleAvatar(),
+                    child: CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: _isImageSelected
+                          ? FileImage(_imageFile)
+                          : // Display the selected image if available
+                          AssetImage('assets/logo.png') as ImageProvider<
+                              Object>, // Display a default image
+                    ),
                   ),
                 ),
                 SizedBox(height: 16.0),
