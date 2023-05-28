@@ -39,6 +39,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           currentPodcasts = podcasts;
         } catch (e) {
           print('error occured');
+          print(e);
         }
 
 //------------------------ un comment for funfact fetching functionality ------------------------
