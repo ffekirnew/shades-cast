@@ -21,7 +21,8 @@ ALLOWED_HOSTS = [
     'fikernewapi.pythonanywhere.com',
     'localhost',
     '192.168.0.144',
-    '192.168.0.136'
+    '192.168.0.136',
+    '192.168.202.214'
 ]
 
 # Application definition

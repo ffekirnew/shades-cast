@@ -159,6 +159,8 @@ class UserApiClient {
     final response = await http.get(
         Uri.parse('$api/api/v3/users/my-account/profile/'),
         headers: headers);
+
+    print(response.body);
     if (response.statusCode != 200) {
       throw Exception("cannot update user");
     } else {

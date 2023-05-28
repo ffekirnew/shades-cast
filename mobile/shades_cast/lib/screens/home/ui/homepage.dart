@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
-import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
 import '../../settings/ui/settings.dart';
@@ -10,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -27,7 +27,13 @@ class homepage extends StatelessWidget {
           ),
         ),
         child: Scaffold(
-          drawer: sideMenu(),
+          drawer: BlocBuilder<HomeBloc, HomeState>(
+            builder: (context, state) {
+              return sideMenu(
+                state: state,
+              );
+            },
+          ),
           body: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
               print(state);
@@ -196,9 +202,8 @@ class homepage extends StatelessWidget {
 }
 
 class sideMenu extends StatelessWidget {
-  const sideMenu({
-    super.key,
-  });
+  final state;
+  const sideMenu({this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -212,67 +217,39 @@ class sideMenu extends StatelessWidget {
               decoration: BoxDecoration(
                   color: Color(0xFF040a11),
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              child: Row(children: [
-                Column(children: [
-                  Row(children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(100.0, 20.0, 0, 0),
-                      child: Text(
-                        "Shamil Bedru",
-                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Row(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: CircleAvatar(
+                      backgroundColor: Color.fromARGB(255, 227, 227, 227),
+                      child: Icon(
+                        Icons.person,
+                        color: Color.fromARGB(255, 0, 140, 255),
                       ),
-                    )
-                  ]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Image(
-                        image: AssetImage(
-                            'Assets/images/podcast.png'), // add the image asset here
-                        height: 50, // set the height here
-                        width: 50, // set the width here
-                        fit: BoxFit.contain, // set the BoxFit property here
-                      ),
-                      SizedBox(
-                        width: 40.0,
-                      ),
-                      Text(
-                        "Followers",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      Text(
-                        "Following",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                    ),
+                    //Image(
+                    //   image: AssetImage(
+                    //       'Assets/images/podcast.png'), // add the image asset here
+                    //   height: 50, // set the height here
+                    //   width: 50, // set the width here
+                    //   fit: BoxFit.contain, // set the BoxFit property here
+                    // )
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 110.0,
-                      ),
-                      Text(
-                        "100",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      Text(
-                        "19",
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(20.0, 0, 0, 0),
+                    child: Text(
+                      state.currentUser.name,
+                      style: TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  ),
+                  Divider(
+                    thickness: 2.0,
+                    color: Colors.white,
                   )
                 ]),
-                Divider(
-                  thickness: 2.0,
-                  color: Colors.white,
-                )
-              ]),
+              ),
             ),
           ),
           SizedBox(
@@ -353,9 +330,8 @@ class sideMenu extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(20),
             child: ElevatedButton(
-                onPressed: () async {
+                onPressed: () {
                   print("logout button pressed");
-
                   // Log user out
                 },
                 child: Text(

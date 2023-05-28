@@ -12,12 +12,15 @@ class ResultShowingBar extends StatelessWidget {
       return Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.green)),
         margin: EdgeInsets.only(bottom: 25, left: 20, right: 20, top: 20),
-        child: Text(
-          "Signup was successfull. Log in to get started.",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Colors.green,
-            fontSize: 14,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+          child: Text(
+            "Signup was successfull. Log in to get started.",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.green,
+              fontSize: 14,
+            ),
           ),
         ),
       );

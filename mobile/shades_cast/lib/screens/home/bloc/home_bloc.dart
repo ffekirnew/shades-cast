@@ -7,6 +7,10 @@ import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/repository/podcast_repository.dart';
 
 import 'package:shades_cast/domain_layer/funfact.dart';
+import 'package:shades_cast/domain_layer/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:shades_cast/repository/user_repo.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/repository/funfact_repo.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.dart';
@@ -16,10 +20,16 @@ part 'home_event.dart';
 part 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc() : super(HomeInitial()) {
+  HomeBloc()
+      : super(HomeInitial(
+            currentUser:
+                User(id: 1, name: 'Shamil Bedru', email: '', password: ''))) {
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
+    UserRepo userRepo = UserRepo();
+    User currentUser =
+        User(id: 1, name: 'Shamil Bedru', email: 'email', password: 'password');
     // FunfactApiClient _apiClientFunFact = FunfactApiClient();
 
     PodcastDatabase _database = PodcastDatabase.instance;
@@ -30,7 +40,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     on<HomeEvent>((event, emit) async {
       if (event is GetPodcasts) {
-        emit(PodcastListerLoadingState());
+        User user = await userRepo.getUserDetail();
+        currentUser = user;
+
+        emit(PodcastListerLoadingState(currentUser: currentUser));
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
@@ -43,7 +56,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             PodcastLoadedState(
                 podcasts: currentPodcasts,
                 favoritedPodcastId: favoritedIds,
-                funFact: currentFunFact),
+                funFact: currentFunFact,
+                currentUser: currentUser),
           );
 //------------------------ un comment for funfact fetching functionality ------------------------
           // Funfact funfact = await funFactRep.getFunfact();
@@ -52,7 +66,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } catch (e) {
           print('error occured here');
           print(e);
-          emit(PodcastsErrorState());
+          emit(PodcastsErrorState(currentUser: currentUser));
         }
       } else if (event is PodcasFavorited) {
         if (!(favoritedIds.contains(event.podcastId))) {
@@ -64,7 +78,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         emit(PodcastLoadedState(
             podcasts: currentPodcasts,
             favoritedPodcastId: favoritedIds,
-            funFact: currentFunFact));
+            funFact: currentFunFact,
+            currentUser: currentUser));
       }
     });
   }

@@ -55,6 +55,19 @@ class UserRepo {
       return 'Failure';
     }
   }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<User> getUserDetail() async {
+    UserApiClient user = UserApiClient();
+    final result = await user.userDetails();
+    print(result);
+    User current_user = User.fromMap(result);
+
+    return current_user;
+  }
 }
 
 // dont forget to clean it up by removing the creation of service out of the repo
