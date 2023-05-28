@@ -11,6 +11,7 @@ import 'package:shades_cast/screens/add_podcast/ui/addPodcast.dart';
 import 'package:shades_cast/screens/settings/ui/settings.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
+import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 
 void main() {
   runApp(
@@ -27,7 +28,10 @@ void main() {
         ),
         BlocProvider(
           create: (BuildContext context) => FavoritePodcastsBloc(),
-        )
+        ),
+        BlocProvider(
+          create: (BuildContext context) => MyPodcastsBloc(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData.dark()

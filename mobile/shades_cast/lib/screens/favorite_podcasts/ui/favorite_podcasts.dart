@@ -39,25 +39,97 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
         ),
         body: BlocBuilder<FavoritePodcastsBloc, FavoritePodcastsState>(
           builder: (context, state) {
-            if (!(state is FavPodcastLoadedState)) {
+            if (state is FavoritePodcastsInitial) {
               BlocProvider.of<FavoritePodcastsBloc>(context)
                   .add(GetFavPodcasts());
+            } else if (state is FavPodcastErrorState) {
+              return Padding(
+                padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(5),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Text(
+                            "Favorite Podcasts",
+                            style: TextStyle(
+                              color: Colors.grey[100],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Color.fromARGB(255, 49, 217, 255),
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<FavoritePodcastsBloc>(context)
+                                  .add(GetFavPodcasts());
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "An error occured",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Color.fromARGB(255, 49, 217, 255),
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<FavoritePodcastsBloc>(context)
+                                  .add(GetFavPodcasts());
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
             }
             // BlocProvider.of<FavoritePodcastsBloc>(context).add(GetPodcasts());
             return Padding(
-              padding: EdgeInsets.only(left: 13, right: 13, top: 40),
+              padding: EdgeInsets.only(left: 13, right: 13, top: 20),
               child: Column(
                 children: [
                   Container(
                     padding: EdgeInsets.all(5),
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Favorite Podcasts",
-                      style: TextStyle(
-                        color: Colors.grey[100],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Favorite Podcasts",
+                          style: TextStyle(
+                            color: Colors.grey[100],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Color.fromARGB(255, 49, 217, 255),
+                            size: 25,
+                          ),
+                          onPressed: () {
+                            BlocProvider.of<FavoritePodcastsBloc>(context)
+                                .add(GetFavPodcasts());
+                          },
+                        )
+                      ],
                     ),
                   ),
                   (state is FavPodcastLoadedState)

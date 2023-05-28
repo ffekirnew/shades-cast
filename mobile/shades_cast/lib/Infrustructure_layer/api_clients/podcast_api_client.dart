@@ -109,13 +109,34 @@ class PodcastApiClient {
       throw Exception("cannot get token");
     }
 
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      Uri.parse('$api/api/v2/podcasts/favorited'),
+      Uri.parse('$api/api/v2/podcasts-favorited'),
       headers: headers,
     );
-    print(response.body);
-    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception("cannot get podcasts");
+    }
+    print("api called successfully");
+    return jsonDecode(response.body);
+  }
+
+  /////////////////////method to handle favorite podcasts
+  ///
+  ///
+  ///
+  ///
+  Future<dynamic> myPodcasts() async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.get(
+      Uri.parse('$api/api/v2/podcasts-created'),
+      headers: headers,
+    );
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }

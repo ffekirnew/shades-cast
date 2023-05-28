@@ -22,6 +22,8 @@ class PodcastLoadedState extends HomeState {
       required this.funFact});
 }
 
+class PodcastsErrorState extends HomeState {}
+
 // class PodcastFavoritedState extends HomeState {
 //   final int podcastId;
 //   PodcastFavoritedState({required this.podcastId});

@@ -12,6 +12,7 @@ import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 
 class MyPodcastsPage extends StatefulWidget {
   MyPodcastsPage();
@@ -54,29 +55,101 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
           backgroundColor: Color(0xFF081624),
           title: Text('My Podcasts'),
         ),
-        body: BlocBuilder<HomeBloc, HomeState>(
+        body: BlocBuilder<MyPodcastsBloc, MyPodcastsState>(
           builder: (context, state) {
-            if (!(state is PodcastLoadedState)) {
-              BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+            if (state is MyPodcastsInitial) {
+              BlocProvider.of<MyPodcastsBloc>(context).add(GetMyPodcasts());
+            } else if (state is MyPodcastErrorState) {
+              return Padding(
+                padding: EdgeInsets.only(left: 13, right: 13, top: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 5),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Text(
+                            "My Podcasts",
+                            style: TextStyle(
+                              color: Colors.grey[100],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Color.fromARGB(255, 49, 217, 255),
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<MyPodcastsBloc>(context)
+                                  .add(GetMyPodcasts());
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "An error occured",
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Color.fromARGB(255, 49, 217, 255),
+                              size: 30,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<MyPodcastsBloc>(context)
+                                  .add(GetMyPodcasts());
+                            },
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              );
             }
-            // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+            // BlocProvider.of<MyPodcastsBloc>(context).add(GetPodcasts());
             return Padding(
-              padding: EdgeInsets.only(left: 13, right: 13, top: 40),
+              padding: EdgeInsets.only(left: 13, right: 13, top: 20),
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(5),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "My Podcasts",
-                      style: TextStyle(
-                        color: Colors.grey[100],
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25.0,
-                      ),
+                    child: Row(
+                      children: [
+                        Text(
+                          "My Podcasts",
+                          style: TextStyle(
+                            color: Colors.grey[100],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Color.fromARGB(255, 49, 217, 255),
+                            size: 25,
+                          ),
+                          onPressed: () {
+                            BlocProvider.of<MyPodcastsBloc>(context)
+                                .add(GetMyPodcasts());
+                          },
+                        )
+                      ],
                     ),
                   ),
-                  (state is PodcastLoadedState)
+                  (state is MyPodcastLoadedState)
                       ? Expanded(
                           child: podcastList(
                             podcasts: state.podcasts,
@@ -238,20 +311,20 @@ class _podcastListState extends State<podcastList> {
                   currentPodcast.title,
                   style: TextStyle(color: Colors.white),
                 ),
-                trailing: IconButton(
-                  onPressed: () {
-                    BlocProvider.of<HomeBloc>(context)
-                        .add(PodcasFavorited(podcastId: currentPodcast.id));
-                  },
-                  icon: Icon(
-                    (widget.currentState.favoritedPodcastId
-                            .contains(currentPodcast.id))
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    color: Color.fromARGB(255, 71, 160, 255),
-                    size: 25,
-                  ),
-                ),
+                // trailing: IconButton(
+                //   onPressed: () {
+                //     BlocProvider.of<MyPodcastsBloc>(context)
+                //         .add(PodcasMyd(podcastId: currentPodcast.id));
+                //   },
+                //   icon: Icon(
+                //     (widget.currentState.MydPodcastId
+                //             .contains(currentPodcast.id))
+                //         ? Icons.My
+                //         : Icons.My_border,
+                //     color: Color.fromARGB(255, 71, 160, 255),
+                //     size: 25,
+                //   ),
+                // ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
