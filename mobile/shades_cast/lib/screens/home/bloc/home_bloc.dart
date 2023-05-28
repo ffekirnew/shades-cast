@@ -37,22 +37,23 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         try {
           final List<Podcast> podcasts = await podcastRepo.getPodcasts();
           currentPodcasts = podcasts;
-        } catch (e) {
-          print('error occured');
-          print(e);
-        }
-
+          print('here');
+          print(podcasts);
+          emit(
+            PodcastLoadedState(
+                podcasts: currentPodcasts,
+                favoritedPodcastId: favoritedIds,
+                funFact: currentFunFact),
+          );
 //------------------------ un comment for funfact fetching functionality ------------------------
-        // Funfact funfact = await funFactRep.getFunfact();
-        // currentFunFact = funfact;
-        // print(funfact);
-
-        emit(
-          PodcastLoadedState(
-              podcasts: currentPodcasts,
-              favoritedPodcastId: favoritedIds,
-              funFact: currentFunFact),
-        );
+          // Funfact funfact = await funFactRep.getFunfact();
+          // currentFunFact = funfact;
+          // print(funfact);
+        } catch (e) {
+          print('error occured here');
+          print(e);
+          emit(PodcastsErrorState());
+        }
       } else if (event is PodcasFavorited) {
         if (!(favoritedIds.contains(event.podcastId))) {
           favoritedIds.add(event.podcastId);

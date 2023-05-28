@@ -21,6 +21,7 @@ abstract class PodcastRepository {
   Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
 
   Future<List<Podcast>> favoritePodcasts();
+  Future<List<Podcast>> myPodcasts();
 }
 
 class PodcastRepositoryImpl implements PodcastRepository {
@@ -178,6 +179,21 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return Podcast.fromMap(favourites[index]);
     });
     return favs;
+  }
+
+  ///////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  ///
+  @override
+  Future<List<Podcast>> myPodcasts() async {
+    final myPodcasts = await _apiClient.myPodcasts();
+    List<Podcast> pods = List.generate(myPodcasts.length, (index) {
+      return Podcast.fromMap(myPodcasts[index]);
+    });
+    return pods;
   }
 
   ///////////////////////////////////////////////

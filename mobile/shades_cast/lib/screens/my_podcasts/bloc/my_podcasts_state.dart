@@ -5,14 +5,14 @@ abstract class MyPodcastsState {}
 
 class MyPodcastsInitial extends MyPodcastsState {}
 
-class PodcastListerLoadingState extends MyPodcastsState {}
+class MyPodcastListerLoadingState extends MyPodcastsState {}
 
-class PodcastLoadedState extends MyPodcastsState {
+class MyPodcastLoadedState extends MyPodcastsState {
   final List<Podcast> podcasts;
-  final List<int> favoritedPodcastId;
 
-  PodcastLoadedState({
+  MyPodcastLoadedState({
     required this.podcasts,
-    required this.favoritedPodcastId,
   });
 }
+
+class MyPodcastErrorState extends MyPodcastsState {}

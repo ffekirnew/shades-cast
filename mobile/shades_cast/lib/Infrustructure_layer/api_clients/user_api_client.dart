@@ -15,7 +15,7 @@ class UserApiClient {
     required String password1,
     required String password2,
   }) async {
-    final url = 'https://fikernewapi.pythonanywhere.com/api/auth/signup/';
+    final url = '$api/api/auth/signup/';
 
     final response = await http.post(
       Uri.parse(url),
@@ -55,6 +55,7 @@ class UserApiClient {
       {required String email, required String password}) async {
     final url = '$api/api/auth/login/';
 
+    print("in login");
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -65,7 +66,8 @@ class UserApiClient {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['key'];
       authService.storeToken(token);
-
+      print('token' + token);
+      print(authService.getToken());
       return token;
     } else {
       throw Exception('Failed to login user with email $email');

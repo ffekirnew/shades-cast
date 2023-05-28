@@ -13,6 +13,7 @@ import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/repository/funfact_repo.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.dart';
+import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 
 part 'favorite_podcasts_event.dart';
@@ -32,15 +33,20 @@ class FavoritePodcastsBloc
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
-        final List<Podcast> favPodcasts = await podcastRepo.favoritePodcasts();
+        try {
+          final List<Podcast> favPodcasts =
+              await podcastRepo.favoritePodcasts();
 
-        currentPodcasts = favPodcasts;
-        emit(
-          FavPodcastLoadedState(
-            podcasts: favPodcasts,
-            favoritedPodcastId: favoritedIds,
-          ),
-        );
+          currentPodcasts = favPodcasts;
+          emit(
+            FavPodcastLoadedState(
+              podcasts: favPodcasts,
+              favoritedPodcastId: favoritedIds,
+            ),
+          );
+        } catch (e) {
+          emit(FavPodcastErrorState());
+        }
       } else if (event is FavPodcastFavorited) {
         if (!(favoritedIds.contains(event.podcastId))) {
           favoritedIds.add(event.podcastId);

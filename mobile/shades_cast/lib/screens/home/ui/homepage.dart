@@ -29,8 +29,90 @@ class homepage extends StatelessWidget {
           drawer: sideMenu(),
           body: BlocBuilder<HomeBloc, HomeState>(
             builder: (context, state) {
-              if (!(state is PodcastLoadedState)) {
+              print(state);
+              if (state is HomeInitial) {
                 BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+              } else if (state is PodcastsErrorState) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 13, right: 13, top: 40),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Image(
+                            image: AssetImage(
+                                'Assets/images/podcast.png'), // add the image asset here
+                            height: 50, // set the height here
+                            width: 50, // set the width here
+                            fit: BoxFit.contain, // set the BoxFit property here
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.menu),
+                            color: Colors.white, // add the menu icon here
+                            onPressed: () {
+                              print("it was pressed");
+                              Scaffold.of(context).openDrawer();
+                              // add the onPressed callback here
+                            },
+                          )
+                        ],
+                      ),
+                      searchBox(),
+                      funFact(state: state),
+                      Container(
+                        padding: EdgeInsets.all(5),
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          children: [
+                            Text(
+                              "Listen to Podcasts",
+                              style: TextStyle(
+                                color: Colors.grey[100],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 25.0,
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Color.fromARGB(255, 49, 217, 255),
+                                size: 25,
+                              ),
+                              onPressed: () {
+                                BlocProvider.of<HomeBloc>(context)
+                                    .add(GetPodcasts());
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "An error occured",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.refresh,
+                                color: Color.fromARGB(255, 49, 217, 255),
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                BlocProvider.of<HomeBloc>(context)
+                                    .add(GetPodcasts());
+                              },
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
               }
               // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
               return Padding(
@@ -63,13 +145,28 @@ class homepage extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.all(5),
                       alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Listen Podcasts",
-                        style: TextStyle(
-                          color: Colors.grey[100],
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25.0,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Listen to Podcasts",
+                            style: TextStyle(
+                              color: Colors.grey[100],
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25.0,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.refresh,
+                              color: Color.fromARGB(255, 49, 217, 255),
+                              size: 25,
+                            ),
+                            onPressed: () {
+                              BlocProvider.of<HomeBloc>(context)
+                                  .add(GetPodcasts());
+                            },
+                          )
+                        ],
                       ),
                     ),
                     (state is PodcastLoadedState)
@@ -399,11 +496,15 @@ class _funFactState extends State<funFact> {
                         child: Column(
                           children: [
                             Text(
-                              widget.state.funFact.title,
+                              (widget.state is PodcastsErrorState)
+                                  ? ""
+                                  : widget.state.funFact.title,
                               style: TextStyle(color: Colors.white),
                             ),
                             Text(
-                              widget.state.funFact.body,
+                              (widget.state is PodcastsErrorState)
+                                  ? "An error Occured"
+                                  : widget.state.funFact.body,
                               style: TextStyle(color: Colors.white),
                             ),
                           ],

@@ -16,3 +16,5 @@ class FavPodcastLoadedState extends FavoritePodcastsState {
     required this.favoritedPodcastId,
   });
 }
+
+class FavPodcastErrorState extends FavoritePodcastsState {}
