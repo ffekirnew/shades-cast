@@ -78,12 +78,14 @@ class UserProfileAPIView(APIView):
     serializer_class = ProfileSerializer
 
     def get(self, request, format=None):
+        print('here')
         user = get_object_or_404(get_user_model(), id=request.user.id)
         profile = user.profile
         serializer = ProfileSerializer(profile)
         return Response(serializer.data)
 
     def put(self, request, format=None):
+        print('here put')
         user = get_object_or_404(get_user_model(), id=request.user.id)
         profile = user.profile
         serializer = self.serializer_class(profile, data=request.data)
@@ -93,6 +95,7 @@ class UserProfileAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, format=None):
+        print('here patch')
         user = get_object_or_404(get_user_model(), id=request.user.id)
         profile = user.profile
         serializer = self.serializer_class(profile, data=request.data)
