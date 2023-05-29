@@ -72,12 +72,15 @@ class UserRepo {
   ////////////////////////////////////////////////////////////////
   ///
   ///
-  Future<void> updateUser(dynamic user) async {
+  Future<void> updateUser(dynamic userDetail) async {
     UserApiClient user = UserApiClient();
     try {
-      final result = await user.updateUser(user);
+      print('in user repo to update user');
+      final result = await user.updateUser(userDetail);
+      print('user succuessfully updated');
     } catch (er) {
       print(er);
+      throw ('update failed in user repo');
     }
   }
 }

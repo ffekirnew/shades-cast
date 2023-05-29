@@ -11,7 +11,7 @@ class FunfactApiClient {
     final response = await http.get(Uri.parse("$api/api/v3/resources/facts/"));
     print(response.body);
     if (response.statusCode != 200) {
-      return null;
+      throw ('cannot get funfact');
     }
     return json.decode(response.body);
   }
