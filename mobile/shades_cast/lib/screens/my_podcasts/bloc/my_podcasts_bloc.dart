@@ -33,7 +33,8 @@ class MyPodcastsBloc extends Bloc<MyPodcastsEvent, MyPodcastsState> {
 
         try {
           final List<Podcast> myPodcasts = await podcastRepo.myPodcasts();
-
+          print('in my podcasts repo');
+          print(myPodcasts);
           currentPodcasts = myPodcasts;
           emit(
             MyPodcastLoadedState(

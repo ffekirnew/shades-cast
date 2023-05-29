@@ -82,7 +82,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> addPodcast(dynamic podcast) async {
     print('got here safely');
     final res = await _apiClient.addPodcast(podcast);
-    if (res.statusCode != 201) {
+    if (res.detail != 201) {
       throw Exception("error getting the created podcast");
     }
     // var dynamicpodcast = json.decode(res.body);
