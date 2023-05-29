@@ -19,8 +19,8 @@ class AddPodcastBloc extends Bloc<AddPodcastEvent, AddPodcastState> {
           print('here in weird');
           PodcastRepository podRepo =
               PodcastRepositoryImpl(_database, _apiClient);
+          print('podcastCreated');
           dynamic podcastCreated = event.createdPodcast;
-
           await podRepo.addPodcast(podcastCreated);
           //submit the podcast
           emit(AddPodcastSuccess());
