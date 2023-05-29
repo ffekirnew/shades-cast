@@ -1,6 +1,9 @@
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
@@ -9,9 +12,10 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  UserApiClient apiClient = UserApiClient();
+  FunfactApiClient apiClient = FunfactApiClient();
+  // dynamic user;
 
-  late File _imageFile;
+  late File? _imageFile;
   late bool _isImageSelected = false;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -23,10 +27,12 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   void initState() {
     super.initState();
+    // getUserInfo();
     // Initialize the controllers with the current user info
     bool _isImageSelected = false;
 
-    _imageFile;
+    // _imageFile;
+
     _firstNameController = TextEditingController(text: "John");
     _lastNameController = TextEditingController(text: "Doe");
     _usernameController = TextEditingController(text: "johndoe");
@@ -57,10 +63,23 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     //   "email": _emailController.text,
     //   "password": _passwordController.text
     // };
-    // dynamic profile = {
-    //   "profile_pic": _imageFile,
+    // if (_isImageSelected) {
+    //   dynamic profile = {
+    //     "profile_pic": _imageFile,
+    //   };
+
+    //   // var res = await apiClient.userDetails();
+    //   // var res = await apiClient.favoritePodcasts();
+    //   // print(res);
+
+    //   final res = await apiClient.updateProfile(profile);
+    //   print(res);
+    // }
+    // dynamic funfact = {
+    //   "title": "happy life",
+    //   "body": "it seems impossible until it's done"
     // };
-    // final res = await apiClient.updateUser(profile);
+    // var res = await apiClient.getFunfact();
     // print(res);
   }
 
@@ -86,10 +105,14 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                 Center(
                   child: GestureDetector(
                     onTap: _pickImage,
+                    // child: CircleAvatar(
+                    //   radius: 50.0,
+                    //   backgroundImage: FileImage(user["profile"]["photo"]),
+                    // ),
                     child: CircleAvatar(
                       radius: 50.0,
                       backgroundImage: _isImageSelected
-                          ? FileImage(_imageFile)
+                          ? FileImage(_imageFile!)
                           : // Display the selected image if available
                           AssetImage('assets/logo.png') as ImageProvider<
                               Object>, // Display a default image
