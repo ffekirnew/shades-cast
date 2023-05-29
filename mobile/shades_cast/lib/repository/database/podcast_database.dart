@@ -52,7 +52,7 @@ class PodcastDatabase {
         title TEXT,
         description TEXT,
         author TEXT,
-        imageUrl TEXT,
+        cover_image TEXT,
         categories TEXT
     )
 ''');
@@ -69,10 +69,41 @@ class PodcastDatabase {
   ///
   ///
 
-  Future<void> savePodcast(Podcast podcast) async {
+  Future<void> savePodcast(dynamic podcast) async {
     final db = await instance.database;
+    // print((podcast.toMap()['id'].runtimeType));
+    print('eheheeeheheheheh');
+    // await db.insert('podcasts', podcast.toMap());
+    // print('got here safe saya');
+    var podcasts = podcast;
+    print('open road');
+    print(podcasts);
+    String id = podcasts["id"].toString();
+    String title = podcasts["title"];
+    String description = podcasts["description"];
+    String author = 'null';
+    print('did the first'); // Assuming the "id" value is already an integer
+    String imageUrl = podcasts["cover_image"];
+    String categories = podcasts["categories"][0];
 
-    await db.insert('podcasts', podcast.toMap());
+    // Use the correct data types in the SQL INSERT statement
+    String insertQuery =
+        'INSERT INTO podcasts (id, title, description, author, imageUrl, categories) '
+        'VALUES (?, ?, ?, ?, ?, ?)';
+    List<dynamic> insertArgs = [
+      id,
+      title,
+      description,
+      author,
+      imageUrl,
+      categories
+    ];
+
+    // Execute the SQL INSERT statement
+    await db.rawInsert(insertQuery, insertArgs);
+    // var rres = await getPodcasts();
+    // // Podcast.fromMap(rres[25]);
+    // print(rres);
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,11 +144,17 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>> getPodcasts() async {
+    print('heerrrrrrrrrrrro');
     final db = await instance.database;
-    final maps = await db.query('podcasts');
-    return List.generate(maps.length, (index) {
+    final List<Map<String, Object?>> queryRows = await db.query('podcasts');
+    final List<dynamic> maps = queryRows.map((row) => row).toList();
+    // return maps;
+    // return maps;
+    final res = List.generate(maps.length, (index) {
       return Podcast.fromMap(maps[index]);
     });
+    print(res);
+    return res;
   }
 
   ////////////////////////////////////////////////////////
