@@ -2,7 +2,7 @@ class User {
   int id;
   String name;
   String email;
-  String password;
+  String? password;
 
   User({
     required this.id,
@@ -23,7 +23,7 @@ class User {
   static User fromMap(Map<String, dynamic> map) {
     return User(
       id: map['id'],
-      name: map['name'],
+      name: map['username'],
       email: map['email'],
       password: map['password'],
     );

@@ -12,7 +12,7 @@ abstract class PodcastRepository {
 
   Future<List<Podcast>> getMyPodcasts();
 
-  Future<void> addPodcast(Podcast podcast);
+  Future<void> addPodcast(dynamic podcast);
 
   Future<void> deletePodcast(String podcastId);
 
@@ -37,20 +37,19 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getPodcasts() async {
-    final localPodcasts = await _database.getPodcasts();
+    // final localPodcasts = await _database.getPodcasts();
 
-    if (localPodcasts.isNotEmpty) {
-      return localPodcasts;
-    } else {
-      print('in podc repo');
-      List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
-      List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
-        return Podcast.fromMap(remotePodcasts[index]);
-      });
-      print(podcasts);
-      // await _database.savePodcasts(remotePodcasts);
-      return podcasts;
-    }
+    // if (localPodcasts.isNotEmpty) {
+    //   return localPodcasts;
+    // } else {
+    print('in podc repo');
+    List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
+    List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
+      return Podcast.fromMap(remotePodcasts[index]);
+    });
+    print(podcasts);
+    // await _database.savePodcasts(remotePodcasts);
+    return podcasts;
   }
   ////////////////////////////////////////////////////////////////
   ///
@@ -77,7 +76,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
 
   @override
-  Future<void> addPodcast(Podcast podcast) async {
+  Future<void> addPodcast(dynamic podcast) async {
     await _apiClient.addPodcast(podcast);
     await _database.savePodcast(podcast);
   }

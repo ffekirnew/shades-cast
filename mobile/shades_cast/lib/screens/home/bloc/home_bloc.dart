@@ -64,7 +64,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           // currentFunFact = funfact;
           // print(funfact);
         } catch (e) {
-          print('error occured here');
+          print('error occured here in home bloc');
           print(e);
           emit(PodcastsErrorState(currentUser: currentUser));
         }

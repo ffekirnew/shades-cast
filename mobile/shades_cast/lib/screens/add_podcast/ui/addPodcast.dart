@@ -32,7 +32,7 @@ class _addPodcastsState extends State<addPodcasts> {
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
-    _imageFile = File('../assets/logo.png');
+    _imageFile = File('assets/logo.png');
     _firstNameController = TextEditingController(text: "John");
     _lastNameController = TextEditingController(text: "Doe");
     _usernameController = TextEditingController(text: "johndoe");
@@ -43,7 +43,7 @@ class _addPodcastsState extends State<addPodcasts> {
 
   Future<void> _pickImage() async {
     final pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       if (pickedFile != null) {
         _imageFile = File(pickedFile.path);
@@ -54,20 +54,12 @@ class _addPodcastsState extends State<addPodcasts> {
   void _submitForm() async {
     // Get the form field values
 
-    dynamic podcast = {
+    dynamic createdPodcast = {
       "title": _firstNameController.text,
       "description": _lastNameController.text,
       "categories": _usernameController.text,
       "cover_image": _imageFile
     };
-
-    Podcast createdPodcast = Podcast(
-        id: 1,
-        title: podcast['title'],
-        author: podcast['author'],
-        description: podcast['description'],
-        imageUrl: '',
-        categories: [podcast['categories']]);
 
     BlocProvider.of<AddPodcastBloc>(context)
         .add(PodcastSubmitted(createdPodcast: createdPodcast));
