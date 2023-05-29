@@ -5,6 +5,8 @@ import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   @override
@@ -56,13 +58,25 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     // TODO: Submit the updated user info to the backend
     // Make sure to validate the form data before submitting
     // Also handle errors if the submission fails
-    // dynamic newUser = {
-    //   "first_name": _firstNameController.text,
-    //   "last_name": _lastNameController.text,
-    //   "username": _usernameController.text,
-    //   "email": _emailController.text,
-    //   "password": _passwordController.text
-    // };
+
+    dynamic newUser = {
+      "first_name": _firstNameController.text,
+      "last_name": _lastNameController.text,
+      "username": _usernameController.text,
+      "email": _emailController.text,
+      "password": _passwordController.text
+    };
+
+    dynamic userDetails = {
+      "title": _firstNameController.text,
+      "description": _lastNameController.text,
+      "categories": _usernameController.text,
+      "cover_image": _imageFile
+    };
+
+    BlocProvider.of<Settings>(context)
+        .add(DetailSubmitted(accountDetails: userDetails));
+
     // if (_isImageSelected) {
     //   dynamic profile = {
     //     "profile_pic": _imageFile,
