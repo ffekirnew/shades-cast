@@ -3,7 +3,7 @@ part of 'settings_bloc.dart';
 @immutable
 abstract class SettingsEvent {}
 
-class DetailSubmitted extends SettingsEvent {
+class AccountDetailSubmitted extends SettingsEvent {
   final dynamic accountDetails;
-  DetailSubmitted({this.accountDetails});
+  AccountDetailSubmitted({this.accountDetails});
 }
