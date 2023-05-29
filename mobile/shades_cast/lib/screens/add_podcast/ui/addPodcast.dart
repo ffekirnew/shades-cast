@@ -63,6 +63,7 @@ class _addPodcastsState extends State<addPodcasts> {
 
     BlocProvider.of<AddPodcastBloc>(context)
         .add(PodcastSubmitted(createdPodcast: createdPodcast));
+    // print(createdPodcast);
 
     // final res = await apiClient.addPodcast(podcast);
     // print(res);
