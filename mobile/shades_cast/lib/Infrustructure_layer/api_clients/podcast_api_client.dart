@@ -206,11 +206,16 @@ class PodcastApiClient {
 
     try {
       var response = await request.send();
-      if (response.statusCode != 200) {
+      if (response.statusCode != 201) {
         print((response.statusCode));
         print("Error sending the file");
       } else {
-        print('Success');
+        // Retrieve the created podcast object from the response
+        var responseString = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseString);
+        // var createdPodcast = jsonResponse['body'];
+        // Return the created podcast object
+        return jsonResponse;
       }
     } catch (e) {
       print("Error: $e");
