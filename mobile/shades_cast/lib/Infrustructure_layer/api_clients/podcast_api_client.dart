@@ -33,7 +33,8 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> getPodcasts() async {
-    final response = await http.get(Uri.parse('$api/api/v2/podcasts'));
+    final response =
+        await http.get(Uri.parse('$api/api/v3/my-account/podcasts/'));
 
     //inspect the response
 
@@ -55,7 +56,7 @@ class PodcastApiClient {
   ///
   Future<List<dynamic>> getMyPodcasts() async {
     final response =
-        await http.get(Uri.parse('$api/api/v2/podcasts/podcasts-created'));
+        await http.get(Uri.parse('$api/api/v3/resources/podcasts/'));
     //inspect the response
 
     print(response.statusCode);
@@ -111,7 +112,7 @@ class PodcastApiClient {
 
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-<<<<<<< HEAD
+// <<<<<<< HEAD
       Uri.parse('$api/api/v2/podcasts-favorited'),
 // <<<<<<< HEAD
       headers: headers,
@@ -186,7 +187,7 @@ class PodcastApiClient {
     var stream = http.ByteStream(_imageFile.openRead());
     stream.cast();
     var length = await _imageFile.length();
-    var uri = Uri.parse('$api/api/v2/podcasts/');
+    var uri = Uri.parse('$api/api/v3/my-account/podcasts/created/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
 

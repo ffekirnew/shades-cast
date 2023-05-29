@@ -43,8 +43,8 @@ void main() {
         debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
-          '/': (context) => homepage(),
-          '/home': (context) => LoginPage(),
+          '/': (context) => LoginPage(),
+          '/home': (context) => homepage(),
           '/podcast': (context) => PodcastPage(podcastId: 1),
           '/addPodcast': (context) => addPodcasts(),
           '/addEpisode': (context) => AddEpisodeScreen(),

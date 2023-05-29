@@ -4,6 +4,6 @@ part of 'add_podcast_bloc.dart';
 abstract class AddPodcastEvent {}
 
 class PodcastSubmitted extends AddPodcastEvent {
-  Podcast createdPodcast;
+  dynamic createdPodcast;
   PodcastSubmitted({required this.createdPodcast});
 }
