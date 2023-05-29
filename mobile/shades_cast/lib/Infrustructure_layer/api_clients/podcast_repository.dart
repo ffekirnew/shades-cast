@@ -82,21 +82,13 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> addPodcast(dynamic podcast) async {
     print('got here safely');
     final res = await _apiClient.addPodcast(podcast);
-    if (res == null) {
+    if (res.detail != 201) {
       throw Exception("error getting the created podcast");
     }
-// <<<<<<< funfact
-
-    // print(res);
-    // print('here too');
-    await _database.savePodcast(res);
-    // print('finally');
-// =======
     // var dynamicpodcast = json.decode(res.body);
 
     print('here too');
     // await _database.savePodcast(podcast.fromMap(podcast));
-// >>>>>>> master
   }
   ////////////////////////////////////////////////////////////////
   ///
@@ -221,11 +213,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Podcast>> myPodcasts() async {
     final myPodcasts = await _apiClient.myPodcasts();
-
+    print('in my podcasts true repo');
     List<Podcast> pods = List.generate(myPodcasts.length, (index) {
       return Podcast.fromMap(myPodcasts[index]);
     });
-
+    print(pods);
     return pods;
   }
 

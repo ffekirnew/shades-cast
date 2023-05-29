@@ -31,12 +31,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     UserRepo userRepo = UserRepo();
     User currentUser =
         User(id: 1, name: 'Shamil Bedru', email: 'email', password: 'password');
-    // FunfactApiClient _apiClientFunFact = FunfactApiClient();
 
-    // FunfactRepository funFactRep =
-    //     FunfactRepositoryImpl(_database, _apiClientFunFact);
-    Funfact currentFunFact =
-        Funfact(title: "FunFact Title", body: "FunFact Body");
+    FunfactApiClient _apiClientFunFact = FunfactApiClient();
+    FunfactRepository funFactRep =
+        FunfactRepositoryImpl(_database, _apiClientFunFact);
+    Funfact currentFunFact = Funfact(title: "", body: "");
 
     on<HomeEvent>((event, emit) async {
       if (event is GetPodcasts) {
@@ -51,7 +50,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final List<Podcast> podcasts = await podcastRepo.getPodcasts();
           currentPodcasts = podcasts;
           print('here');
-          print(podcasts);
+
+          Funfact funfact = await funFactRep.getFunfact();
+          currentFunFact = funfact;
+
           emit(
             PodcastLoadedState(
                 podcasts: currentPodcasts,
@@ -60,9 +62,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 currentUser: currentUser),
           );
 //------------------------ un comment for funfact fetching functionality ------------------------
-          // Funfact funfact = await funFactRep.getFunfact();
-          // currentFunFact = funfact;
-          // print(funfact);
+
+          print(funfact);
         } catch (e) {
           print('error occured here in home bloc');
           print(e);

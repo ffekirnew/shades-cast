@@ -87,12 +87,20 @@ class UserApiClient {
     if (token == null) {
       throw Exception("cannot get token");
     }
+
     Map<String, String> headers = {'Authorization': 'Token $token'};
+
+    if (newUser['cover_image'] == null) {
+      newUser['cover_image'] = '';
+    }
+
+    print(newUser);
     final response = await http.patch(
       Uri.parse("$api/api/v3/my-account/"),
       body: newUser,
       headers: headers,
     );
+
     if (response.statusCode != 200) {
       throw Exception("cannot update user");
     } else {
@@ -135,10 +143,11 @@ class UserApiClient {
     request.fields['photo'] = path.basename(profile_pic.path);
 
     try {
+      print('trying to send user profile ');
       var response = await request.send();
       if (response.statusCode != 200) {
         print(response.statusCode);
-        print("Error sending the file");
+        print("Error sending the file of user");
       } else {
         print('Success');
       }
