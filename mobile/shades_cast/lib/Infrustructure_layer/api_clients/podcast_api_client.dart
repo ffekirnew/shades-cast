@@ -111,6 +111,7 @@ class PodcastApiClient {
 
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
+<<<<<<< HEAD
       Uri.parse('$api/api/v2/podcasts-favorited'),
 // <<<<<<< HEAD
       headers: headers,
@@ -135,9 +136,30 @@ class PodcastApiClient {
 
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-      Uri.parse('$api/api/v2/podcasts-created'),
-// =======
-// >>>>>>> 0fd7d43d0a0d6b29fa24ab12b9196dce0ad59cdf
+      Uri.parse('$api/api/v3/my-account/podcasts/favorited'),
+      headers: headers,
+    );
+    if (response.statusCode != 200) {
+      throw Exception("cannot get podcasts");
+    }
+    print("api called successfully");
+    return jsonDecode(response.body);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  Future<dynamic> addToFavorite(String podcastId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.post(
+      Uri.parse('$api/api/v3/resources/podcasts/$podcastId/add-favorite'),
       headers: headers,
     );
     if (response.statusCode != 200) {
@@ -159,29 +181,12 @@ class PodcastApiClient {
     String description = podcast["description"];
     String categories = podcast["categories"];
 
-    // String? token = await authService.getToken();
-    // print("api called successfully");
-    // print(token);
-    // if (token == null) {
-    //   throw Exception("cannot get token");
-    // }
-    // print(podcast);
-    // Map<String, String> headers = {'Authorization': 'Token $token'};
-    // final response = await http.post(
-    //   Uri.parse('$api/api/v2/podcasts/'),
-    //   body: podcast,
-    //   headers: headers,
-    // );
-    // print("got here");
-    // print(response.statusCode);
-    // print(jsonDecode(response.body));
-
     final AuthService authService = AuthService();
 
     var stream = http.ByteStream(_imageFile.openRead());
     stream.cast();
     var length = await _imageFile.length();
-    var uri = Uri.parse('http://192.168.0.144:8000/api/v2/podcasts/');
+    var uri = Uri.parse('$api/api/v2/podcasts/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
 
