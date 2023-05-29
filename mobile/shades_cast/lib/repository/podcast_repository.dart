@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:shades_cast/domain_layer/episode.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:shades_cast/domain_layer/user.dart';
@@ -77,8 +80,15 @@ class PodcastRepositoryImpl implements PodcastRepository {
 
   @override
   Future<void> addPodcast(dynamic podcast) async {
-    await _apiClient.addPodcast(podcast);
-    await _database.savePodcast(podcast);
+    print('got here safely');
+    final res = await _apiClient.addPodcast(podcast);
+    if (res.statusCode != 201) {
+      throw Exception("error getting the created podcast");
+    }
+    var dynamicpodcast = json.decode(res.body);
+
+    print('here too');
+    await _database.savePodcast(podcast.fromMap(podcast));
   }
   ////////////////////////////////////////////////////////////////
   ///
