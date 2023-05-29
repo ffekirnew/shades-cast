@@ -68,6 +68,18 @@ class UserRepo {
 
     return current_user;
   }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  Future<void> updateUser(dynamic user) async {
+    UserApiClient user = UserApiClient();
+    try {
+      final result = await user.updateUser(user);
+    } catch (er) {
+      print(er);
+    }
+  }
 }
 
 // dont forget to clean it up by removing the creation of service out of the repo

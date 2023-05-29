@@ -187,7 +187,7 @@ class PodcastApiClient {
     var stream = http.ByteStream(_imageFile.openRead());
     stream.cast();
     var length = await _imageFile.length();
-    var uri = Uri.parse('$api/api/v3/my-account/podcasts/created/');
+    var uri = Uri.parse('$api/api/v3/resources/podcasts/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
 
