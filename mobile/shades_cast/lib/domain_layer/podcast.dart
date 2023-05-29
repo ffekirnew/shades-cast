@@ -36,13 +36,24 @@ class Podcast {
   }
 
   static Podcast fromMap(Map<String, dynamic> map) {
+    print(map);
     return Podcast(
-      id: map['id'],
+      id: int.parse(map['id']),
       title: map['title'],
-      author: map['creator'],
+      author: map['author'],
       description: map['description'],
-      imageUrl: map['cover_image'],
-      categories: map['categories'],
+      imageUrl: map['imageUrl'],
+      categories: [map['categories']],
     );
+
+    // print(map);
+    // return Podcast(
+    //   id: int.parse(map['id']),
+    //   title: map['title'],
+    //   author: map['creator'],
+    //   description: map['description'],
+    //   imageUrl: map['imageUrl'],
+    //   categories: map['categories'],
+    // );
   }
 }
