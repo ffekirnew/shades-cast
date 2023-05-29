@@ -27,12 +27,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
+    PodcastDatabase _database = PodcastDatabase.instance;
     UserRepo userRepo = UserRepo();
     User currentUser =
         User(id: 1, name: 'Shamil Bedru', email: 'email', password: 'password');
     // FunfactApiClient _apiClientFunFact = FunfactApiClient();
 
-    PodcastDatabase _database = PodcastDatabase.instance;
     // FunfactRepository funFactRep =
     //     FunfactRepositoryImpl(_database, _apiClientFunFact);
     Funfact currentFunFact =

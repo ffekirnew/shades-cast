@@ -5,8 +5,10 @@ import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as path;
 import 'package:shades_cast/Infrustructure_layer/api_clients/authService.dart';
-
+import 'package:shades_cast/screens/add_podcast/bloc/add_podcast_bloc.dart';
 import '../../../Infrustructure_layer/api_clients/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shades_cast/domain_layer/podcast.dart';
 
 class addPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
@@ -59,6 +61,17 @@ class _addPodcastsState extends State<addPodcasts> {
       "cover_image": _imageFile
     };
 
+    Podcast createdPodcast = Podcast(
+        id: 1,
+        title: podcast['title'],
+        author: podcast['author'],
+        description: podcast['description'],
+        imageUrl: '',
+        categories: [podcast['categories']]);
+
+    BlocProvider.of<AddPodcastBloc>(context)
+        .add(PodcastSubmitted(createdPodcast: createdPodcast));
+
     // final res = await apiClient.addPodcast(podcast);
     // print(res);
     // final AuthService authService = AuthService();
@@ -110,81 +123,113 @@ class _addPodcastsState extends State<addPodcasts> {
           title: Text("Add Podcast"),
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Center(
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 60.0,
+          child: BlocBuilder<AddPodcastBloc, AddPodcastState>(
+              builder: (context, state) {
+            String errorMessage = '';
+            if (state is AddPodcastError) {
+              errorMessage = 'Error occured. Try again';
+            } else if (state is AddPodcastSuccess) {
+              errorMessage = 'Podcast succesfully added.';
+            }
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 60.0,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                Center(
-                  child: TextButton(
-                    onPressed: _pickImage,
-                    child: Text("Change Profile Picture"),
+                  SizedBox(height: 16.0),
+                  Center(
+                    child: TextButton(
+                      onPressed: _pickImage,
+                      child: Text("Change Profile Picture"),
+                    ),
                   ),
-                ),
-                SizedBox(height: 32.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 32.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _firstNameController,
+                    decoration: InputDecoration(
+                      labelText: "Title",
+                      fillColor: Colors.blue,
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                  controller: _firstNameController,
-                  decoration: InputDecoration(
-                    labelText: "Title",
-                    fillColor: Colors.blue,
-                    labelStyle: TextStyle(color: Colors.blue),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _lastNameController,
+                    decoration: InputDecoration(
+                      labelText: "Description",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    controller: _usernameController,
+                    decoration: InputDecoration(
+                      labelText: "Category",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
                   ),
-                  controller: _lastNameController,
-                  decoration: InputDecoration(
-                    labelText: "Description",
-                    labelStyle: TextStyle(color: Colors.blue),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    decoration: InputDecoration(
+                      fillColor:
+                          Colors.blue, // sets the background color to blue
+                      labelStyle: TextStyle(color: Colors.blue),
+                      labelText: "Email",
+                    ),
+                    controller: _emailController,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
+                  SizedBox(height: 16.0),
+                  SizedBox(height: 32.0),
+                  Container(
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: _submitForm,
+                      child: Text(
+                        "Create Podcast",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w400),
+                      ),
+                    ),
                   ),
-                  controller: _usernameController,
-                  decoration: InputDecoration(
-                    labelText: "Category",
-                    labelStyle: TextStyle(color: Colors.blue),
+                  SizedBox(
+                    height: 150,
                   ),
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  style: TextStyle(
-                    color: Colors.white, // sets the text color to white
-                  ),
-                  decoration: InputDecoration(
-                    fillColor: Colors.blue, // sets the background color to blue
-                    labelStyle: TextStyle(color: Colors.blue),
-                    labelText: "Email",
-                  ),
-                  controller: _emailController,
-                ),
-                SizedBox(height: 16.0),
-                SizedBox(height: 32.0),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: Text("create Podcast"),
-                ),
-              ],
-            ),
-          ),
+                  Container(
+                    child: Center(
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(
+                            color: (errorMessage == 'Error occured. Try again')
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 20),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );
