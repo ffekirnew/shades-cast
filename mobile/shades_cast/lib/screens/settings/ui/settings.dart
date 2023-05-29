@@ -74,8 +74,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       "cover_image": _imageFile
     };
 
-    BlocProvider.of<Settings>(context)
-        .add(DetailSubmitted(accountDetails: userDetails));
+    BlocProvider.of<SettingsBloc>(context)
+        .add(DetailSubmitted(accountDetails: userDetails) as SettingsBloc);
 
     // if (_isImageSelected) {
     //   dynamic profile = {
