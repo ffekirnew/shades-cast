@@ -4,3 +4,7 @@ part of 'add_podcast_bloc.dart';
 abstract class AddPodcastState {}
 
 class AddPodcastInitial extends AddPodcastState {}
+
+class AddPodcastSuccess extends AddPodcastState {}
+
+class AddPodcastError extends AddPodcastState {}
