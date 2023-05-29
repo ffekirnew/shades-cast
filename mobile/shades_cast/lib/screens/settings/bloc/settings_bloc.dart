@@ -1,0 +1,28 @@
+import 'package:bloc/bloc.dart';
+import 'package:meta/meta.dart';
+import 'package:shades_cast/repository/user_repo.dart';
+
+part 'settings_event.dart';
+part 'settings_state.dart';
+
+class SettingsBloc extends Bloc<SettingsBloc, SettingsState> {
+  SettingsBloc() : super(SettingsInitial()) {
+    on<SettingsBloc>((event, emit) async {
+      if (event is DetailSubmitted) {
+        try {
+          print('here in weird');
+          UserRepo userRepo = UserRepo();
+
+          dynamic userCreated = event;
+
+          // await userRepo.updateUser(userCreated);
+
+          emit(SettingsSuccess());
+        } catch (e) {
+          print(e);
+          emit(SettingsError());
+        }
+      }
+    });
+  }
+}

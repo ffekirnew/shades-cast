@@ -13,6 +13,7 @@ import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 import 'package:shades_cast/screens/add_podcast/bloc/add_podcast_bloc.dart';
+import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
 
 void main() {
   runApp(
@@ -31,7 +32,7 @@ void main() {
           create: (BuildContext context) => FavoritePodcastsBloc(),
         ),
         BlocProvider(
-          create: (BuildContext context) => MyPodcastsBloc(),
+          create: (BuildContext context) => (),
         ),
         BlocProvider(
           create: (BuildContext context) => AddPodcastBloc(),
