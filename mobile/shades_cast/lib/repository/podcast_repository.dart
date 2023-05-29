@@ -213,11 +213,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Podcast>> myPodcasts() async {
     final myPodcasts = await _apiClient.myPodcasts();
-    print('in my podcasts true repo');
+
     List<Podcast> pods = List.generate(myPodcasts.length, (index) {
       return Podcast.fromMap(myPodcasts[index]);
     });
-    print(pods);
+
     return pods;
   }
 

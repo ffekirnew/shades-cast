@@ -15,14 +15,23 @@ class FunfactRepositoryImpl extends FunfactRepository {
   FunfactRepositoryImpl(this._database, this._apiClient);
   @override
   Future<Funfact> getFunfact() async {
-    final funfact = await _database.getFunfact();
+    print('in funfact repo');
+    // final funfact = await _database.getFunfact();
 
-    if (funfact != null) {
-      return funfact;
+    // if (funfact != null) {
+    //   return funfact;
+    // }
+    final remoteFunfacts = await _apiClient.getFunfact();
+    print('funfact gotten');
+    print(remoteFunfacts);
+    Funfact newFunfact = Funfact(title: 'title', body: 'body');
+    if (remoteFunfacts.length > 0) {
+      final fact = remoteFunfacts[0];
+      print(fact);
+      newFunfact = Funfact.fromMap(fact);
     }
-    final remoteFunfact = await _apiClient.getFunfact();
-    Funfact newFunfact = Funfact.fromMap(remoteFunfact);
-    await _database.saveFunfact(newFunfact);
+    // await _database.saveFunfact(newFunfact);
+    print('funfact processed');
     return newFunfact;
   }
 }
