@@ -71,6 +71,7 @@ class PodcastDatabase {
 
   Future<void> savePodcast(Podcast podcast) async {
     final db = await instance.database;
+
     await db.insert('podcasts', podcast.toMap());
   }
 
