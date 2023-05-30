@@ -1,3 +1,5 @@
+import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+
 class Podcast {
   final int id;
   final String title;
@@ -36,12 +38,17 @@ class Podcast {
   }
 
   static Podcast fromMap(Map<String, dynamic> map) {
+    String imageLink = api + map["cover_image"];
+    if (map['cover_image'].contains('http')) {
+      imageLink = map["cover_image"];
+    }
+
     return Podcast(
       id: map['id'],
       title: map['title'],
       author: map['creator'],
       description: map['description'],
-      imageUrl: map['cover_image'],
+      imageUrl: imageLink,
       categories: map['categories'],
     );
   }

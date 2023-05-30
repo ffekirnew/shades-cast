@@ -41,22 +41,27 @@ class PodcastDetailsAndPlayerBloc
         PodcastRepository podRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
-        final Podcast pod =
-            await podRepo.getPodcastById(event.podcastId.toString());
+        try {
+          final Podcast pod =
+              await podRepo.getPodcastById(event.podcastId.toString());
 
-        currentPodcast = pod;
+          currentPodcast = pod;
 
-        List<Episode> episodes =
-            await podRepo.getEpisodes(event.podcastId.toString());
+          List<Episode> episodes =
+              await podRepo.getEpisodes(event.podcastId.toString());
 
-        currentEpisodes = episodes;
+          currentEpisodes = episodes;
 
-        print('ended');
-        emit(PodcastDetailEpisodes(
-            episodes: currentEpisodes,
-            currentPlayingEpisode:
-                currentEpisode % (max(currentEpisodes.length, 1)),
-            podcast: pod));
+          print('ended');
+          emit(PodcastDetailEpisodes(
+              episodes: currentEpisodes,
+              currentPlayingEpisode:
+                  currentEpisode % (max(currentEpisodes.length, 1)),
+              podcast: pod));
+        } catch (e) {
+          print(e);
+          emit(PodcastDetailsAndPlayerErrorState());
+        }
       } else if (event is SkipToNextButtonClicked) {
         currentEpisode += 1;
         print(currentEpisode);
