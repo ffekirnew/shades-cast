@@ -483,7 +483,7 @@ class _funFactState extends State<funFact> {
               topLeft: Radius.circular(15),
               bottomLeft: Radius.circular(15),
             ),
-            color: Color.fromARGB(55, 160, 160, 160),
+            color: Color.fromARGB(20, 160, 160, 160),
           ),
           padding: EdgeInsets.all(20),
           margin: EdgeInsets.all(20),
@@ -501,7 +501,8 @@ class _funFactState extends State<funFact> {
                       child: Icon(Icons.close))
                 ],
               ),
-              (widget.state is PodcastLoadedState)
+              ((widget.state is PodcastLoadedState) |
+                      (widget.state is PodcastsErrorState))
                   ? Container(
                       margin: EdgeInsets.all(20),
                       padding: EdgeInsets.only(bottom: 50),
@@ -518,7 +519,10 @@ class _funFactState extends State<funFact> {
                               (widget.state is PodcastsErrorState)
                                   ? "An error Occured"
                                   : widget.state.funFact.body,
-                              style: TextStyle(color: Colors.white),
+                              style: (widget.state is PodcastsErrorState)
+                                  ? TextStyle(color: Colors.red, fontSize: 18)
+                                  : TextStyle(
+                                      color: Colors.white, fontSize: 18),
                             ),
                           ],
                         ),

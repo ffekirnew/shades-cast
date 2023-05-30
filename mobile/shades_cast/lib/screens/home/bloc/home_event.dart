@@ -8,9 +8,9 @@ class PodcastClicked extends HomeEvent {
   PodcastClicked({required this.podcastId});
 }
 
-class PodastSearched extends HomeEvent {
+class PodcastSearched extends HomeEvent {
   final String searchTerm;
-  PodastSearched({required this.searchTerm});
+  PodcastSearched({required this.searchTerm});
 }
 
 class PodcasFavorited extends HomeEvent {

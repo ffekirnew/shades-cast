@@ -44,7 +44,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Podcast>> getPodcasts() async {
     final localPodcasts = await _database.getPodcasts();
-
     if (localPodcasts.isNotEmpty) {
       return localPodcasts;
     }
@@ -91,6 +90,8 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<void> addPodcast(dynamic podcast) async {
     final res = await _apiClient.addPodcast(podcast);
+    print('printing');
+    print(podcast);
     if (res == null) {
       throw Exception("error getting the created podcast");
     }

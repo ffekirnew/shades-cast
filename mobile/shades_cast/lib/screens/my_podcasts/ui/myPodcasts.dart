@@ -281,7 +281,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
-
+      print(currentPodcast.description);
       podcasts.add(GestureDetector(
         onTap: () {
           Navigator.push(
@@ -330,8 +330,7 @@ class _podcastListState extends State<podcastList> {
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
                 child: Text(
-                  //  currentPodcast.description ?? "",
-                  "some description to check how the subtitle exactly looks and if it can be used",
+                  currentPodcast.description ?? "",
                   style: TextStyle(
                       color: Color.fromARGB(205, 255, 255, 255),
                       fontSize: 16,
