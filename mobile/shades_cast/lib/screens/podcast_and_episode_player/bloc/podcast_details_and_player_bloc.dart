@@ -34,7 +34,6 @@ class PodcastDetailsAndPlayerBloc
 
     on<PodcastDetailsAndPlayerEvent>((event, emit) async {
       if (event is PodcastDetailPageOpened) {
-        // int currentIndex = event.selectedIndex;
         isFromMyPodcasts = event.isFromMyPodcasts;
         emit(PodcastLoadingState());
 
