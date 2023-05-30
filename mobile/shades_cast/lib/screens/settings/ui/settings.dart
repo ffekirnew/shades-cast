@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
+  bool refresh;
+  AccountSettingsScreen({this.refresh = false});
   @override
   _AccountSettingsScreenState createState() => _AccountSettingsScreenState();
 }
@@ -60,11 +62,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     // Also handle errors if the submission fails
 
     dynamic newUser = {
-      "first_name": _firstNameController.text,
-      "last_name": _lastNameController.text,
       "username": _usernameController.text,
       "email": _emailController.text,
-      "password": _passwordController.text
     };
 
     BlocProvider.of<SettingsBloc>(context)
@@ -104,6 +103,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           } else if (state is SettingsSuccess) {
             errorMessage = 'Account succesfully updated';
           }
+          if (widget.refresh) {
+            errorMessage = '';
+            widget.refresh = false;
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -134,29 +137,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       child: Text("Change Profile Picture"),
                     ),
                   ),
-                  SizedBox(height: 32.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    controller: _firstNameController,
-                    decoration: InputDecoration(
-                      labelText: "First Name",
-                      fillColor: Colors.blue,
-                      labelStyle: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    controller: _lastNameController,
-                    decoration: InputDecoration(
-                      labelText: "Last Name",
-                      labelStyle: TextStyle(color: Colors.blue),
-                    ),
-                  ),
                   SizedBox(height: 16.0),
                   TextFormField(
                     style: TextStyle(
@@ -180,30 +160,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       labelText: "Email",
                     ),
                     controller: _emailController,
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "New password",
-                      labelStyle: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    controller: _confirmPasswordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      labelText: "Confirm Password",
-                      labelStyle: TextStyle(color: Colors.blue),
-                    ),
                   ),
                   SizedBox(height: 32.0),
                   ElevatedButton(

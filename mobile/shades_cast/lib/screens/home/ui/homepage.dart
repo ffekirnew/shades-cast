@@ -264,7 +264,10 @@ class sideMenu extends StatelessWidget {
               // handle item 1 tap
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => MyPodcastsPage()),
+                MaterialPageRoute(
+                    builder: (context) => MyPodcastsPage(
+                          refresh: true,
+                        )),
               );
             },
           ),
@@ -285,7 +288,10 @@ class sideMenu extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => FavoritePodcastsPage()),
+                MaterialPageRoute(
+                    builder: (context) => FavoritePodcastsPage(
+                          refresh: true,
+                        )),
               );
             },
           ),
@@ -308,7 +314,9 @@ class sideMenu extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AccountSettingsScreen()),
+                    builder: (context) => AccountSettingsScreen(
+                          refresh: true,
+                        )),
               );
             },
           ),
@@ -332,7 +340,9 @@ class sideMenu extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => FunFactListScreen()),
+                          builder: (context) => FunFactListScreen(
+                                refresh: true,
+                              )),
                     );
                   },
                 )
@@ -542,9 +552,8 @@ class _funFactState extends State<funFact> {
 
 //the search box component of the screen
 class searchBox extends StatelessWidget {
-  const searchBox({
-    super.key,
-  });
+  TextEditingController searchInputController = TextEditingController();
+  searchBox({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -552,6 +561,12 @@ class searchBox extends StatelessWidget {
       padding: EdgeInsets.symmetric(vertical: 15),
       child: Container(
         child: TextField(
+          onEditingComplete: () {
+            // Perform search functionality here
+            BlocProvider.of<HomeBloc>(context)
+                .add(PodcastSearched(searchTerm: searchInputController.text));
+          },
+          controller: searchInputController,
           decoration: InputDecoration(
             hintText: '',
             suffixIcon: IconButton(
@@ -559,6 +574,8 @@ class searchBox extends StatelessWidget {
               color: Colors.blue,
               onPressed: () {
                 // Perform search functionality here
+                BlocProvider.of<HomeBloc>(context).add(
+                    PodcastSearched(searchTerm: searchInputController.text));
               },
             ),
             border: OutlineInputBorder(

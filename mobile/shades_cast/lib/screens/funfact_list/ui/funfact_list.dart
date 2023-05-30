@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/screens/add_funfact/ui/add_funfact.dart';
+import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -51,9 +52,10 @@ class FunFactCard extends StatelessWidget {
 
 class FunFactListScreen extends StatelessWidget {
   List<Funfact> funfacts = [];
+  bool refresh;
   // Assuming each funfact has a title and body
 
-  FunFactListScreen();
+  FunFactListScreen({this.refresh = false});
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +80,10 @@ class FunFactListScreen extends StatelessWidget {
       body: BlocBuilder<FunfactBloc, FunfactState>(
         builder: (context, state) {
           funfacts = state.funfacts;
+          if (refresh) {
+            BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+            refresh = false;
+          }
           if (state is FunfactInitial) {
             BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
           } else if (state is FunfactErrorState) {
@@ -129,7 +135,10 @@ class FunFactListScreen extends StatelessWidget {
           // Navigate to the AddFunFactScreen when the button is pressed
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddFunFactScreen()),
+            MaterialPageRoute(
+                builder: (context) => AddFunFactScreen(
+                      refresh: true,
+                    )),
           );
         },
       ),

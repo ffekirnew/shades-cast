@@ -15,7 +15,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 
 class MyPodcastsPage extends StatefulWidget {
-  MyPodcastsPage();
+  bool refresh;
+  MyPodcastsPage({this.refresh = false});
 
   @override
   _MyPodcastsPageState createState() => _MyPodcastsPageState();
@@ -57,6 +58,10 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
         ),
         body: BlocBuilder<MyPodcastsBloc, MyPodcastsState>(
           builder: (context, state) {
+            if (widget.refresh) {
+              BlocProvider.of<MyPodcastsBloc>(context).add(GetMyPodcasts());
+              widget.refresh = false;
+            }
             if (state is MyPodcastsInitial) {
               BlocProvider.of<MyPodcastsBloc>(context).add(GetMyPodcasts());
             } else if (state is MyPodcastErrorState) {

@@ -12,7 +12,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddEpisodeScreen extends StatefulWidget {
   int podcastId;
-  AddEpisodeScreen({required this.podcastId});
+  bool refresh;
+  AddEpisodeScreen({required this.podcastId, this.refresh = false});
   @override
   _AddEpisodeScreenState createState() => _AddEpisodeScreenState();
 }
@@ -133,6 +134,11 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
             errorMessage = 'Error occured. Try again';
           } else if (state is AddEpisodeSuccess) {
             errorMessage = 'Podcast succesfully added.';
+          }
+
+          if (widget.refresh) {
+            errorMessage = '';
+            widget.refresh = true;
           }
 
           return SingleChildScrollView(
