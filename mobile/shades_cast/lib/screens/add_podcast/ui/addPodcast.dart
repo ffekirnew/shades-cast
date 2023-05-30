@@ -67,11 +67,11 @@ class _addPodcastsState extends State<addPodcasts> {
       "cover_image": _imageFile
     };
 
-    // BlocProvider.of<AddPodcastBloc>(context)
-    //     .add(PodcastSubmitted(createdPodcast: createdPodcast));
-    PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
-    final res = await podRepo.searchPodcast('funny');
-    print(res);
+    BlocProvider.of<AddPodcastBloc>(context)
+        .add(PodcastSubmitted(createdPodcast: createdPodcast));
+    // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
+    // final res = await podRepo.searchPodcast('funny');
+    // print(res);
     // print(res);
   }
 

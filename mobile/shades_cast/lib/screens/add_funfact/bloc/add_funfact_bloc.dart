@@ -11,7 +11,7 @@ part 'add_funfact_state.dart';
 
 class AddFunfactBloc extends Bloc<AddFunfactEvent, AddFunfactState> {
   AddFunfactBloc() : super(AddFunfactInitial()) {
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
     FunfactApiClient _apiClient = FunfactApiClient();
     FunfactRepository funRepo = FunfactRepositoryImpl(_database, _apiClient);
     on<AddFunfactEvent>((event, emit) async {

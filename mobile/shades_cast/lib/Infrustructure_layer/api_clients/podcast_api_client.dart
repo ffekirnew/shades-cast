@@ -191,7 +191,7 @@ class PodcastApiClient {
 
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = http.delete(
-      Uri.parse('$api/api/v3/resources/podcasts/$podcastId/add-favorite'),
+      Uri.parse('$api/api/v3/resources/podcasts/$podcastId/delete-favorite'),
       headers: headers,
     );
   }
