@@ -295,9 +295,9 @@ class PodcastDatabase {
   ///
   ///
   ///
-  Future<void> deleteEpisode(String podcastId, Episode episode) async {
+  Future<void> deleteEpisode(String episodeId) async {
     final db = await openDb();
-    db.delete('episodes', where: 'id =?', whereArgs: [episode.id]);
+    db.delete('episodes', where: 'id =?', whereArgs: [episodeId]);
   }
 
   ////////////////////////////////////////////////////////////////
