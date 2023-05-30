@@ -7,62 +7,106 @@ import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:shades_cast/domain_layer/episode.dart';
 
 class PodcastDatabase {
-  static final PodcastDatabase instance = PodcastDatabase._init();
-  static Database? _database;
+  final int version = 1;
+  Database? db;
 
-  PodcastDatabase._init();
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-    _database = await _initDB('podcasts.db');
-    return _database!;
+  static final PodcastDatabase _dbHelper = PodcastDatabase._internal();
+  PodcastDatabase._internal() {
+    initializeDatabase();
+  }
+  factory PodcastDatabase() {
+    return _dbHelper;
+  }
+  Future<void> initializeDatabase() async {
+    db = await openDb();
   }
 
-  Future<Database> _initDB(String filePath) async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, filePath);
-
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+  Future testDb() async {
+    db = await openDb();
+    await db!.execute('INSERT INTO lists VALUES (0, "Fruit", 2)');
+    await db!.execute(
+        'INSERT INTO items VALUES (0, 0, "Apples", "2 Kg", "Better if they are green")');
+    List lists = await db!.rawQuery('select * from lists');
+    List items = await db!.rawQuery('select * from items');
+    print(lists[0].toString());
+    print(items[0].toString());
   }
 
-  Future<void> _createDB(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE podcasts(
-        id TEXT PRIMARY KEY,
-        title TEXT,
-        description TEXT,
-        author TEXT,
-        imageUrl TEXT,
-        categories TEXT
-      )
-      ''');
-
-    await db.execute('''
-      CREATE TABLE episodes(
-        id TEXT PRIMARY KEY,
-        podcastId TEXT,
-        title TEXT,
-        description TEXT,
-        audioUrl TEXT
-      )
-      ''');
-    await db.execute('''
-    CREATE TABLE favorites(
-     id TEXT PRIMARY KEY,
-        title TEXT,
-        description TEXT,
-        author TEXT,
-        cover_image TEXT,
-        categories TEXT
-    )
-''');
-    // await db.execute('''
-    //   CREATE TABLE funfacts(
-    //     TEXT title,
-    //     TEXT body
-    //   )
-    //     ''');
+  Future<Database> openDb() async {
+    if (db == null) {
+      db = await openDatabase(join(await getDatabasesPath(), 'podcast.db'),
+          onCreate: (database, version) {
+        database.execute('''
+          CREATE TABLE podcasts(
+            id TEXT PRIMARY KEY,
+            title TEXT,
+            description TEXT,
+            author TEXT,
+            imageUrl TEXT,
+            categories TEXT
+          )
+          ''');
+        database.execute('''
+          CREATE TABLE episodes(
+            id TEXT PRIMARY KEY,
+            podcastId TEXT,
+            title TEXT,
+            description TEXT,
+            audioUrl TEXT
+          )
+          ''');
+        database.execute('''
+          CREATE TABLE favorites(
+            id TEXT PRIMARY KEY,
+            title TEXT,
+            description TEXT,
+            author TEXT,
+            imageUrl TEXT,
+            categories TEXT
+          )
+        ''');
+      }, version: version);
+    }
+    return db!;
   }
+
+//   Future<void> _createDB(Database db, int version) async {
+//     await db.execute('''
+//       CREATE TABLE podcasts(
+//         id TEXT PRIMARY KEY,
+//         title TEXT,
+//         description TEXT,
+//         author TEXT,
+//         imageUrl TEXT,
+//         categories TEXT
+//       )
+//       ''');
+
+//     await db.execute('''
+//       CREATE TABLE episodes(
+//         id TEXT PRIMARY KEY,
+//         podcastId TEXT,
+//         title TEXT,
+//         description TEXT,
+//         audioUrl TEXT
+//       )
+//       ''');
+//     await db.execute('''
+//     CREATE TABLE favorites(
+//      id TEXT PRIMARY KEY,
+//         title TEXT,
+//         description TEXT,
+//         author TEXT,
+//         cover_image TEXT,
+//         categories TEXT
+//     )
+// ''');
+  // await db.execute('''
+  //   CREATE TABLE funfacts(
+  //     TEXT title,
+  //     TEXT body
+  //   )
+  //     ''');
 
   ////////////////////////////////
   ///
@@ -70,37 +114,38 @@ class PodcastDatabase {
   ///
 
   Future<void> savePodcast(dynamic podcast) async {
-    final db = await instance.database;
     // print((podcast.toMap()['id'].runtimeType));
-    print('eheheeeheheheheh');
-    // await db.insert('podcasts', podcast.toMap());
-    // print('got here safe saya');
-    var podcasts = podcast;
-    print('open road');
-    print(podcasts);
-    String id = podcasts["id"].toString();
-    String title = podcasts["title"];
-    String description = podcasts["description"];
-    String author = 'null';
-    print('did the first'); // Assuming the "id" value is already an integer
-    String imageUrl = podcasts["cover_image"];
-    String categories = podcasts["categories"][0];
+    // print('eheheeeheheheheh');
+    final db = await openDb();
+    await db.insert('podcasts', podcast.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    // // print('got here safe saya');
+    // var podcasts = podcast;
+    // // print('open road');
+    // print(podcasts);
+    // String id = podcasts["id"].toString();
+    // String title = podcasts["title"];
+    // String description = podcasts["description"];
+    // String author = 'null';
+    // print('did the first'); // Assuming the "id" value is already an integer
+    // String imageUrl = podcasts["cover_image"];
+    // String categories = podcasts["categories"][0];
 
-    // Use the correct data types in the SQL INSERT statement
-    String insertQuery =
-        'INSERT INTO podcasts (id, title, description, author, imageUrl, categories) '
-        'VALUES (?, ?, ?, ?, ?, ?)';
-    List<dynamic> insertArgs = [
-      id,
-      title,
-      description,
-      author,
-      imageUrl,
-      categories
-    ];
+    // // Use the correct data types in the SQL INSERT statement
+    // String insertQuery =
+    //     'INSERT INTO podcasts (id, title, description, author, imageUrl, categories) '
+    //     'VALUES (?, ?, ?, ?, ?, ?)';
+    // List<dynamic> insertArgs = [
+    //   id,
+    //   title,
+    //   description,
+    //   author,
+    //   imageUrl,
+    //   categories
+    // ];
 
-    // Execute the SQL INSERT statement
-    await db.rawInsert(insertQuery, insertArgs);
+    // // Execute the SQL INSERT statement
+    // await db.rawInsert(insertQuery, insertArgs);
     // var rres = await getPodcasts();
     // // Podcast.fromMap(rres[25]);
     // print(rres);
@@ -111,14 +156,14 @@ class PodcastDatabase {
   ///
   ///
   Future<void> savePodcasts(List<dynamic> podcasts) async {
-    final db = await instance.database;
+    final db = await openDb();
     for (Podcast podcast in podcasts) {
       await db.insert('podcasts', podcast.toMap());
     }
   }
 
   Future<void> deletePodcast(String podcastId) async {
-    final db = await instance.database;
+    final db = await openDb();
     await db.delete('podcasts', where: 'id = ?', whereArgs: [podcastId]);
   }
 
@@ -127,7 +172,7 @@ class PodcastDatabase {
   ///
   ///
   Future<Podcast?> getPodcastById(String podcastId) async {
-    final db = await instance.database;
+    final db = await openDb();
     List<Map<String, dynamic>> maps =
         await db.query('podcasts', where: 'id = ?', whereArgs: [podcastId]);
 
@@ -144,17 +189,12 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>> getPodcasts() async {
-    print('heerrrrrrrrrrrro');
-    final db = await instance.database;
-    final List<Map<String, Object?>> queryRows = await db.query('podcasts');
-    final List<dynamic> maps = queryRows.map((row) => row).toList();
-    // return maps;
-    // return maps;
-    final res = List.generate(maps.length, (index) {
-      return Podcast.fromMap(maps[index]);
+    // print('heerrrrrrrrrrrro');
+    final db = await openDb();
+    final List<Map<String, dynamic>> queryRows = await db.query('podcasts');
+    return List.generate(queryRows.length, (index) {
+      return Podcast.fromMap(queryRows[index]);
     });
-    print(res);
-    return res;
   }
 
   ////////////////////////////////////////////////////////
@@ -165,10 +205,15 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>?> getFavorites() async {
-    final db = await instance.database;
-    final maps = await db.query('favorites');
-    return List.generate(maps.length, (index) {
-      return Podcast.fromMap(maps[index]);
+    // final db = await instance.database;
+    // final maps = await db.query('favorites');
+    // return List.generate(maps.length, (index) {
+    //   return Podcast.fromMap(maps[index]);
+    // });
+    final db = await openDb();
+    final List<Map<String, dynamic>> queryRows = await db.query('favorites');
+    return List.generate(queryRows.length, (index) {
+      return Podcast.fromMap(queryRows[index]);
     });
   }
 
@@ -177,14 +222,30 @@ class PodcastDatabase {
   ///
   ///
   Future<void> saveFavorites(List<Podcast> favorites) async {
-    final db = await instance.database;
+    final db = await openDb();
+    Batch batch = db.batch();
+
     for (Podcast podcast in favorites) {
-      await db.insert('favorites', podcast.toMap());
+      batch.insert(
+        'favorites',
+        {
+          'id': podcast.id.toString(),
+          'title': podcast.title,
+          'description':
+              podcast.description ?? '', // Ensure description is not null
+          'author': podcast.author ?? '',
+          'imageUrl': podcast.imageUrl.toString(),
+          'categories': podcast.categories?.toList()[0][0],
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace,
+      );
     }
+
+    await batch.commit(noResult: true);
   }
 
   Future<void> saveEpisodes(List<Episode> episodes) async {
-    final db = await instance.database;
+    final db = await openDb();
     Batch batch = db.batch();
 
     for (Episode episode in episodes) {
@@ -205,12 +266,10 @@ class PodcastDatabase {
   ///
 
   Future<List<Episode>> getEpisodes(String podcastId) async {
-    final db = await instance.database;
-    final maps = await db
+    final db = await openDb();
+    final List<Map<String, dynamic>> queryRows = await db
         .query('episodes', where: 'podcastId = ?', whereArgs: [podcastId]);
-    return List.generate(maps.length, (index) {
-      return Episode.fromMap(maps[index]);
-    });
+    return queryRows.map((row) => Episode.fromMap(row)).toList();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -219,8 +278,8 @@ class PodcastDatabase {
   ///
 
   Future<void> saveEpisode(Episode episode) async {
-    final db = await instance.database;
-    db.insert('episodes', episode.toMap());
+    final db = await openDb();
+    await db.insert('episodes', episode.toMap());
   }
 
 ////////////////////////////////////////////////////////////////
@@ -228,7 +287,7 @@ class PodcastDatabase {
   ///
   ///
   Future<void> deleteEpisode(String podcastId, Episode episode) async {
-    final db = await instance.database;
+    final db = await openDb();
     db.delete('episodes', where: 'id =?', whereArgs: [episode.id]);
   }
 
@@ -237,12 +296,12 @@ class PodcastDatabase {
   ///
   ///
   Future<Funfact?> getFunfact() async {
-    final db = await instance.database;
+    final db = await openDb();
     List<Map<String, dynamic>> result = await db.query(
       'funfacts',
       limit: 1, // Limit the query to retrieve only one row
     );
-    if (result.length > 0) {
+    if (result.isNotEmpty) {
       return Funfact.fromMap(result.first);
     }
     return null;
@@ -252,7 +311,8 @@ class PodcastDatabase {
   ///
   ///
   Future<void> saveFunfact(Funfact funfact) async {
-    final db = await instance.database;
-    await db.insert('funfacts', funfact.toMap());
+    final db = await openDb();
+    await db.insert('funfacts', funfact.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 }
