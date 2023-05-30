@@ -34,8 +34,8 @@ class AddFunFactScreen extends StatelessWidget {
                 // Implement the add functionality here
                 // Call a method or use a BLoC to add the funfact to the database
                 // Example: onAddFunFact(titleController.text, bodyController.text);
-                Navigator.pop(
-                    context); // Go back to the FunFactListScreen after adding
+                // Navigator.pop(
+                //     context); // Go back to the FunFactListScreen after adding
               },
               child: Text('Add FunFact'),
             ),

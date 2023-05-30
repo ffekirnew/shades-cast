@@ -15,6 +15,7 @@ import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 import 'package:shades_cast/screens/add_podcast/bloc/add_podcast_bloc.dart';
 import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
+import 'package:shades_cast/screens/add_epsiode/bloc/add_episode_bloc.dart';
 
 void main() {
   runApp(
@@ -41,6 +42,9 @@ void main() {
         BlocProvider(
           create: (BuildContext context) => MyPodcastsBloc(),
         ),
+        BlocProvider(
+          create: (BuildContext context) => AddEpisodeBloc(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData.dark()
@@ -52,7 +56,9 @@ void main() {
           '/home': (context) => homepage(),
           '/podcast': (context) => PodcastPage(podcastId: 1),
           '/addPodcast': (context) => addPodcasts(),
-          '/addEpisode': (context) => AddEpisodeScreen(),
+          '/addEpisode': (context) => AddEpisodeScreen(
+                podcastId: 1,
+              ),
           '/myPodcasts': (context) => MyPodcastsPage(),
           '/settings': (context) => AccountSettingsScreen(),
         },

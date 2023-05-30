@@ -5,7 +5,9 @@ abstract class PodcastDetailsAndPlayerEvent {}
 
 class PodcastDetailPageOpened extends PodcastDetailsAndPlayerEvent {
   final int podcastId;
-  PodcastDetailPageOpened({required this.podcastId});
+  final bool isFromMyPodcasts;
+  PodcastDetailPageOpened(
+      {required this.podcastId, required this.isFromMyPodcasts});
 }
 
 class EpisodeItemClicked extends PodcastDetailsAndPlayerEvent {

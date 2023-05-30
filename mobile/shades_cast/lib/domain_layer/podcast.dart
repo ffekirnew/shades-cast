@@ -39,7 +39,11 @@ class Podcast {
 
   static Podcast fromMap(Map<String, dynamic> map) {
     return Podcast(
+// <<<<<<< funfact
       id: map['id'] != null ? int.parse(map['id']) : 1,
+// =======
+//       id: map['id'],
+// >>>>>>> master
       title: map['title'],
       author: map['author'],
       description: map['description'],
