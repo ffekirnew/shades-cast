@@ -11,6 +11,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shades_cast/screens/funfact_list/ui/funfact_list.dart';
+import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -18,184 +19,171 @@ class homepage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Theme(
-        data: ThemeData(
-          scaffoldBackgroundColor: Color(0xFF081624),
-          textTheme: TextTheme(
-            bodyMedium:
-                TextStyle(color: Colors.white), // set the text color here
-          ),
-        ),
-        child: Scaffold(
-          drawer: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              return sideMenu(
-                state: state,
-              );
-            },
-          ),
-          body: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              if (state is HomeInitial) {
-                BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
-              } else if (state is PodcastsErrorState) {
-                return Padding(
-                  padding: EdgeInsets.only(left: 13, right: 13, top: 40),
-                  child: Column(
+    return Scaffold(
+      drawer: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          return sideMenu(
+            state: state,
+          );
+        },
+      ),
+      body: BlocBuilder<HomeBloc, HomeState>(
+        builder: (context, state) {
+          if (state is HomeInitial) {
+            BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+          } else if (state is PodcastsErrorState) {
+            return Padding(
+              padding: EdgeInsets.only(left: 13, right: 13, top: 40),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Image(
-                            image: AssetImage(
-                                'Assets/images/podcast.png'), // add the image asset here
-                            height: 50, // set the height here
-                            width: 50, // set the width here
-                            fit: BoxFit.contain, // set the BoxFit property here
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.menu),
-                            color: Colors.white, // add the menu icon here
-                            onPressed: () {
-                              print("it was pressed");
-                              Scaffold.of(context).openDrawer();
-                              // add the onPressed callback here
-                            },
-                          )
-                        ],
+                      Image(
+                        image: AssetImage(
+                            'Assets/images/podcast.png'), // add the image asset here
+                        height: 50, // set the height here
+                        width: 50, // set the width here
+                        fit: BoxFit.contain, // set the BoxFit property here
                       ),
-                      searchBox(),
-                      funFact(state: state),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          children: [
-                            Text(
-                              "Listen to Podcasts",
-                              style: TextStyle(
-                                color: Colors.grey[100],
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25.0,
-                              ),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Color.fromARGB(255, 49, 217, 255),
-                                size: 25,
-                              ),
-                              onPressed: () {
-                                BlocProvider.of<HomeBloc>(context)
-                                    .add(GetPodcasts());
-                              },
-                            )
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              "An error occured",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                Icons.refresh,
-                                color: Color.fromARGB(255, 49, 217, 255),
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                BlocProvider.of<HomeBloc>(context)
-                                    .add(GetPodcasts());
-                              },
-                            )
-                          ],
-                        ),
+                      IconButton(
+                        icon: Icon(Icons.menu),
+                        color: Colors.white, // add the menu icon here
+                        onPressed: () {
+                          print("it was pressed");
+                          Scaffold.of(context).openDrawer();
+                          // add the onPressed callback here
+                        },
                       )
                     ],
                   ),
-                );
-              }
-              // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
-              return Padding(
-                padding: EdgeInsets.only(left: 13, right: 13, top: 40),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  searchBox(),
+                  funFact(state: state),
+                  Container(
+                    padding: EdgeInsets.all(5),
+                    alignment: Alignment.centerLeft,
+                    child: Row(
                       children: [
-                        Image(
-                          image: AssetImage(
-                              'Assets/images/podcast.png'), // add the image asset here
-                          height: 50, // set the height here
-                          width: 50, // set the width here
-                          fit: BoxFit.contain, // set the BoxFit property here
+                        Text(
+                          "Listen to Podcasts",
+                          style: TextStyle(
+                            color: Colors.grey[100],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25.0,
+                          ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.menu),
-                          color: Colors.white, // add the menu icon here
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Color.fromARGB(255, 49, 217, 255),
+                            size: 25,
+                          ),
                           onPressed: () {
-                            print("it was pressed");
-                            Scaffold.of(context).openDrawer();
-                            // add the onPressed callback here
+                            BlocProvider.of<HomeBloc>(context)
+                                .add(GetPodcasts());
                           },
                         )
                       ],
                     ),
-                    searchBox(),
-                    funFact(state: state),
-                    Container(
-                      padding: EdgeInsets.all(5),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Text(
-                            "Listen to Podcasts",
-                            style: TextStyle(
-                              color: Colors.grey[100],
-                              fontWeight: FontWeight.bold,
-                              fontSize: 25.0,
-                            ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "An error occured",
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.refresh,
+                            color: Color.fromARGB(255, 49, 217, 255),
+                            size: 30,
                           ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.refresh,
-                              color: Color.fromARGB(255, 49, 217, 255),
-                              size: 25,
-                            ),
-                            onPressed: () {
-                              BlocProvider.of<HomeBloc>(context)
-                                  .add(GetPodcasts());
-                            },
-                          )
-                        ],
-                      ),
+                          onPressed: () {
+                            BlocProvider.of<HomeBloc>(context)
+                                .add(GetPodcasts());
+                          },
+                        )
+                      ],
                     ),
-                    (state is PodcastLoadedState)
-                        ? Expanded(
-                            child: podcastList(
-                              podcasts: state.podcasts,
-                              currentState: state,
-                            ),
-                          )
-                        : Expanded(
-                            child: Center(
-                              child: SpinKitFadingCircle(
-                                color: Color.fromARGB(255, 37, 153, 255),
-                              ),
-                            ),
-                          ),
+                  )
+                ],
+              ),
+            );
+          }
+          // BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+          return Padding(
+            padding: EdgeInsets.only(left: 13, right: 13, top: 40),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Image(
+                      image: AssetImage(
+                          'Assets/images/podcast.png'), // add the image asset here
+                      height: 50, // set the height here
+                      width: 50, // set the width here
+                      fit: BoxFit.contain, // set the BoxFit property here
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.menu),
+                      color: Colors.white, // add the menu icon here
+                      onPressed: () {
+                        print("it was pressed");
+                        Scaffold.of(context).openDrawer();
+                        // add the onPressed callback here
+                      },
+                    )
                   ],
                 ),
-              );
-            },
-          ),
-        ),
+                searchBox(),
+                funFact(state: state),
+                Container(
+                  padding: EdgeInsets.all(5),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    children: [
+                      Text(
+                        "Listen to Podcasts",
+                        style: TextStyle(
+                          color: Colors.grey[100],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.refresh,
+                          color: Color.fromARGB(255, 49, 217, 255),
+                          size: 25,
+                        ),
+                        onPressed: () {
+                          BlocProvider.of<HomeBloc>(context).add(GetPodcasts());
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                (state is PodcastLoadedState)
+                    ? Expanded(
+                        child: podcastList(
+                          podcasts: state.podcasts,
+                          currentState: state,
+                        ),
+                      )
+                    : Expanded(
+                        child: Center(
+                          child: SpinKitFadingCircle(
+                            color: Color.fromARGB(255, 37, 153, 255),
+                          ),
+                        ),
+                      ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/screens/add_funfact/ui/add_funfact.dart';
+import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FunFactCard extends StatelessWidget {
   final String title;
@@ -14,14 +17,32 @@ class FunFactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Color(0xffD2E9E9),
-      child: ListTile(
-        title: Text(title),
-        subtitle: Text(body),
-        trailing: IconButton(
-          icon: Icon(Icons.delete),
-          onPressed: onDelete,
+    final titleSyle = TextStyle(color: Colors.white, fontSize: 20);
+    final bodySyle =
+        TextStyle(color: Color.fromARGB(255, 203, 203, 203), fontSize: 16);
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+      child: Card(
+        color: Color.fromARGB(255, 27, 65, 84),
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+          child: ListTile(
+            title: Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: Text(
+                title,
+                style: titleSyle,
+              ),
+            ),
+            subtitle: Text(
+              body,
+              style: bodySyle,
+            ),
+            trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: onDelete,
+            ),
+          ),
         ),
       ),
     );
@@ -29,38 +50,69 @@ class FunFactCard extends StatelessWidget {
 }
 
 class FunFactListScreen extends StatelessWidget {
-  final List<Map<String, String>> funfacts = [
-    {
-      "title": "the main",
-      "body":
-          "the Road to victort if filled with hurdles but it is glorious. such is life"
-    }
-  ]; // Assuming each funfact has a title and body
+  List<Funfact> funfacts = [];
+  // Assuming each funfact has a title and body
 
   FunFactListScreen();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Theme(
-        data: ThemeData(
-          scaffoldBackgroundColor: Color(0xFF081624),
-          textTheme: TextTheme(
-            bodyMedium:
-                TextStyle(color: Colors.white), // set the text color here
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text('FunFacts'),
+            IconButton(
+              icon: Icon(
+                Icons.refresh,
+                color: Color.fromARGB(255, 49, 217, 255),
+                size: 25,
+              ),
+              onPressed: () {
+                BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+              },
+            )
+          ],
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text('FunFacts'),
-          ),
-          body: ListView.builder(
+      ),
+      body: BlocBuilder<FunfactBloc, FunfactState>(
+        builder: (context, state) {
+          funfacts = state.funfacts;
+          if (state is FunfactInitial) {
+            BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+          } else if (state is FunfactErrorState) {
+            return Container(
+              child: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Error Occured. Try again",
+                    style: TextStyle(color: Colors.red, fontSize: 20),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.refresh,
+                      color: Color.fromARGB(255, 141, 141, 141),
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      BlocProvider.of<FunfactBloc>(context)
+                          .add(GetAllFunfacts());
+                    },
+                  )
+                ],
+              )),
+            );
+          }
+          return ListView.builder(
             itemCount: funfacts.length,
             itemBuilder: (context, index) {
               final funfact = funfacts[index];
+
               return FunFactCard(
-                title: funfact['title'] ?? '',
-                body: funfact['body'] ?? '',
+                title: (state.funfacts.length > 0) ? funfact.title : "",
+                body: (state.funfacts.length > 0) ? funfact.body : "",
                 onDelete: () {
                   // Implement the delete functionality here
                   // Call a method or use a BLoC to delete the funfact from the database
@@ -68,18 +120,18 @@ class FunFactListScreen extends StatelessWidget {
                 },
               );
             },
-          ),
-          floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              // Navigate to the AddFunFactScreen when the button is pressed
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AddFunFactScreen()),
-              );
-            },
-          ),
-        ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          // Navigate to the AddFunFactScreen when the button is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddFunFactScreen()),
+          );
+        },
       ),
     );
   }
