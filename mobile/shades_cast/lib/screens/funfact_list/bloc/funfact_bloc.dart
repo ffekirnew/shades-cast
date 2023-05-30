@@ -12,7 +12,7 @@ part 'funfact_state.dart';
 class FunfactBloc extends Bloc<FunfactEvent, FunfactState> {
   FunfactBloc() : super(FunfactInitial()) {
     FunfactApiClient _apiClient = FunfactApiClient();
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
     FunfactRepository funfactRepo =
         FunfactRepositoryImpl(_database, _apiClient);
 

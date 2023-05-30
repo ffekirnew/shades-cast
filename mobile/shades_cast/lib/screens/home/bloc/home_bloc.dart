@@ -29,61 +29,92 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     PodcastApiClient _apiClient = PodcastApiClient();
     PodcastDatabase _database = PodcastDatabase();
     UserRepo userRepo = UserRepo();
-    User currentUser =
-        User(id: 1, name: 'Shamil Bedru', email: 'email', password: 'password');
+    User currentUser = User(id: 1, name: '', email: '', password: '');
 
     FunfactApiClient _apiClientFunFact = FunfactApiClient();
     FunfactRepository funFactRep =
         FunfactRepositoryImpl(_database, _apiClientFunFact);
     Funfact currentFunFact = Funfact(title: "", body: "");
 
-    on<HomeEvent>((event, emit) async {
-      if (event is GetPodcasts) {
-        User user = await userRepo.getUserDetail();
-        currentUser = user;
+    on<HomeEvent>(
+      (event, emit) async {
+        if (event is GetPodcasts) {
+          User user = await userRepo.getUserDetail();
+          currentUser = user;
 
-        emit(PodcastListerLoadingState(currentUser: currentUser));
-        PodcastRepository podcastRepo =
-            PodcastRepositoryImpl(_database, _apiClient);
+          emit(PodcastListerLoadingState(currentUser: currentUser));
+          PodcastRepository podcastRepo =
+              PodcastRepositoryImpl(_database, _apiClient);
 
-        try {
-          final List<Podcast> podcasts = await podcastRepo.getPodcasts();
-          currentPodcasts = podcasts;
-          print('here');
+          try {
+            final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+            currentPodcasts = podcasts;
+            print('here');
 
-          Funfact funfact = await funFactRep.getFunfact();
-          currentFunFact = funfact;
+            Funfact funfact = await funFactRep.getFunfact();
+            currentFunFact = funfact;
 
-          emit(
-            PodcastLoadedState(
-                podcasts: currentPodcasts,
-                favoritedPodcastId: favoritedIds,
-                funFact: currentFunFact,
-                currentUser: currentUser),
-          );
+            emit(
+              PodcastLoadedState(
+                  podcasts: currentPodcasts,
+                  favoritedPodcastId: favoritedIds,
+                  funFact: currentFunFact,
+                  currentUser: currentUser),
+            );
 
-          print(funfact);
-        } catch (e) {
-          print('error occured here in home bloc');
-          print(e);
-          emit(PodcastsErrorState(currentUser: currentUser));
+            print(funfact);
+          } catch (e) {
+            print('error occured here in home bloc');
+            print(e);
+            emit(PodcastsErrorState(currentUser: currentUser));
+          }
+        } else if (event is PodcasFavorited) {
+          PodcastRepository podcastRepo =
+              PodcastRepositoryImpl(_database, _apiClient);
+          if (!(favoritedIds.contains(event.podcastId))) {
+            favoritedIds.add(event.podcastId);
+            await podcastRepo.addToFavorite(event.podcastId.toString());
+          } else {
+            favoritedIds.remove(event.podcastId);
+          }
+
+          emit(PodcastLoadedState(
+              podcasts: currentPodcasts,
+              favoritedPodcastId: favoritedIds,
+              funFact: currentFunFact,
+              currentUser: currentUser));
+        } else if (event is PodcastSearched) {
+          User user = await userRepo.getUserDetail();
+          currentUser = user;
+
+          emit(PodcastListerLoadingState(currentUser: currentUser));
+          PodcastRepository podcastRepo =
+              PodcastRepositoryImpl(_database, _apiClient);
+
+          try {
+            final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+            currentPodcasts = podcasts;
+            print('here');
+
+            Funfact funfact = await funFactRep.getFunfact();
+            currentFunFact = funfact;
+
+            emit(
+              PodcastLoadedState(
+                  podcasts: currentPodcasts,
+                  favoritedPodcastId: favoritedIds,
+                  funFact: currentFunFact,
+                  currentUser: currentUser),
+            );
+
+            print(funfact);
+          } catch (e) {
+            print('error occured here in home bloc');
+            print(e);
+            emit(PodcastsErrorState(currentUser: currentUser));
+          }
         }
-      } else if (event is PodcasFavorited) {
-        PodcastRepository podcastRepo =
-            PodcastRepositoryImpl(_database, _apiClient);
-        if (!(favoritedIds.contains(event.podcastId))) {
-          favoritedIds.add(event.podcastId);
-          await podcastRepo.addToFavorite(event.podcastId.toString());
-        } else {
-          favoritedIds.remove(event.podcastId);
-        }
-
-        emit(PodcastLoadedState(
-            podcasts: currentPodcasts,
-            favoritedPodcastId: favoritedIds,
-            funFact: currentFunFact,
-            currentUser: currentUser));
-      }
-    });
+      },
+    );
   }
 }
