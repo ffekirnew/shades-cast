@@ -26,6 +26,13 @@ class _PodcastPageState extends State<PodcastPage> {
         body: BlocBuilder<PodcastDetailsAndPlayerBloc,
             PodcastDetailsAndPlayerState>(
           builder: (context, state) {
+            if (state is PodcastDetailsAndPlayerErrorState) {
+              return Expanded(
+                  child: Text(
+                "Error Getting Podcast. Try again",
+                style: TextStyle(color: Colors.red, fontSize: 20),
+              ));
+            }
             return (!(state is PodcastDetailEpisodes))
                 ? Center(
                     child: SpinKitFadingCircle(

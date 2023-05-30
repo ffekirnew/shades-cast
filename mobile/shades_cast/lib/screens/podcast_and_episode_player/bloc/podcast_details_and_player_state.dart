@@ -25,3 +25,5 @@ class PodcastDetailEpisodes extends PodcastDetailsAndPlayerState {
       required this.currentPlayingEpisode,
       required this.podcast});
 }
+
+class PodcastDetailsAndPlayerErrorState extends PodcastDetailsAndPlayerState {}
