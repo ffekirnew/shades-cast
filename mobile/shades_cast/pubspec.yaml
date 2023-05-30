@@ -47,6 +47,7 @@ dependencies:
   sqflite: ^2.2.8+4
   
   shared_preferences: ^2.1.1
+  mockito: ^5.4.1
 # >>>>>>> master
 
 dev_dependencies:
