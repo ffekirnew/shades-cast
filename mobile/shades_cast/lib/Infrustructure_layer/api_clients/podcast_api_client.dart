@@ -261,7 +261,7 @@ class PodcastApiClient {
     }
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
     final response = await http.delete(
-      Uri.parse('$api/api/podcasts/' + podcastId),
+      Uri.parse('$api/api/v3/resources/podcasts/$podcastId/'),
       headers: headers,
     );
 
@@ -346,7 +346,7 @@ class PodcastApiClient {
   ///
   ///
   ///
-  Future<void> deleteEpisode(String podcastId, Episode episode) async {
+  Future<void> deleteEpisode(String episodeId) async {
     String? token = await authService.getToken();
     if (token == null) {
       throw Exception("cannot get token");
@@ -354,8 +354,7 @@ class PodcastApiClient {
     Map<String, String> headers = {'Authorization': 'Bearer $token'};
 
     final response = await http.delete(
-      Uri.parse('$api/api/episodes'),
-      body: episode,
+      Uri.parse('$api/api/v3/resources/episodes/$episodeId/'),
       headers: headers,
     );
     if (response.statusCode != 204) {
