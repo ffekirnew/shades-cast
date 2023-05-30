@@ -53,6 +53,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
             Funfact funfact = await funFactRep.getFunfact();
             currentFunFact = funfact;
+            for (final pod in currentPodcasts) {
+              favoritedIds.add(pod.id);
+            }
 
             emit(
               PodcastLoadedState(
@@ -61,8 +64,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   funFact: currentFunFact,
                   currentUser: currentUser),
             );
-
-            print(funfact);
           } catch (e) {
             print('error occured here in home bloc');
             print(e);
@@ -75,6 +76,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             favoritedIds.add(event.podcastId);
             await podcastRepo.addToFavorite(event.podcastId.toString());
           } else {
+            await podcastRepo.deleteFromFavorite(event.podcastId.toString());
             favoritedIds.remove(event.podcastId);
           }
 
