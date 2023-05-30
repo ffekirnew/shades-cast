@@ -262,11 +262,11 @@ class PodcastApiClient {
     Map<String, String> headers = {
       'Authorization': 'Bearer $token'
     }; //podcasts/{id}/episodes
-    final response =
-        await http.get(Uri.parse("$api/api/v3/resources/episodes/" + podcatId));
+    final response = await http
+        .get(Uri.parse("$api/api/v3/resources/podcasts/$podcatId/episodes"));
 
     if (response.statusCode != 200) {
-      throw Exception('Failed to get podcast with ID $podcatId');
+      throw Exception('Failed to get episodes with podcast id ID $podcatId');
     } else {
       return json.decode(response.body);
     }

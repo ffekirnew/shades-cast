@@ -7,6 +7,7 @@ import 'package:shades_cast/domain_layer/episode.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:shades_cast/screens/add_epsiode/ui/addEpisode.dart';
 
 class PodcastPage extends StatefulWidget {
   final int podcastId;
@@ -21,27 +22,32 @@ class _PodcastPageState extends State<PodcastPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(215, 20, 20, 20),
-        body: BlocBuilder<PodcastDetailsAndPlayerBloc,
-            PodcastDetailsAndPlayerState>(
-          builder: (context, state) {
-            if (state is PodcastDetailsAndPlayerErrorState) {
-              return Expanded(
+        child: Scaffold(
+      backgroundColor: Color.fromARGB(215, 20, 20, 20),
+      body: BlocBuilder<PodcastDetailsAndPlayerBloc,
+          PodcastDetailsAndPlayerState>(
+        builder: (context, state) {
+          if (state is PodcastDetailsAndPlayerErrorState) {
+            return Center(
+              child: Container(
+                  width: 300,
+                  height: 100,
                   child: Text(
-                "Error Getting Podcast. Try again",
-                style: TextStyle(color: Colors.red, fontSize: 20),
-              ));
-            }
-            return (!(state is PodcastDetailEpisodes))
-                ? Center(
-                    child: SpinKitFadingCircle(
-                      color: Color.fromARGB(255, 37, 153, 255),
-                    ),
-                  )
-                : Container(
-                    height: double.infinity,
-                    child: Column(children: [
+                    "Error Getting Podcast. Try again",
+                    style: TextStyle(color: Colors.red, fontSize: 20),
+                  )),
+            );
+          }
+          return (!(state is PodcastDetailEpisodes))
+              ? Center(
+                  child: SpinKitFadingCircle(
+                    color: Color.fromARGB(255, 37, 153, 255),
+                  ),
+                )
+              : Container(
+                  height: double.infinity,
+                  child: Column(
+                    children: [
                       Container(
                         color: Color.fromARGB(255, 0, 0, 0),
                         child: Stack(
@@ -120,21 +126,21 @@ class _PodcastPageState extends State<PodcastPage> {
                             currentEpisodeIndex: state.currentPlayingEpisode),
                       ),
                       Container(
-                        height: (state.podcast.description == null) ? 0 : 90,
                         width: double.infinity,
-                        padding: EdgeInsets.only(
-                            top: 10, bottom: 10, left: 25, right: 25),
-                        child: Expanded(
-                          child: ListView(children: [
-                            Text(
-                              state.podcast.description ?? "",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  color: Color.fromARGB(255, 255, 255, 255)),
-                            ),
-                          ]),
-                        ),
+                        padding: EdgeInsets.all(12),
+                        height: ((state.podcast.description != null) |
+                                (state.episodes.length == 0))
+                            ? 90
+                            : 0,
+                        child: ListView(children: [
+                          Text(
+                            state.podcast.description ?? "",
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 255, 255, 255)),
+                          ),
+                        ]),
                       ),
                       (state.episodes.length > 0)
                           ? Container(
@@ -170,16 +176,43 @@ class _PodcastPageState extends State<PodcastPage> {
                               state: state,
                               podcastId: widget.podcastId)
                           : Container(
+                              margin: EdgeInsets.only(bottom: 250),
                               child: Center(
-                                  child: Text(
-                              "No Episodes",
-                              style: TextStyle(color: Colors.white),
-                            )))
-                    ]));
-          },
-        ),
+                                child: Text(
+                                  "No Episodes",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                );
+        },
       ),
-    );
+      floatingActionButton: BlocBuilder<PodcastDetailsAndPlayerBloc,
+          PodcastDetailsAndPlayerState>(builder: (context, state) {
+        int podcastId = 1;
+        if (state is PodcastDetailEpisodes) {
+          podcastId = state.podcast.id;
+        }
+        return (state.isFromMyPodcasts)
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            AddEpisodeScreen(podcastId: podcastId)),
+                  );
+                },
+                child: Icon(Icons.add),
+              )
+            : Container();
+      }),
+    ));
   }
 }
 

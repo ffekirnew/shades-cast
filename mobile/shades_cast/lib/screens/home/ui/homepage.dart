@@ -10,6 +10,7 @@ import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shades_cast/screens/funfact_list/ui/funfact_list.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -327,6 +328,34 @@ class sideMenu extends StatelessWidget {
             thickness: 2.0,
             color: Color(0xFF040a11),
           ),
+          (state.currentUser.name == 'admin')
+              ? ListTile(
+                  leading: Icon(
+                    Icons.note,
+                    color: Colors.white,
+                  ),
+                  title: Text(
+                    'Funfacts',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  onTap: () {
+                    // handle item 2 tap
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => FunFactListScreen()),
+                    );
+                  },
+                )
+              : Container(),
+
+          (state.currentUser.name == 'admin')
+              ? Divider(
+                  thickness: 2.0,
+                  color: Color(0xFF040a11),
+                )
+              : Container(),
 
           Container(
             margin: EdgeInsets.all(20),
@@ -376,8 +405,9 @@ class _podcastListState extends State<podcastList> {
           //       EpisodeItemClicked(
           //           selectedIndex: currentPodcast.id,
           //           podcastId: currentPodcast.id));
-          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context)
-              .add(PodcastDetailPageOpened(podcastId: currentPodcast.id));
+          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
+              PodcastDetailPageOpened(
+                  podcastId: currentPodcast.id, isFromMyPodcasts: false));
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
