@@ -18,23 +18,28 @@ This might differ based on the operating system that you have. We'll provide how
     sudo apt install python3-pip
 
 ### 3. Start the PostgresSQL database and configure it to set the password for the user postgres 'admin' and create the database 'podcasts':
-To start postgres:
+#### a. To start postgres:
 
     sudo service postgresql start
 
-Switch to the 'postgres' user account, which is the default superuser for PostgreSQL, using the following command:
+#### b. Switch to the 'postgres' user account, which is the default superuser for PostgreSQL, using the following command:
 
     sudo -u postgres psql
 
-After this command, the terminal will be visibly different. Continue and set the password for the 'postgres' user by executing the following SQL command:
+#### c. After this command, the terminal will be visibly different. Continue and set the password for the 'postgres' user by executing the following SQL command:
 
     ALTER USER postgres PASSWORD 'admin';
 
-Create the 'podcasts' database by running the following SQL command:
+#### d. Create the 'podcasts' database by running the following SQL command:
 
     CREATE DATABASE podcasts;
 
-Exit the PostgreSQL prompt by typing \q and pressing Enter. 
+#### e. Change to the newly created database and install the postgres trigram extension used for similarity search:
+
+    \c podcasts;
+    CREATE EXTENSION pg_trgm;
+
+#### f. Exit the PostgreSQL prompt by typing \q and pressing Enter. 
 
     \q
 
