@@ -70,44 +70,6 @@ class PodcastDatabase {
     return db!;
   }
 
-//   Future<void> _createDB(Database db, int version) async {
-//     await db.execute('''
-//       CREATE TABLE podcasts(
-//         id TEXT PRIMARY KEY,
-//         title TEXT,
-//         description TEXT,
-//         author TEXT,
-//         imageUrl TEXT,
-//         categories TEXT
-//       )
-//       ''');
-
-//     await db.execute('''
-//       CREATE TABLE episodes(
-//         id TEXT PRIMARY KEY,
-//         podcastId TEXT,
-//         title TEXT,
-//         description TEXT,
-//         audioUrl TEXT
-//       )
-//       ''');
-//     await db.execute('''
-//     CREATE TABLE favorites(
-//      id TEXT PRIMARY KEY,
-//         title TEXT,
-//         description TEXT,
-//         author TEXT,
-//         cover_image TEXT,
-//         categories TEXT
-//     )
-// ''');
-  // await db.execute('''
-  //   CREATE TABLE funfacts(
-  //     TEXT title,
-  //     TEXT body
-  //   )
-  //     ''');
-
   ////////////////////////////////
   ///
   ///
@@ -119,36 +81,6 @@ class PodcastDatabase {
     final db = await openDb();
     await db.insert('podcasts', podcast.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
-    // // print('got here safe saya');
-    // var podcasts = podcast;
-    // // print('open road');
-    // print(podcasts);
-    // String id = podcasts["id"].toString();
-    // String title = podcasts["title"];
-    // String description = podcasts["description"];
-    // String author = 'null';
-    // print('did the first'); // Assuming the "id" value is already an integer
-    // String imageUrl = podcasts["cover_image"];
-    // String categories = podcasts["categories"][0];
-
-    // // Use the correct data types in the SQL INSERT statement
-    // String insertQuery =
-    //     'INSERT INTO podcasts (id, title, description, author, imageUrl, categories) '
-    //     'VALUES (?, ?, ?, ?, ?, ?)';
-    // List<dynamic> insertArgs = [
-    //   id,
-    //   title,
-    //   description,
-    //   author,
-    //   imageUrl,
-    //   categories
-    // ];
-
-    // // Execute the SQL INSERT statement
-    // await db.rawInsert(insertQuery, insertArgs);
-    // var rres = await getPodcasts();
-    // // Podcast.fromMap(rres[25]);
-    // print(rres);
   }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,11 +137,6 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>?> getFavorites() async {
-    // final db = await instance.database;
-    // final maps = await db.query('favorites');
-    // return List.generate(maps.length, (index) {
-    //   return Podcast.fromMap(maps[index]);
-    // });
     final db = await openDb();
     final List<Map<String, dynamic>> queryRows = await db.query('favorites');
     return List.generate(queryRows.length, (index) {
