@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 
 class AddFunFactScreen extends StatelessWidget {
+  bool refresh;
   final TextEditingController titleController = TextEditingController();
   final TextEditingController bodyController = TextEditingController();
-
+  AddFunFactScreen({this.refresh = false});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +29,12 @@ class AddFunFactScreen extends StatelessWidget {
               'Successfully added',
               style: TextStyle(color: Colors.green),
             );
+          }
+          if (refresh) {
+            errorMessage = Text(
+              '',
+            );
+            refresh = false;
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),

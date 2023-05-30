@@ -56,8 +56,6 @@ class FavoritePodcastsBloc
           emit(FavPodcastErrorState());
         }
       } else if (event is FavPodcastFavorited) {
-        print(favoritedIds);
-
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
         if (currentPodcasts.length == 0) {
@@ -70,13 +68,16 @@ class FavoritePodcastsBloc
             print(e);
           }
         }
+        print(favoritedIds);
         if (!(favoritedIds.contains(event.podcastId))) {
           favoritedIds.add(event.podcastId);
           await podcastRepo.addToFavorite(event.podcastId.toString());
         } else {
-          await podcastRepo.deleteFromFavorite(event.podcastId.toString());
           favoritedIds.remove(event.podcastId);
+          print('here');
+          await podcastRepo.deleteFromFavorite(event.podcastId.toString());
         }
+        print(favoritedIds);
       }
 
       emit(

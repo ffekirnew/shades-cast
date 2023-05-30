@@ -204,8 +204,10 @@ class _PodcastPageState extends State<PodcastPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            AddEpisodeScreen(podcastId: podcastId)),
+                        builder: (context) => AddEpisodeScreen(
+                              podcastId: podcastId,
+                              refresh: true,
+                            )),
                   );
                 },
                 child: Icon(Icons.add),

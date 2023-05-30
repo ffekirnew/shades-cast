@@ -9,7 +9,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 
 class FavoritePodcastsPage extends StatefulWidget {
-  FavoritePodcastsPage();
+  bool refresh;
+  FavoritePodcastsPage({this.refresh = false});
 
   @override
   _FavoritePodcastsPageState createState() => _FavoritePodcastsPageState();
@@ -39,6 +40,13 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
         ),
         body: BlocBuilder<FavoritePodcastsBloc, FavoritePodcastsState>(
           builder: (context, state) {
+            if (widget.refresh) {
+              BlocProvider.of<FavoritePodcastsBloc>(context)
+                  .add(GetFavPodcasts());
+
+              widget.refresh = false;
+            }
+
             if (state is FavoritePodcastsInitial) {
               BlocProvider.of<FavoritePodcastsBloc>(context)
                   .add(GetFavPodcasts());

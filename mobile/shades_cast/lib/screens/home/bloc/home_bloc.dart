@@ -53,7 +53,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
             Funfact funfact = await funFactRep.getFunfact();
             currentFunFact = funfact;
-            for (final pod in currentPodcasts) {
+
+            final List<Podcast> favPodcasts =
+                await podcastRepo.favoritePodcasts();
+
+            favoritedIds = [];
+            for (final pod in favPodcasts) {
               favoritedIds.add(pod.id);
             }
 
@@ -94,12 +99,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               PodcastRepositoryImpl(_database, _apiClient);
 
           try {
-            final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+            print('here to search');
+            final List<Podcast> podcasts =
+                await podcastRepo.searchPodcasts(event.searchTerm);
             currentPodcasts = podcasts;
-            print('here');
-
-            Funfact funfact = await funFactRep.getFunfact();
-            currentFunFact = funfact;
+            print('search result');
+            print(currentPodcasts);
 
             emit(
               PodcastLoadedState(
@@ -108,8 +113,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   funFact: currentFunFact,
                   currentUser: currentUser),
             );
-
-            print(funfact);
           } catch (e) {
             print('error occured here in home bloc');
             print(e);

@@ -23,7 +23,7 @@ abstract class PodcastRepository {
   Future<List<Episode>> getEpisodes(String podcastId);
 
   Future<void> addEpisode(dynamic episode);
-  Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
+  Future<void> deleteEpisode(String episodeId);
 
   Future<List<Podcast>> favoritePodcasts();
   Future<List<Podcast>> myPodcasts();
@@ -142,10 +142,10 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
 
   @override
-  Future<void> deleteEpisode(String podcastId, List episode) async {
-    Episode deleted_episode = Episode.fromMap(episode as Map<String, dynamic>);
-    await _database.deleteEpisode(podcastId, deleted_episode);
-    await _apiClient.deleteEpisode(podcastId, deleted_episode);
+  Future<void> deleteEpisode(String episodeId) async {
+    // Episode deleted_episode = Episode.fromMap(episode as Map<String, dynamic>);
+    await _database.deleteEpisode(episodeId);
+    await _apiClient.deleteEpisode(episodeId);
   }
 
   ////////////////////////////////////
