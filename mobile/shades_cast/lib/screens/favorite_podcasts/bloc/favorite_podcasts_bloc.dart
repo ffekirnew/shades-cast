@@ -9,6 +9,8 @@ import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.
 import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/repository/podcast_repository.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
 import 'package:shades_cast/repository/funfact_repo.dart';
@@ -54,9 +56,7 @@ class FavoritePodcastsBloc
           emit(FavPodcastErrorState());
         }
       } else if (event is FavPodcastFavorited) {
-        print('fav ids');
         print(favoritedIds);
-        print('current pods');
 
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
@@ -66,25 +66,19 @@ class FavoritePodcastsBloc
                 await podcastRepo.favoritePodcasts();
 
             currentPodcasts = favPodcasts;
-            print(currentPodcasts);
           } catch (e) {
             print(e);
           }
         }
         if (!(favoritedIds.contains(event.podcastId))) {
-          print('in');
-          print(favoritedIds);
-          print(event.podcastId);
           favoritedIds.add(event.podcastId);
           await podcastRepo.addToFavorite(event.podcastId.toString());
         } else {
-          print('out');
-          print(favoritedIds);
+          await podcastRepo.deleteFromFavorite(event.podcastId.toString());
           favoritedIds.remove(event.podcastId);
         }
       }
-      print('not here');
-      print(favoritedIds);
+
       emit(
         FavPodcastLoadedState(
           podcasts: currentPodcasts,
