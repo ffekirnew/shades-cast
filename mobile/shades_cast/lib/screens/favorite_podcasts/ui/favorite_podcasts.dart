@@ -67,6 +67,7 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
                               size: 25,
                             ),
                             onPressed: () {
+                              print('refreshed');
                               BlocProvider.of<FavoritePodcastsBloc>(context)
                                   .add(GetFavPodcasts());
                             },

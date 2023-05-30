@@ -91,7 +91,8 @@ class PodcastApiClient {
   ///
   ///
   Future<dynamic> getPodcastById(String id) async {
-    final response = await http.get(Uri.parse('$api/api/v2/podcasts/' + id));
+    final response =
+        await http.get(Uri.parse('$api/api/v3/resources/podcasts/' + id));
 
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
@@ -112,11 +113,10 @@ class PodcastApiClient {
 
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.get(
-// <<<<<<< HEAD
-      Uri.parse('$api/api/v2/podcasts-favorited'),
-// <<<<<<< HEAD
+      Uri.parse('$api/api/v3/my-account/podcasts/favorited'),
       headers: headers,
     );
+
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
@@ -263,7 +263,7 @@ class PodcastApiClient {
       'Authorization': 'Bearer $token'
     }; //podcasts/{id}/episodes
     final response =
-        await http.get(Uri.parse("$api/api/v2/podcasts/2/episodes"));
+        await http.get(Uri.parse("$api/api/v3/resources/episodes/" + podcatId));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to get podcast with ID $podcatId');

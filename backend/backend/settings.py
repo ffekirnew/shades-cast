@@ -15,7 +15,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024 * 1024 * 1024 # 10 MB
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024 * 1024 * 1024  # 10 MB
 
 ALLOWED_HOSTS = [
     'fikernewapi.pythonanywhere.com',
@@ -23,8 +23,13 @@ ALLOWED_HOSTS = [
     '192.168.0.144',
     '192.168.0.136',
     '192.168.202.214',
+
     '10.4.192.65'
     '10.28.154.159'
+
+    '10.4.192.65',
+    '10.4.192.7',
+
 ]
 
 # Application definition
@@ -169,4 +174,3 @@ DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 FFMPEG_PATH = '/path/to/ffmpeg'
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024  # 100 MB
-
