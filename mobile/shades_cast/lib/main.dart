@@ -47,9 +47,9 @@ void main() {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: ThemeData.dark()
             .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
-        debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),

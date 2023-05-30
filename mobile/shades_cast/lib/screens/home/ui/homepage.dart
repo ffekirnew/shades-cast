@@ -410,12 +410,20 @@ class _podcastListState extends State<podcastList> {
                   podcastId: currentPodcast.id, isFromMyPodcasts: false));
         },
         child: Container(
+          decoration: BoxDecoration(
+            border: Border(),
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(15),
+                bottomLeft: Radius.circular(15),
+                topLeft: Radius.circular(15)),
+            color: Color(0xFF040a11),
+          ),
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          color: Color.fromARGB(255, 0, 0, 0),
           child: Column(
             children: [
               ListTile(
+                // tileColor: Colors.redAccent,
                 leading: Image(
                   image: NetworkImage(currentPodcast.imageUrl ??
                       "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
@@ -423,6 +431,17 @@ class _podcastListState extends State<podcastList> {
                 title: Text(
                   currentPodcast.title,
                   style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Container(
+                  // margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
+                  child: Text(
+                    currentPodcast.description ??
+                        "some description to check how the subtitle exactly looks and if it can be used",
+                    style: TextStyle(
+                        color: Color.fromARGB(205, 255, 255, 255),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w200),
+                  ),
                 ),
                 trailing: IconButton(
                   onPressed: () {
@@ -437,17 +456,6 @@ class _podcastListState extends State<podcastList> {
                     color: Color.fromARGB(255, 71, 160, 255),
                     size: 25,
                   ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
-                child: Text(
-                  currentPodcast.description ??
-                      "some description to check how the subtitle exactly looks and if it can be used",
-                  style: TextStyle(
-                      color: Color.fromARGB(205, 255, 255, 255),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w200),
                 ),
               ),
             ],
@@ -481,7 +489,15 @@ class _funFactState extends State<funFact> {
     return Visibility(
         visible: visibility,
         child: Container(
-          color: Color.fromARGB(55, 160, 160, 160),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(15),
+              topLeft: Radius.circular(15),
+              bottomLeft: Radius.circular(15),
+            ),
+            color: Color.fromARGB(55, 160, 160, 160),
+          ),
+          padding: EdgeInsets.all(20),
           margin: EdgeInsets.all(20),
           child: Column(
             children: [
