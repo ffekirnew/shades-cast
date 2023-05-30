@@ -15,6 +15,8 @@ abstract class PodcastRepository {
 
   Future<Podcast> getPodcastById(String podcastId);
 
+  Future<List<Podcast>> searchPodcasts(String query);
+
   Future<List<Podcast>> getMyPodcasts();
 
   Future<void> addPodcast(dynamic podcast);
@@ -278,5 +280,14 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> deleteFromFavorite(String podcastId) async {
     await _apiClient.deleteFromFavorite(podcastId);
     await _database.deleteFromFavorite(podcastId);
+  }
+
+  @override
+  Future<List<Podcast>> searchPodcasts(String query) async {
+    final res = await _apiClient.searchPodcasts(query);
+    List<Podcast> podcasts = List.generate(res.length, (index) {
+      return Podcast.fromMap(res[index]);
+    });
+    return podcasts;
   }
 }
