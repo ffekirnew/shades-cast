@@ -23,6 +23,7 @@ class PodcastDetailsAndPlayerBloc
             episodes: [], currentPlayingEpisode: 0)) {
     int currentEpisode = 0;
     List<Episode> currentEpisodes = [];
+    bool isFromMyPodcasts = false;
     Podcast currentPodcast = Podcast(
         id: 1,
         title: '',
@@ -34,6 +35,7 @@ class PodcastDetailsAndPlayerBloc
     on<PodcastDetailsAndPlayerEvent>((event, emit) async {
       if (event is PodcastDetailPageOpened) {
         // int currentIndex = event.selectedIndex;
+        isFromMyPodcasts = event.isFromMyPodcasts;
         emit(PodcastLoadingState());
 
         PodcastDatabase _database = PodcastDatabase.instance;
@@ -42,34 +44,37 @@ class PodcastDetailsAndPlayerBloc
             PodcastRepositoryImpl(_database, _apiClient);
 
         try {
+          print('here first');
           final Podcast pod =
               await podRepo.getPodcastById(event.podcastId.toString());
 
           currentPodcast = pod;
-
+          print('herreee');
           List<Episode> episodes =
               await podRepo.getEpisodes(event.podcastId.toString());
 
           currentEpisodes = episodes;
-
+          print(episodes);
           print('ended');
           emit(PodcastDetailEpisodes(
               episodes: currentEpisodes,
               currentPlayingEpisode:
                   currentEpisode % (max(currentEpisodes.length, 1)),
-              podcast: pod));
+              podcast: pod,
+              isFromMyPodcasts: isFromMyPodcasts));
         } catch (e) {
           print(e);
           emit(PodcastDetailsAndPlayerErrorState());
         }
       } else if (event is SkipToNextButtonClicked) {
         currentEpisode += 1;
-        print(currentEpisode);
+
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
             currentPlayingEpisode:
                 currentEpisode % (max(currentEpisodes.length, 1)),
-            podcast: currentPodcast));
+            podcast: currentPodcast,
+            isFromMyPodcasts: isFromMyPodcasts));
       } else if (event is SkipToPreviousButtonClicked) {
         currentEpisode -= 1;
         print(currentEpisode);
@@ -78,14 +83,16 @@ class PodcastDetailsAndPlayerBloc
             episodes: currentEpisodes,
             currentPlayingEpisode:
                 currentEpisode % (max(currentEpisodes.length, 1)),
-            podcast: currentPodcast));
+            podcast: currentPodcast,
+            isFromMyPodcasts: isFromMyPodcasts));
       } else if (event is EpisodeItemClicked) {
         currentEpisode = event.selectedIndex;
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
             currentPlayingEpisode:
                 currentEpisode % (max(currentEpisodes.length, 1)),
-            podcast: currentPodcast));
+            podcast: currentPodcast,
+            isFromMyPodcasts: isFromMyPodcasts));
       }
     });
   }

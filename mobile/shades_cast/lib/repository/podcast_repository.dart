@@ -53,6 +53,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
+    print(podcasts);
 
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
@@ -69,11 +70,16 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // if (localPodcast != null) {
     //   return localPodcast;
     // } else {
-    final remotePodcast = await _apiClient.getPodcastById(podcastId);
+    try {
+      final remotePodcast = await _apiClient.getPodcastById(podcastId);
 
-    Podcast podcast = Podcast.fromMap(remotePodcast);
-    // await _database.savePodcast(remotePodcast);
-    return podcast;
+      Podcast podcast = Podcast.fromMap(remotePodcast);
+      // await _database.savePodcast(remotePodcast);
+      return podcast;
+    } catch (e) {
+      print(e);
+      throw ("Couldn't get podcast in repository");
+    }
     // }
   }
   ////////////////////////////////////////////////////////////////
@@ -146,7 +152,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<void> addEpisode(dynamic episode) async {
     Episode saved_episode = Episode.fromMap(episode as Map<String, dynamic>);
-    await _database.saveEpisode(saved_episode);
+    // await _database.saveEpisode(saved_episode);
     await _apiClient.addEpisode(saved_episode);
   }
 
@@ -179,7 +185,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
       print(remoteEpisodes);
       List<Episode> episodes = [];
 
-      for (final episode in [remoteEpisodes]) {
+      for (final episode in remoteEpisodes) {
         final newEpisode = Episode.fromMap(episode);
         episodes.add(newEpisode);
       }

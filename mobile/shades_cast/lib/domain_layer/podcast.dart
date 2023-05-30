@@ -44,7 +44,7 @@ class Podcast {
     }
 
     return Podcast(
-      id: int.parse(map['id']),
+      id: map['id'],
       title: map['title'],
       author: map['author'],
       description: map['description'],

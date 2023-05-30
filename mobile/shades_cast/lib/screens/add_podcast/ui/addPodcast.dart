@@ -124,6 +124,7 @@ class _addPodcastsState extends State<addPodcasts> {
             } else if (state is AddPodcastSuccess) {
               errorMessage = 'Podcast succesfully added.';
             }
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
