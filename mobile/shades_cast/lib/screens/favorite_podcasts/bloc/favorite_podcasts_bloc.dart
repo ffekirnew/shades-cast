@@ -22,14 +22,15 @@ part 'favorite_podcasts_state.dart';
 class FavoritePodcastsBloc
     extends Bloc<FavoritePodcastsEvent, FavoritePodcastsState> {
   FavoritePodcastsBloc() : super(FavoritePodcastsInitial()) {
-    on<FavoritePodcastsEvent>((event, emit) async {
-      List<int> favoritedIds = [];
-      PodcastApiClient _apiClient = PodcastApiClient();
-      PodcastDatabase _database = PodcastDatabase.instance;
-      List<Podcast> currentPodcasts = [];
+    List<int> favoritedIds = [];
+    PodcastApiClient _apiClient = PodcastApiClient();
+    PodcastDatabase _database = PodcastDatabase.instance;
+    List<Podcast> currentPodcasts = [];
 
+    on<FavoritePodcastsEvent>((event, emit) async {
       if (event is GetFavPodcasts) {
         emit(FavPodcastListerLoadingState());
+
         PodcastRepository podcastRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
@@ -38,6 +39,11 @@ class FavoritePodcastsBloc
               await podcastRepo.favoritePodcasts();
 
           currentPodcasts = favPodcasts;
+          favoritedIds = [];
+          for (final pod in currentPodcasts) {
+            favoritedIds.add(pod.id);
+          }
+
           emit(
             FavPodcastLoadedState(
               podcasts: favPodcasts,
@@ -48,15 +54,43 @@ class FavoritePodcastsBloc
           emit(FavPodcastErrorState());
         }
       } else if (event is FavPodcastFavorited) {
+        print('fav ids');
+        print(favoritedIds);
+        print('current pods');
+
+        PodcastRepository podcastRepo =
+            PodcastRepositoryImpl(_database, _apiClient);
+        if (currentPodcasts.length == 0) {
+          try {
+            final List<Podcast> favPodcasts =
+                await podcastRepo.favoritePodcasts();
+
+            currentPodcasts = favPodcasts;
+            print(currentPodcasts);
+          } catch (e) {
+            print(e);
+          }
+        }
         if (!(favoritedIds.contains(event.podcastId))) {
+          print('in');
+          print(favoritedIds);
+          print(event.podcastId);
           favoritedIds.add(event.podcastId);
+          await podcastRepo.addToFavorite(event.podcastId.toString());
         } else {
+          print('out');
+          print(favoritedIds);
           favoritedIds.remove(event.podcastId);
         }
-
-        emit(FavPodcastLoadedState(
-            podcasts: currentPodcasts, favoritedPodcastId: favoritedIds));
       }
+      print('not here');
+      print(favoritedIds);
+      emit(
+        FavPodcastLoadedState(
+          podcasts: currentPodcasts,
+          favoritedPodcastId: favoritedIds,
+        ),
+      );
     });
   }
 }

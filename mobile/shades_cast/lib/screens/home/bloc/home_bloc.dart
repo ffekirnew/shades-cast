@@ -70,8 +70,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           emit(PodcastsErrorState(currentUser: currentUser));
         }
       } else if (event is PodcasFavorited) {
+        PodcastRepository podcastRepo =
+            PodcastRepositoryImpl(_database, _apiClient);
         if (!(favoritedIds.contains(event.podcastId))) {
           favoritedIds.add(event.podcastId);
+          await podcastRepo.addToFavorite(event.podcastId.toString());
         } else {
           favoritedIds.remove(event.podcastId);
         }
