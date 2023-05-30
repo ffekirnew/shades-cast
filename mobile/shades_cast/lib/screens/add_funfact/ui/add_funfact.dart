@@ -8,7 +8,9 @@ class AddFunFactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add FunFact'),
+        title: Text(
+          'Add FunFact',
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
