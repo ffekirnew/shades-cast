@@ -27,7 +27,7 @@ abstract class PodcastRepository {
   Future<List<Episode>> getEpisodes(String podcastId);
 
   Future<void> addEpisode(dynamic episode);
-  Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
+  Future<void> deleteEpisode(String episodeId);
 
   Future<List<Podcast>> favoritePodcasts();
 
@@ -98,15 +98,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     if (res == null) {
       throw Exception("error getting the created podcast");
     }
-    // print(res);
-    // print('here too');
-    // await _database.savePodcast(res);
-    // print('finally');
-
-    // var dynamicpodcast = json.decode(res.body);
-
-    // await _database.savePodcast(podcast.fromMap(podcast));
-// >>>>>>> master
   }
 
   ////////////////////////////////////////////////////////////////
@@ -165,10 +156,9 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
 
   @override
-  Future<void> deleteEpisode(String podcastId, List episode) async {
-    Episode deleted_episode = Episode.fromMap(episode as Map<String, dynamic>);
-    await _database.deleteEpisode(podcastId, deleted_episode);
-    await _apiClient.deleteEpisode(podcastId, deleted_episode);
+  Future<void> deleteEpisode(String episodeId) async {
+    await _database.deleteEpisode(episodeId);
+    await _apiClient.deleteEpisode(episodeId);
   }
 
   ////////////////////////////////////
