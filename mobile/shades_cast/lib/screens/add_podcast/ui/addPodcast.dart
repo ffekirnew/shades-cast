@@ -70,7 +70,7 @@ class _addPodcastsState extends State<addPodcasts> {
     // BlocProvider.of<AddPodcastBloc>(context)
     //     .add(PodcastSubmitted(createdPodcast: createdPodcast));
     PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
-    final res = await podRepo.favoritePodcasts();
+    final res = await podRepo.searchPodcast('funny');
     print(res);
     // print(res);
   }

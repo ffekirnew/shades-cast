@@ -217,6 +217,15 @@ class PodcastDatabase {
     });
   }
 
+  ////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<void> deleteFromFavorite(String podcastId) async {
+    final db = await openDb();
+    await db.delete('favorites', where: 'id = ?', whereArgs: [podcastId]);
+  }
+
   ////////////////////////////////////////////////////////
   ///
   ///
