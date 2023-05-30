@@ -22,16 +22,13 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
   PodcastApiClient apiClient = PodcastApiClient();
 
   File? _audioFile;
-  late TextEditingController _titleController;
-  late TextEditingController _descriptionController;
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descriptionController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
-
-    _titleController = TextEditingController(text: "Title");
-    _descriptionController = TextEditingController(text: "description");
   }
 
   Future<File> _pickAudio() async {
@@ -87,7 +84,8 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
       "podcast": widget.podcastId.toString(),
       "_audioFile": _audioFile,
     };
-
+    print('truth');
+    print(episode);
     BlocProvider.of<AddEpisodeBloc>(context)
         .add(EpsiodeSubmitted(createdEpsiode: episode));
 
@@ -133,12 +131,12 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
           if (state is AddEpisodeError) {
             errorMessage = 'Error occured. Try again';
           } else if (state is AddEpisodeSuccess) {
-            errorMessage = 'Podcast succesfully added.';
+            errorMessage = 'Episode succesfully added.';
           }
 
           if (widget.refresh) {
             errorMessage = '';
-            widget.refresh = true;
+            widget.refresh = false;
           }
 
           return SingleChildScrollView(
@@ -166,6 +164,7 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
                   ),
                   SizedBox(height: 32.0),
                   TextFormField(
+                    controller: _titleController,
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
@@ -176,6 +175,7 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
                   ),
                   SizedBox(height: 16.0),
                   TextFormField(
+                    controller: _descriptionController,
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),

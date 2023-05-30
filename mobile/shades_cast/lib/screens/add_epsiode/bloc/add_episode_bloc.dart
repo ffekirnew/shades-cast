@@ -26,7 +26,7 @@ class AddEpisodeBloc extends Bloc<AddEpisodeEvent, AddEpisodeState> {
           dynamic episodeCreated = event.createdEpsiode;
 
           await podRepo.addEpisode(episodeCreated);
-          print('episodeCreated');
+          print(episodeCreated);
           //submit the episode
           emit(AddEpisodeSuccess());
         } catch (e) {
