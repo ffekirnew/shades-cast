@@ -11,10 +11,10 @@ class Podcast {
   Podcast(
       {required this.id,
       required this.title,
-      required this.author,
-      required this.description,
-      required this.imageUrl,
-      required this.categories});
+      this.author,
+      this.description,
+      this.imageUrl,
+      this.categories});
 
   factory Podcast.fromJson(Map<String, dynamic> json) {
     return Podcast(
@@ -31,35 +31,20 @@ class Podcast {
       'id': id,
       'title': title,
       'description': description,
-      'author': author,
-      'imageUrl': imageUrl,
-      'categories': categories
+      'author': author ?? "",
+      'imageUrl': imageUrl ?? "",
+      'categories': categories![0]
     };
   }
 
   static Podcast fromMap(Map<String, dynamic> map) {
-    String imageLink = api + map["cover_image"];
-    if (map['cover_image'].contains('http')) {
-      imageLink = map["cover_image"];
-    }
-
     return Podcast(
-      id: int.parse(map['id']),
+      id: map['id'] != null ? int.parse(map['id']) : 1,
       title: map['title'],
       author: map['author'],
       description: map['description'],
-      imageUrl: imageLink,
-      categories: map['categories'],
+      imageUrl: map['imageUrl'],
+      categories: [map['categories']],
     );
-
-    // print(map);
-    // return Podcast(
-    //   id: int.parse(map['id']),
-    //   title: map['title'],
-    //   author: map['creator'],
-    //   description: map['description'],
-    //   imageUrl: map['imageUrl'],
-    //   categories: map['categories'],
-    // );
   }
 }

@@ -43,11 +43,12 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getPodcasts() async {
-    // final localPodcasts = await _database.getPodcasts();
+    final localPodcasts = await _database.getPodcasts();
 
-    // if (localPodcasts.isNotEmpty) {
-    //   return localPodcasts;
-    // } else {
+    if (localPodcasts.isNotEmpty) {
+      return localPodcasts;
+    }
+    print('none');
 
     List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
@@ -87,13 +88,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
     if (res == null) {
       throw Exception("error getting the created podcast");
     }
-// <<<<<<< funfact
-
     // print(res);
     // print('here too');
     await _database.savePodcast(res);
     // print('finally');
-// =======
+
     // var dynamicpodcast = json.decode(res.body);
 
     // await _database.savePodcast(podcast.fromMap(podcast));
@@ -108,6 +107,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> addToFavorite(String podcastId) async {
     try {
       await _apiClient.addToFavorite(podcastId);
+      // await _database.savePodcast(podcast)
     } catch (e) {
       print(e);
       throw ("Couldn't add To Favorites in Repository");
