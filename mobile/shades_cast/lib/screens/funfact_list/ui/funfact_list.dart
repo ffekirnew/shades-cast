@@ -15,6 +15,7 @@ class FunFactCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color(0xffD2E9E9),
       child: ListTile(
         title: Text(title),
         subtitle: Text(body),
