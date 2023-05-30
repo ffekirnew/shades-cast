@@ -16,6 +16,8 @@ import 'package:shades_cast/screens/add_podcast/bloc/add_podcast_bloc.dart';
 import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 import 'package:shades_cast/screens/add_epsiode/bloc/add_episode_bloc.dart';
+import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
+import 'package:shades_cast/screens/add_funfact/bloc/add_funfact_bloc.dart';
 
 void main() {
   runApp(
@@ -44,6 +46,12 @@ void main() {
         ),
         BlocProvider(
           create: (BuildContext context) => AddEpisodeBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => FunfactBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => AddFunfactBloc(),
         ),
       ],
       child: MaterialApp(

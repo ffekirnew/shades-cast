@@ -122,106 +122,94 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Theme(
-        data: ThemeData(
-          scaffoldBackgroundColor: Color(0xFF081624),
-          textTheme: TextTheme(
-            bodyMedium:
-                TextStyle(color: Colors.white), // set the text color here
-          ),
-        ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: Text("Add Episode"),
-          ),
-          body: BlocBuilder<AddEpisodeBloc, AddEpisodeState>(
-            builder: (context, state) {
-              String errorMessage = '';
-              if (state is AddEpisodeError) {
-                errorMessage = 'Error occured. Try again';
-              } else if (state is AddEpisodeSuccess) {
-                errorMessage = 'Podcast succesfully added.';
-              }
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Add Episode"),
+      ),
+      body: BlocBuilder<AddEpisodeBloc, AddEpisodeState>(
+        builder: (context, state) {
+          String errorMessage = '';
+          if (state is AddEpisodeError) {
+            errorMessage = 'Error occured. Try again';
+          } else if (state is AddEpisodeSuccess) {
+            errorMessage = 'Podcast succesfully added.';
+          }
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Center(
-                        child: CircleAvatar(
-                          radius: 85.0,
-                          child: IconButton(
-                            icon: Icon(Icons.audiotrack),
-                            iconSize: 128.0,
-                            onPressed: _pickAudio,
-                          ),
-                        ),
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: CircleAvatar(
+                      radius: 85.0,
+                      child: IconButton(
+                        icon: Icon(Icons.audiotrack),
+                        iconSize: 128.0,
+                        onPressed: _pickAudio,
                       ),
-                      SizedBox(height: 16.0),
-                      Center(
-                        child: TextButton(
-                          onPressed: _pickAudio,
-                          child: Text("Choose Audio"),
-                        ),
-                      ),
-                      SizedBox(height: 32.0),
-                      TextFormField(
-                        style: TextStyle(
-                          color: Colors.white, // sets the text color to white
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "Title",
-                          labelStyle: TextStyle(color: Colors.blue),
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      TextFormField(
-                        style: TextStyle(
-                          color: Colors.white, // sets the text color to white
-                        ),
-                        decoration: InputDecoration(
-                          labelText: "Description",
-                          labelStyle: TextStyle(color: Colors.blue),
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-                      Container(
-                        margin: EdgeInsets.fromLTRB(50.0, 0, 50.0, 0),
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: _submitForm,
-                          child: Text("Add Episode"),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 150,
-                      ),
-                      Container(
-                        child: Center(
-                          child: Text(
-                            errorMessage,
-                            style: TextStyle(
-                                color:
-                                    (errorMessage == 'Error occured. Try again')
-                                        ? Colors.red
-                                        : Colors.green,
-                                fontSize: 20),
-                          ),
-                        ),
-                      )
-                    ],
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ),
+                  SizedBox(height: 16.0),
+                  Center(
+                    child: TextButton(
+                      onPressed: _pickAudio,
+                      child: Text("Choose Audio"),
+                    ),
+                  ),
+                  SizedBox(height: 32.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    decoration: InputDecoration(
+                      labelText: "Title",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  TextFormField(
+                    style: TextStyle(
+                      color: Colors.white, // sets the text color to white
+                    ),
+                    decoration: InputDecoration(
+                      labelText: "Description",
+                      labelStyle: TextStyle(color: Colors.blue),
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(50.0, 0, 50.0, 0),
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: _submitForm,
+                      child: Text("Add Episode"),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 150,
+                  ),
+                  Container(
+                    child: Center(
+                      child: Text(
+                        errorMessage,
+                        style: TextStyle(
+                            color: (errorMessage == 'Error occured. Try again')
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 20),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
