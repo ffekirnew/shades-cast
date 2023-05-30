@@ -11,7 +11,7 @@ part 'add_podcast_state.dart';
 class AddPodcastBloc extends Bloc<AddPodcastEvent, AddPodcastState> {
   AddPodcastBloc() : super(AddPodcastInitial()) {
     PodcastApiClient _apiClient = PodcastApiClient();
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
 
     on<AddPodcastEvent>((event, emit) async {
       if (event is PodcastSubmitted) {

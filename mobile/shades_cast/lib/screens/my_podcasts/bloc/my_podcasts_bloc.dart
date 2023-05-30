@@ -23,7 +23,7 @@ class MyPodcastsBloc extends Bloc<MyPodcastsEvent, MyPodcastsState> {
     on<MyPodcastsEvent>((event, emit) async {
       List<int> MydIds = [];
       PodcastApiClient _apiClient = PodcastApiClient();
-      PodcastDatabase _database = PodcastDatabase.instance;
+      PodcastDatabase _database = PodcastDatabase();
       List<Podcast> currentPodcasts = [];
 
       if (event is GetMyPodcasts) {

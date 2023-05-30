@@ -27,7 +27,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
     UserRepo userRepo = UserRepo();
     User currentUser =
         User(id: 1, name: 'Shamil Bedru', email: 'email', password: 'password');

@@ -10,6 +10,9 @@ import '../../../Infrustructure_layer/api_clients/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 
+import '../../../Infrustructure_layer/api_clients/podcast_repository.dart';
+import '../../../repository/database/podcast_database.dart';
+
 class addPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
 
@@ -20,6 +23,9 @@ class addPodcasts extends StatefulWidget {
 
 class _addPodcastsState extends State<addPodcasts> {
   PodcastApiClient apiClient = PodcastApiClient();
+  PodcastApiClient _apiClient = PodcastApiClient();
+  PodcastDatabase _database = PodcastDatabase();
+
   late File _imageFile;
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -61,45 +67,12 @@ class _addPodcastsState extends State<addPodcasts> {
       "cover_image": _imageFile
     };
 
-    BlocProvider.of<AddPodcastBloc>(context)
-        .add(PodcastSubmitted(createdPodcast: createdPodcast));
-    // print(createdPodcast);
-
-    // final res = await apiClient.addPodcast(podcast);
+    // BlocProvider.of<AddPodcastBloc>(context)
+    //     .add(PodcastSubmitted(createdPodcast: createdPodcast));
+    PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
+    final res = await podRepo.favoritePodcasts();
+    print(res);
     // print(res);
-    // final AuthService authService = AuthService();
-
-    // var stream = http.ByteStream(_imageFile.openRead());
-    // stream.cast();
-    // var length = await _imageFile.length();
-    // var uri = Uri.parse('http://192.168.0.144:8000/api/v2/podcasts/');
-    // var request = http.MultipartRequest('POST', uri);
-    // String? token = await authService.getToken();
-
-    // request.headers['Authorization'] = 'Token $token';
-    // request.fields['title'] = "shamil";
-    // request.fields['categories'] = _usernameController.text;
-
-    // var multipartFile = http.MultipartFile(
-    //   'cover_image',
-    //   stream,
-    //   length,
-    //   filename: path.basename(_imageFile.path), // Use the original filename
-    // );
-    // request.files.add(multipartFile);
-    // request.fields['cover_image'] = path.basename(_imageFile.path);
-
-    // try {
-    //   var response = await request.send();
-    //   if (response.statusCode != 200) {
-    //     print((response.statusCode));
-    //     print("Error sending the file");
-    //   } else {
-    //     print('Success');
-    //   }
-    // } catch (e) {
-    //   print("Error: $e");
-    // }
   }
 
   @override
