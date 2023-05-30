@@ -28,8 +28,10 @@ abstract class PodcastRepository {
   Future<void> deleteEpisode(String podcastId, List<dynamic> episode);
 
   Future<List<Podcast>> favoritePodcasts();
+
   Future<List<Podcast>> myPodcasts();
   Future<void> addToFavorite(String podcastId);
+  Future<void> deleteFromFavorite(String podcastId);
 }
 
 class PodcastRepositoryImpl implements PodcastRepository {
@@ -243,6 +245,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Podcast>> myPodcasts() async {
     final myPodcasts = await _apiClient.myPodcasts();
+    print(myPodcasts);
 
     List<Podcast> pods = List.generate(myPodcasts.length, (index) {
       return Podcast.fromMap(myPodcasts[index]);
@@ -269,5 +272,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
+  }
+
+  @override
+  Future<void> deleteFromFavorite(String podcastId) async {
+    await _apiClient.deleteFromFavorite(podcastId);
+    await _database.deleteFromFavorite(podcastId);
   }
 }

@@ -13,7 +13,7 @@ part 'add_episode_state.dart';
 class AddEpisodeBloc extends Bloc<AddEpisodeEvent, AddEpisodeState> {
   AddEpisodeBloc() : super(AddEpisodeInitial()) {
     PodcastApiClient _apiClient = PodcastApiClient();
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
 
     on<AddEpisodeEvent>((event, emit) async {
       if (event is EpsiodeSubmitted) {

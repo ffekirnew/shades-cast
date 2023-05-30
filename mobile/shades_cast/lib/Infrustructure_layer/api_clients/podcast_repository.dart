@@ -12,7 +12,7 @@ abstract class PodcastRepository {
   Future<List<Podcast>> getPodcasts();
 
   Future<Podcast> getPodcastById(String podcastId);
-
+  Future<List<Podcast>?> searchPodcast(String query);
   Future<List<Podcast>> getMyPodcasts();
 
   Future<void> addPodcast(dynamic podcast);
@@ -243,5 +243,16 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
     // }
+  }
+
+  @override
+  Future<List<Podcast>> searchPodcast(String query) async {
+    // localResults = await _database.searchPodcast();
+    final result = await _apiClient.searchPodcasts(query);
+    List<Podcast> podcasts = List.generate(result.length, (index) {
+      return Podcast.fromMap(result[index]);
+    });
+    // await _database.savePodcasts(remotePodcasts);
+    return podcasts;
   }
 }

@@ -75,13 +75,19 @@ class PodcastApiClient {
   ///
   ///
   Future<List<dynamic>> searchPodcasts(String query) async {
-    final response = await http.get(Uri.parse('$api/search?q=$query'));
-    if (response.statusCode == 200) {
-      final podcastsJson = json.decode(response.body)['results'];
-      return podcastsJson.map<Podcast>((json)).toList();
-    } else {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.get(Uri.parse('$api/api/v3/search/$query/'),
+        headers: headers);
+    if (response.statusCode != 200) {
       throw Exception('Failed to load podcasts');
     }
+    print(jsonDecode(response.body));
+    return jsonDecode(response.body)['podcasts'];
   }
 
   //method to handle seaching podcasts by id
@@ -144,7 +150,9 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
+
     print("api called successfully");
+    // print(jsonDecode(response.body));
     return jsonDecode(response.body);
   }
 
@@ -169,6 +177,23 @@ class PodcastApiClient {
     }
     print("api called successfully");
     return jsonDecode(response.body);
+  }
+
+  ///////////////////////////
+  ///method to remove form favorite
+  ///
+  ///
+  Future<void> deleteFromFavorite(String podcastId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = http.delete(
+      Uri.parse('$api/api/v3/resources/podcasts/$podcastId/add-favorite'),
+      headers: headers,
+    );
   }
 
   //method to add a new podcast
