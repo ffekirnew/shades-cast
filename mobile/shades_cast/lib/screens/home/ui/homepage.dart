@@ -553,6 +553,7 @@ class _funFactState extends State<funFact> {
 //the search box component of the screen
 class searchBox extends StatelessWidget {
   TextEditingController searchInputController = TextEditingController();
+  final FocusNode searchFocusNode = FocusNode();
   searchBox({super.key});
 
   @override
@@ -562,11 +563,12 @@ class searchBox extends StatelessWidget {
       child: Container(
         child: TextField(
           onEditingComplete: () {
-            // Perform search functionality here
+            searchFocusNode.unfocus();
             BlocProvider.of<HomeBloc>(context)
                 .add(PodcastSearched(searchTerm: searchInputController.text));
           },
           controller: searchInputController,
+          focusNode: searchFocusNode,
           decoration: InputDecoration(
             hintText: '',
             suffixIcon: IconButton(
@@ -574,6 +576,7 @@ class searchBox extends StatelessWidget {
               color: Colors.blue,
               onPressed: () {
                 // Perform search functionality here
+                searchFocusNode.unfocus();
                 BlocProvider.of<HomeBloc>(context).add(
                     PodcastSearched(searchTerm: searchInputController.text));
               },

@@ -147,9 +147,12 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<void> addEpisode(dynamic episode) async {
+    print('got here safeeee');
     Episode saved_episode = Episode.fromMap(episode as Map<String, dynamic>);
+    print(saved_episode);
+    print('heere tooo');
     // await _database.saveEpisode(saved_episode);
-    await _apiClient.addEpisode(saved_episode);
+    await _apiClient.addEpisode(episode);
   }
 
   ////////////////////////////////////////////////
@@ -186,18 +189,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
       }
       print(episodes);
       // await _database.saveEpisodes(episodes);
-      if (episodes.length > 0) {
-        Episode newEpisode = Episode(
-            id: 2,
-            podcastId: '1',
-            title: 'episode 2',
-            description: 'some other description',
-            audioUrl:
-                'https://fikernewapi.pythonanywhere.com/media/the-new-sho/2023/05/11/48a3737e-1076-4fab-9652-5fbb2af545d0.mp3',
-            publishedDate: '',
-            durationInSeconds: 20);
-        episodes.add(newEpisode);
-      }
 
       return episodes;
     } catch (e) {

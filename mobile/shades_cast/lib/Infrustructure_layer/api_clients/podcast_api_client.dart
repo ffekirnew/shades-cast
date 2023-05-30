@@ -220,6 +220,7 @@ class PodcastApiClient {
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;
+    request.fields['description'] = description;
 
     var multipartFile = http.MultipartFile(
       'cover_image',
@@ -298,11 +299,12 @@ class PodcastApiClient {
   }
 
   Future<void> addEpisode(dynamic episode) async {
+    print(episode);
     File _audioFile = episode["_audioFile"];
     String title = episode["title"];
     String description = episode["description"];
     String id = episode["podcast"];
-    var uri = Uri.parse('$api/api/v2/episodes/');
+    var uri = Uri.parse('$api/api/v3/resources/episodes/');
     var request = http.MultipartRequest('POST', uri);
     final AuthService authService = AuthService();
     String? token = await authService.getToken();
