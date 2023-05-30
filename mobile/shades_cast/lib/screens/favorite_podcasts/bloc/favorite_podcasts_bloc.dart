@@ -24,7 +24,7 @@ class FavoritePodcastsBloc
   FavoritePodcastsBloc() : super(FavoritePodcastsInitial()) {
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
-    PodcastDatabase _database = PodcastDatabase.instance;
+    PodcastDatabase _database = PodcastDatabase();
     List<Podcast> currentPodcasts = [];
 
     on<FavoritePodcastsEvent>((event, emit) async {

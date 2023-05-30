@@ -40,18 +40,20 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getPodcasts() async {
+    print('got here');
     // final localPodcasts = await _database.getPodcasts();
 
     // if (localPodcasts.isNotEmpty) {
     //   return localPodcasts;
-    // } else {
+    // }
+    print('this should not get printted');
     print('in podc repo');
     List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
     print(podcasts);
-    // await _database.savePodcasts(remotePodcasts);
+    await _database.savePodcasts(remotePodcasts);
     return podcasts;
   }
   ////////////////////////////////////////////////////////////////
@@ -82,13 +84,13 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> addPodcast(dynamic podcast) async {
     print('got here safely');
     final res = await _apiClient.addPodcast(podcast);
-    if (res.detail != 201) {
-      throw Exception("error getting the created podcast");
-    }
+    // if (re != 201) {
+    //   throw Exception("error getting the created podcast");
+    // }
     // var dynamicpodcast = json.decode(res.body);
 
     print('here too');
-    // await _database.savePodcast(podcast.fromMap(podcast));
+    await _database.savePodcast(Podcast.fromMap(podcast));
   }
   ////////////////////////////////////////////////////////////////
   ///
@@ -185,11 +187,13 @@ class PodcastRepositoryImpl implements PodcastRepository {
 
   @override
   Future<List<Podcast>> favoritePodcasts() async {
+    print('got here favs');
     final localFavorites = await _database.getFavorites();
-
-    if (localFavorites != null) {
+    print('locals: $localFavorites');
+    if (localFavorites!.length > 0) {
       return localFavorites;
     } else {
+      print('please dont print this');
       final remoteFavorites = await _apiClient.favoritePodcasts();
       List<Podcast> favorites = List.generate(remoteFavorites.length, (index) {
         return Podcast.fromMap(remoteFavorites[index]);

@@ -82,6 +82,17 @@ def podcast_add_favorite(request, id):
     return Response({'status': 'ok'})
 
 
+@api_view(['DELETE'])
+def podcast_delete_favorite(request, id):
+    podcast = get_object_or_404(Podcast, id=id)
+
+    if request.user in podcast.favorited_by.all():
+        podcast.favorited_by.remove(request.user)
+        return Response({'status': 'ok'})
+    else:
+        return Response({'status': 'error', 'message': 'User has not favorited this podcast.'}, status=400)
+
+
 @api_view(['GET'])
 def podcast_favorited_by(request, id):
     podcast = get_object_or_404(Podcast, id=id)

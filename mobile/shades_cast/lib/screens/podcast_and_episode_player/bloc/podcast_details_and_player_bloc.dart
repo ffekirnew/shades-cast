@@ -38,7 +38,7 @@ class PodcastDetailsAndPlayerBloc
         isFromMyPodcasts = event.isFromMyPodcasts;
         emit(PodcastLoadingState());
 
-        PodcastDatabase _database = PodcastDatabase.instance;
+        PodcastDatabase _database = PodcastDatabase();
         PodcastApiClient _apiClient = PodcastApiClient();
         PodcastRepository podRepo =
             PodcastRepositoryImpl(_database, _apiClient);
