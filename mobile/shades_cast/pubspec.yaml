@@ -45,6 +45,7 @@ dependencies:
   just_audio: ^0.9.32
   # =======
   sqflite: ^2.2.8+4
+  
   shared_preferences: ^2.1.1
 # >>>>>>> master
 
