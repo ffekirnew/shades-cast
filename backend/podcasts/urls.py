@@ -16,6 +16,8 @@ urlpatterns.extend([
          views.PodcastEpisodesListView.as_view(), name='podcast_episodes'),
     path('podcasts/<int:id>/add-favorite',
          views.podcast_add_favorite, name='podcast_add_favorite'),
+    path('podcasts/<int:id>/delete-favorite',
+         views.podcast_delete_favorite, name='podcast_delete_favorite'),
     path('podcasts/<int:id>/favorited-by',
          views.podcast_favorited_by, name='podcast_add_favorite'),
     path('podcasts/categories/<slug:category_slug>',
