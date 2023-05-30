@@ -61,7 +61,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                 funFact: currentFunFact,
                 currentUser: currentUser),
           );
-//------------------------ un comment for funfact fetching functionality ------------------------
 
           print(funfact);
         } catch (e) {

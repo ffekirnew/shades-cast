@@ -293,8 +293,9 @@ class _podcastListState extends State<podcastList> {
           //       EpisodeItemClicked(
           //           selectedIndex: currentPodcast.id,
           //           podcastId: currentPodcast.id));
-          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context)
-              .add(PodcastDetailPageOpened(podcastId: currentPodcast.id));
+          BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
+              PodcastDetailPageOpened(
+                  podcastId: currentPodcast.id, isFromMyPodcasts: true));
         },
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
