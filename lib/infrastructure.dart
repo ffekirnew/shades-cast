@@ -31,11 +31,12 @@ class DataBase {
     return podcasts;
   }
 
-  Future<void> removeFavoritePodcast(int podcastId) async {
+  Future<List<Podcast>> removeFavoritePodcast(int podcastId) async {
     final db = await openDatabase(
       join(await getDatabasesPath(), 'podcasts.db'),
       version: 1,
     );
     await db.delete('favorites', where: 'id = ?', whereArgs: [podcastId]);
+    return getFavorites();
   }
 }
