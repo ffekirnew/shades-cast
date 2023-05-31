@@ -225,13 +225,13 @@ Widget getEpisodes(
     required int podcastId}) {
   List<EpisodeItem> episodeItems = [];
   for (int index = 0; index < episodes.length; index++) {
-    print('current....................................................');
     print(state.currentPlayingEpisode);
     print(index);
-    print('current....................................................');
 
+    print(state.isFromMyPodcasts);
     episodeItems.add(EpisodeItem(
-        episodes[index], (state.currentPlayingEpisode == index), index));
+        episodes[index], (state.currentPlayingEpisode == index), index,
+        episodeId: episodes[index].id, dispayDelete: (state.isFromMyPodcasts)));
   }
 
   return Expanded(

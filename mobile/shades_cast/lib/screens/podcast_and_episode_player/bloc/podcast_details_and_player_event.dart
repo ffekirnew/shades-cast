@@ -24,3 +24,8 @@ class SkipToPreviousButtonClicked extends PodcastDetailsAndPlayerEvent {
   final int selectedIndex;
   SkipToPreviousButtonClicked({required this.selectedIndex});
 }
+
+class EpisodeDeleted extends PodcastDetailsAndPlayerEvent {
+  final int episodeId;
+  EpisodeDeleted({required this.episodeId});
+}

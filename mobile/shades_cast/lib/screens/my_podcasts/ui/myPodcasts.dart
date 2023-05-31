@@ -286,6 +286,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
+      print(currentPodcast.imageUrl);
       print(currentPodcast.description);
       podcasts.add(GestureDetector(
         onTap: () {
@@ -316,6 +317,23 @@ class _podcastListState extends State<podcastList> {
                 title: Text(
                   currentPodcast.title,
                   style: TextStyle(color: Colors.white),
+                ),
+
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return DeleteConfirmationDialog(
+                          onConfirm: () {
+                            BlocProvider.of<MyPodcastsBloc>(context).add(
+                                PodcastDeleted(podcastId: currentPodcast.id));
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
                 // trailing: IconButton(
                 //   onPressed: () {
@@ -353,6 +371,35 @@ class _podcastListState extends State<podcastList> {
         padding: EdgeInsets.zero,
         children: podcasts,
       ),
+    );
+  }
+}
+
+class DeleteConfirmationDialog extends StatelessWidget {
+  final Function onConfirm;
+
+  const DeleteConfirmationDialog({required this.onConfirm});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Confirmation'),
+      content: Text('Are you sure you want to delete?'),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+        TextButton(
+          child: Text('Delete'),
+          onPressed: () {
+            onConfirm();
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+      ],
     );
   }
 }

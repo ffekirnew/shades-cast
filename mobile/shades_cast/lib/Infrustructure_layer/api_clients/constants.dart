@@ -1,18 +1,22 @@
-const String api = 'http://192.168.0.136:8000';
+import 'package:flutter/material.dart';
 
+const String api = 'http://10.4.192.7:8000';
 
+const KBodyBgPrimaryColor = Color(0xFFFFFFFF); // White
+const KBodyBgSecondaryColor = Color(0xFFF0F0F0); // Light Gray
+const KBodyBgTertiaryColor = Color(0xFFE0E0E0); // Gray
 
-//192.168.0.144
-//10.28.154.159
+const KTitleTextPrimaryColor = Color(0xFF333333); // Dark Gray
+const KTitleTextSecondaryColor = Color(0xFF555555); // Gray
 
+const KBodyTextPrimaryColor = Color.fromARGB(255, 98, 80, 80); // Dark Gray
+const KBodyTextSecondaryColor = Color(0xFF666666); // Gray
 
-// =======
-// const String api = 'https://197.156.86.88:8000';
+const KBodyBoxItemPrimaryColor = Color(0xFFEAEAEA); // Light Gray
+const KBodyBoxItemSecondaryaryColor = Color(0xFFCCCCCC); // Gray
 
-//fikernewapi.pythonanywhere.com/
-//http://fikernewapi.pythonanywhere.com
-//hostname -I
-//10.28.155.220 
-//192.168.180.102
-//192.168.180.102
-// >>>>>>> e62bd581cd1e8d72945d5229aa9d86c55d053901
+// .copyWith(
+//           scaffoldBackgroundColor: KBodyBgPrimaryColor,
+//           cardColor: KBodyBoxItemPrimaryColor,
+//           primaryColor: KTitleTextPrimaryColor,
+//         )

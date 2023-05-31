@@ -33,12 +33,13 @@ class PodcastDetailsAndPlayerBloc
         categories: []);
 
     on<PodcastDetailsAndPlayerEvent>((event, emit) async {
+      PodcastDatabase _database = PodcastDatabase();
+      PodcastApiClient _apiClient = PodcastApiClient();
+
       if (event is PodcastDetailPageOpened) {
         isFromMyPodcasts = event.isFromMyPodcasts;
         emit(PodcastLoadingState());
 
-        PodcastDatabase _database = PodcastDatabase();
-        PodcastApiClient _apiClient = PodcastApiClient();
         PodcastRepository podRepo =
             PodcastRepositoryImpl(_database, _apiClient);
 
@@ -92,6 +93,15 @@ class PodcastDetailsAndPlayerBloc
                 currentEpisode % (max(currentEpisodes.length, 1)),
             podcast: currentPodcast,
             isFromMyPodcasts: isFromMyPodcasts));
+      } else if (event is EpisodeDeleted) {
+        PodcastRepository podcastRepo =
+            PodcastRepositoryImpl(_database, _apiClient);
+
+        try {
+          await podcastRepo.deleteEpisode(event.episodeId.toString());
+        } catch (e) {
+          print(e);
+        }
       }
     });
   }

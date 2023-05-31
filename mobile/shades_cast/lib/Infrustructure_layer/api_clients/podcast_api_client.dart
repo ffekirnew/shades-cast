@@ -260,7 +260,7 @@ class PodcastApiClient {
     if (token == null) {
       throw Exception("cannot get token");
     }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.delete(
       Uri.parse('$api/api/v3/resources/podcasts/$podcastId/'),
       headers: headers,
@@ -353,7 +353,7 @@ class PodcastApiClient {
     if (token == null) {
       throw Exception("cannot get token");
     }
-    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    Map<String, String> headers = {'Authorization': 'Token $token'};
 
     final response = await http.delete(
       Uri.parse('$api/api/v3/resources/episodes/$episodeId/'),
