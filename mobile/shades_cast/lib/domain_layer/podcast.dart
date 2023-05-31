@@ -46,7 +46,7 @@ class Podcast {
       title: map['title'],
       author: map['author'],
       description: map['description'],
-      imageUrl: map['imageUrl'],
+      imageUrl: map['cover_image'],
       categories: [map['categories']],
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
 import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/ui/myPodcasts.dart';
 import 'screens/add_epsiode/ui/addEpisode.dart';
@@ -56,8 +57,7 @@ void main() {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark()
-            .copyWith(scaffoldBackgroundColor: Color(0xFF09121C)),
+        theme: ThemeData.dark(),
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),

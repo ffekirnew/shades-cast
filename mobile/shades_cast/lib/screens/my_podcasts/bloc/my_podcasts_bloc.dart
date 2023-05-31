@@ -44,6 +44,18 @@ class MyPodcastsBloc extends Bloc<MyPodcastsEvent, MyPodcastsState> {
         } catch (e) {
           emit(MyPodcastErrorState());
         }
+      } else if (event is PodcastDeleted) {
+        PodcastRepository podcastRepo =
+            PodcastRepositoryImpl(_database, _apiClient);
+
+        try {
+          await podcastRepo.deletePodcast(event.podcastId.toString());
+          emit(MyPodcastLoadedState(
+            podcasts: currentPodcasts,
+          ));
+        } catch (e) {
+          print(e);
+        }
       }
     });
   }

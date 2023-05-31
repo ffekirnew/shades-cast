@@ -360,6 +360,8 @@ class sideMenu extends StatelessWidget {
             child: ElevatedButton(
                 onPressed: () {
                   print("logout button pressed");
+
+                  Navigator.pushReplacementNamed(context, '/');
                   // Log user out
                 },
                 child: Text(
