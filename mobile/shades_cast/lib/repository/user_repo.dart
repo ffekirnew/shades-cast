@@ -63,7 +63,8 @@ class UserRepo {
   Future<User> getUserDetail() async {
     UserApiClient user = UserApiClient();
     final result = await user.userDetails();
-    print(result);
+    print('user got called');
+    print(User.fromMap(result));
     User current_user = User.fromMap(result);
 
     return current_user;
@@ -77,6 +78,22 @@ class UserRepo {
     try {
       print('in user repo to update user');
       final result = await user.updateUser(userDetail);
+      print('user succuessfully updated');
+    } catch (er) {
+      print(er);
+      throw ('update failed in user repo');
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  Future<void> updateProfile(dynamic profile) async {
+    UserApiClient user = UserApiClient();
+    try {
+      print('in user repo to update user');
+      final result = await user.updateUser(profile);
       print('user succuessfully updated');
     } catch (er) {
       print(er);

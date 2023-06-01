@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/bloc/podcast_details_and_player_bloc.dart';
 import 'package:shades_cast/screens/podcast_and_episode_player/ui/podcast_and_episode_player.dart';
+import '../../../Infrustructure_layer/api_clients/constants.dart';
 import '../../settings/ui/settings.dart';
 import '../../my_podcasts/ui/myPodcasts.dart';
 import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
@@ -84,6 +85,7 @@ class homepage extends StatelessWidget {
                             size: 25,
                           ),
                           onPressed: () {
+                            print('refreshed');
                             BlocProvider.of<HomeBloc>(context)
                                 .add(GetPodcasts());
                           },
@@ -219,11 +221,13 @@ class sideMenu extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: CircleAvatar(
-                      backgroundColor: Color.fromARGB(255, 227, 227, 227),
-                      child: Icon(
-                        Icons.person,
-                        color: Color.fromARGB(255, 0, 140, 255),
-                      ),
+                      radius: 50.0,
+                      backgroundImage: state.currentUser.profile != null
+                          ? NetworkImage(
+                              '$api/' + state.currentUser.profile['photo'])
+                          : // Display the selected image if available
+                          AssetImage('assets/logo.png') as ImageProvider<
+                              Object>, // Display a default image
                     ),
                     //Image(
                     //   image: AssetImage(
