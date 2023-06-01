@@ -27,7 +27,7 @@ class FunfactApiClient {
         body: funfact, headers: headers);
 
     if (response.statusCode != 201) {
-      return null;
+      throw ("Couldn't get funfact");
     }
     return json.decode(response.body);
   }
