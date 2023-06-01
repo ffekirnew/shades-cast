@@ -58,7 +58,9 @@ class homepage extends StatelessWidget {
                       )
                     ],
                   ),
-                  searchBox(),
+                  searchBox(
+                    key: Key('home_page_search_button'),
+                  ),
                   funFact(
                     state: state,
                     context: context,
