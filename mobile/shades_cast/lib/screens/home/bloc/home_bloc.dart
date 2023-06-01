@@ -9,6 +9,7 @@ import 'package:shades_cast/repository/podcast_repository.dart';
 import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/domain_layer/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:shades_cast/repository/user_repo.dart';
 import 'package:shades_cast/screens/home/ui/homepage.dart';
@@ -35,6 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FunfactRepository funFactRep =
         FunfactRepositoryImpl(_database, _apiClientFunFact);
     Funfact currentFunFact = Funfact(title: "", body: "");
+    bool funfactVisibility = true;
 
     on<HomeEvent>(
       (event, emit) async {
@@ -42,7 +44,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           User user = await userRepo.getUserDetail();
           currentUser = user;
 
-          emit(PodcastListerLoadingState(currentUser: currentUser));
+          emit(PodcastListerLoadingState(
+              currentUser: currentUser, funfactVisibility: funfactVisibility));
           PodcastRepository podcastRepo =
               PodcastRepositoryImpl(_database, _apiClient);
 
@@ -67,12 +70,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   podcasts: currentPodcasts,
                   favoritedPodcastId: favoritedIds,
                   funFact: currentFunFact,
-                  currentUser: currentUser),
+                  currentUser: currentUser,
+                  funfactVisibility: funfactVisibility),
             );
           } catch (e) {
             print('error occured here in home bloc');
             print(e);
-            emit(PodcastsErrorState(currentUser: currentUser));
+            emit(PodcastsErrorState(
+                currentUser: currentUser,
+                funfactVisibility: funfactVisibility));
           }
         } else if (event is PodcasFavorited) {
           PodcastRepository podcastRepo =
@@ -89,12 +95,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               podcasts: currentPodcasts,
               favoritedPodcastId: favoritedIds,
               funFact: currentFunFact,
-              currentUser: currentUser));
+              currentUser: currentUser,
+              funfactVisibility: funfactVisibility));
         } else if (event is PodcastSearched) {
           User user = await userRepo.getUserDetail();
           currentUser = user;
 
-          emit(PodcastListerLoadingState(currentUser: currentUser));
+          emit(PodcastListerLoadingState(
+              currentUser: currentUser, funfactVisibility: funfactVisibility));
           PodcastRepository podcastRepo =
               PodcastRepositoryImpl(_database, _apiClient);
 
@@ -111,13 +119,20 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   podcasts: currentPodcasts,
                   favoritedPodcastId: favoritedIds,
                   funFact: currentFunFact,
-                  currentUser: currentUser),
+                  currentUser: currentUser,
+                  funfactVisibility: funfactVisibility),
             );
           } catch (e) {
             print('error occured here in home bloc');
             print(e);
-            emit(PodcastsErrorState(currentUser: currentUser));
+            emit(PodcastsErrorState(
+              currentUser: currentUser,
+              funfactVisibility: funfactVisibility,
+            ));
           }
+        } else if (event is FunfactWindowClosed) {
+          funfactVisibility = false;
+          BlocProvider.of<HomeBloc>(event.context).add(GetPodcasts());
         }
       },
     );

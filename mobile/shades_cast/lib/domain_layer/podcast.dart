@@ -1,12 +1,12 @@
 import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
 
 class Podcast {
-  final int id;
-  final String title;
-  final String? author;
-  final String? description;
-  final String? imageUrl;
-  final List? categories;
+  int id;
+  String title;
+  String? author;
+  String? description;
+  String? imageUrl;
+  List? categories;
 
   Podcast(
       {required this.id,

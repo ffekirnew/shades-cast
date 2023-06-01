@@ -50,11 +50,9 @@ class _addPodcastsState extends State<addPodcasts> {
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-      }
-    });
+    if (pickedFile != null) {
+      _imageFile = File(pickedFile.path);
+    }
   }
 
   void _submitForm() async {

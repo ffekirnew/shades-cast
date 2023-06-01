@@ -51,7 +51,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     if (localPodcasts.isNotEmpty) {
       return localPodcasts;
     }
-    print('none');
 
     List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
@@ -217,6 +216,15 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return Podcast.fromMap(favourites[index]);
     });
 
+    for (Podcast pod in favs) {
+      String tmp = (pod.imageUrl) ?? "";
+      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
+        pod.imageUrl = api + tmp;
+      }
+    }
+    print("new fav");
+    print(favs);
+
     return favs;
   }
 
@@ -254,6 +262,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
       return Podcast.fromMap(remotePodcasts[index]);
     });
     // await _database.savePodcasts(remotePodcasts);
+
     return podcasts;
     // }
   }
@@ -270,6 +279,15 @@ class PodcastRepositoryImpl implements PodcastRepository {
     List<Podcast> podcasts = List.generate(res.length, (index) {
       return Podcast.fromMap(res[index]);
     });
+
+    for (Podcast pod in podcasts) {
+      String tmp = (pod.imageUrl) ?? "";
+      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
+        pod.imageUrl = api + tmp;
+      }
+    }
+    print("new");
+    print(podcasts);
     return podcasts;
   }
 }

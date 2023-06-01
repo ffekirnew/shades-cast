@@ -19,8 +19,17 @@ import 'package:shades_cast/screens/my_podcasts/bloc/my_podcasts_bloc.dart';
 import 'package:shades_cast/screens/add_epsiode/bloc/add_episode_bloc.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 import 'package:shades_cast/screens/add_funfact/bloc/add_funfact_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shades_cast/Infrustructure_layer/api_clients/authService.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  AuthService auth = AuthService();
+  final token = await auth.getToken();
+  bool isLoggedIn = (token != null);
+  String initialRoute = isLoggedIn ? '/home' : '/';
+
   runApp(
     MultiBlocProvider(
       providers: [
@@ -60,7 +69,7 @@ void main() {
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor: KBodyBgPrimaryColor,
         ),
-        initialRoute: '/',
+        initialRoute: initialRoute,
         routes: {
           '/': (context) => LoginPage(),
           '/home': (context) => homepage(),

@@ -182,7 +182,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
-
+      print(currentPodcast.imageUrl);
       podcasts.add(GestureDetector(
         onTap: () {
           Navigator.push(
