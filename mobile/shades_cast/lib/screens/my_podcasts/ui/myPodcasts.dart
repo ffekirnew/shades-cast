@@ -320,7 +320,10 @@ class _podcastListState extends State<podcastList> {
                 ),
 
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.white,
+                  ),
                   onPressed: () {
                     showDialog(
                       context: context,

@@ -93,6 +93,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF081624),
         title: Text("Account Settings"),
       ),
       body: BlocBuilder<SettingsBloc, SettingsState>(

@@ -60,18 +60,21 @@ class _EpisodeItemState extends State<EpisodeItem> {
                       color: Colors.white),
                 ),
               ),
-              SizedBox(width: 10),
-              Text(
-                durationToString(widget.duration),
-                style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
+              // SizedBox(width: 10),
+              // Text(
+              //   durationToString(widget.duration),
+              //   style: TextStyle(
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.white),
+              // ),
               SizedBox(width: 10),
               widget.dispayDelete
                   ? IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: Icon(
+                        Icons.delete,
+                        color: Colors.white,
+                      ),
                       onPressed: () {
                         showDialog(
                           context: context,

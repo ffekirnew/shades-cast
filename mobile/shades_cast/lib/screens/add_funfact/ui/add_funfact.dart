@@ -12,6 +12,7 @@ class AddFunFactScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF081624),
         title: Text(
           'Add FunFact',
         ),
