@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+import 'package:shades_cast/screens/edit_podcast/bloc/edit_podcast_bloc.dart';
 import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/my_podcasts/ui/myPodcasts.dart';
 import 'screens/add_epsiode/ui/addEpisode.dart';
@@ -22,6 +23,8 @@ import 'package:shades_cast/screens/add_funfact/bloc/add_funfact_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/authService.dart';
 
+import 'package:go_router/go_router.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,6 +32,27 @@ void main() async {
   final token = await auth.getToken();
   bool isLoggedIn = (token != null);
   String initialRoute = isLoggedIn ? '/home' : '/';
+
+  // final _router = GoRouter(
+  //   routes: [
+  //     GoRoute(
+  //       path: '/',
+  //       builder: (context, state) => LoginPage(),
+  //     ),
+  //     GoRoute(
+  //       path: '/home',
+  //       builder: (context, state) => homepage(),
+  //     ),
+  //     GoRoute(
+  //       path: '/myPodcasts',
+  //       builder: (context, state) => MyPodcastsPage(),
+  //     ),
+  //     GoRoute(
+  //       path: '/',
+  //       builder: (context, state) => homepage(),
+  //     ),
+  //   ],
+  // );
 
   runApp(
     MultiBlocProvider(
@@ -62,6 +86,9 @@ void main() async {
         ),
         BlocProvider(
           create: (BuildContext context) => AddFunfactBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => EditPodcastBloc(),
         ),
       ],
       child: MaterialApp(

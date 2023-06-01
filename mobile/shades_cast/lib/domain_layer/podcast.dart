@@ -40,9 +40,6 @@ class Podcast {
   static Podcast fromMap(Map<String, dynamic> map) {
     return Podcast(
       id: map['id'],
-
-//       id: map['id'],
-
       title: map['title'],
       author: map['author'],
       description: map['description'],

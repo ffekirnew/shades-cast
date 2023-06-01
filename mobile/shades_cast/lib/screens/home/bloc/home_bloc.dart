@@ -37,6 +37,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         FunfactRepositoryImpl(_database, _apiClientFunFact);
 
     Funfact currentFunFact = Funfact(title: "", body: "");
+    print(currentFunFact);
     bool funfactVisibility = true;
 
     on<HomeEvent>(
@@ -57,9 +58,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             print('here sfjkf');
             currentPodcasts = podcasts;
 
+            print(' got here also');
             Funfact funfact = await funFactRep.getFunfact();
+            print(' for the love of god');
             currentFunFact = funfact;
-
             final List<Podcast> favPodcasts =
                 await podcastRepo.favoritePodcasts();
             print('here 1');

@@ -34,6 +34,7 @@ abstract class PodcastRepository {
   Future<List<Podcast>> myPodcasts();
   Future<void> addToFavorite(String podcastId);
   Future<void> deleteFromFavorite(String podcastId);
+  Future<void> updatePodcast(dynamic podcast, String podcastId);
 }
 
 class PodcastRepositoryImpl implements PodcastRepository {
@@ -217,9 +218,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
     });
 
     for (Podcast pod in favs) {
-      String tmp = (pod.imageUrl) ?? "";
-      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
-        pod.imageUrl = api + tmp;
+      if (!(pod.imageUrl == null)) {
+        String tmp = (pod.imageUrl) ?? "";
+        if ((pod.imageUrl != null) & (!(pod.imageUrl!.contains('http')))) {
+          pod.imageUrl = api + tmp;
+        }
       }
     }
     print("new fav");
@@ -281,13 +284,28 @@ class PodcastRepositoryImpl implements PodcastRepository {
     });
 
     for (Podcast pod in podcasts) {
-      String tmp = (pod.imageUrl) ?? "";
-      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
-        pod.imageUrl = api + tmp;
+      if (!(pod.imageUrl == null)) {
+        String tmp = (pod.imageUrl) ?? "";
+        if ((pod.imageUrl != null) & (!(pod.imageUrl!.contains('http')))) {
+          pod.imageUrl = api + tmp;
+        }
       }
     }
     print("new");
     print(podcasts);
     return podcasts;
+  }
+
+  @override
+  Future<void> updatePodcast(dynamic podcast, String podcastId) async {
+    final res = await _apiClient.UpdatePodcast(podcast, podcastId);
+    await _database.deletePodcast(podcastId);
+    // if (re != 201) {
+    //   throw Exception("error getting the created podcast");
+    // }
+    // var dynamicpodcast = json.decode(res.body);
+
+    print('here too');
+    await _database.savePodcast(Podcast.fromMap(podcast));
   }
 }

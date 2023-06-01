@@ -221,12 +221,13 @@ class sideMenu extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: CircleAvatar(
                       radius: 50.0,
-                      backgroundImage: state.currentUser.profile != null
-                          ? NetworkImage(
-                              '$api/' + state.currentUser.profile['photo'])
-                          : // Display the selected image if available
-                          AssetImage('assets/logo.png') as ImageProvider<
-                              Object>, // Display a default image
+                      child: Icon(Icons.person),
+                      // backgroundImage: state.currentUser.profile != null
+                      //     ? NetworkImage(
+                      //         '$api/' + state.currentUser.profile['photo'])
+                      //     : // Display the selected image if available
+                      //     AssetImage('assets/logo.png') as ImageProvider<
+                      //         Object>, // Display a default image
                     ),
                     //Image(
                     //   image: AssetImage(

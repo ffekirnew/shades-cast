@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shades_cast/screens/add_podcast/ui/addPodcast.dart';
+import 'package:shades_cast/screens/edit_podcast/ui/editPodcast.dart';
 import '../../add_podcast/ui/addPodcast.dart';
 
 import 'package:flutter/material.dart';
@@ -302,33 +303,59 @@ class _podcastListState extends State<podcastList> {
           child: Column(
             children: [
               ListTile(
-                leading: Image(
-                  image: NetworkImage(currentPodcast.imageUrl ??
-                      "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
+                leading: Container(
+                  width: 100,
+                  child: Image(
+                    image: NetworkImage(currentPodcast.imageUrl ??
+                        "https://fikernewapi.pythonanywhere.com/media/the-daily-show/cover-images/d0260764-4aae-4180-8c49-0b6110c877f9.jpg"), //dummy image for place holder if no image
+                  ),
                 ),
                 title: Text(
                   currentPodcast.title,
                   style: TextStyle(color: Colors.white),
                 ),
 
-                trailing: IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.white,
+                trailing: Container(
+                  width: 100,
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.edit_outlined,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => editPodcasts(
+                                      podcastId: currentPodcast.id,
+                                    )),
+                          );
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return DeleteConfirmationDialog(
+                                onConfirm: () {
+                                  BlocProvider.of<MyPodcastsBloc>(context).add(
+                                      PodcastDeleted(
+                                          podcastId: currentPodcast.id));
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return DeleteConfirmationDialog(
-                          onConfirm: () {
-                            BlocProvider.of<MyPodcastsBloc>(context).add(
-                                PodcastDeleted(podcastId: currentPodcast.id));
-                          },
-                        );
-                      },
-                    );
-                  },
                 ),
                 // trailing: IconButton(
                 //   onPressed: () {
