@@ -15,7 +15,7 @@ void main() {
       (tester) async {
         app.main();
         await tester.pumpAndSettle();
-        await tester.tap(find.byType(Container).at(0));
+        await tester.tap(find.byType(ListTile).at(0));
 
         expect(find.byType(PodcastPage), findsOneWidget);
       },

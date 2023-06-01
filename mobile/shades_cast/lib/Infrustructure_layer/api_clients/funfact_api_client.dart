@@ -31,4 +31,36 @@ class FunfactApiClient {
     }
     return json.decode(response.body);
   }
+
+  Future<void> updateFunfact(String funfactId, dynamic funfact) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.patch(
+        Uri.parse("$api/api/v3/resources/facts/$funfactId/"),
+        headers: headers);
+    if (response.statusCode != 204) {
+      throw Exception('funcfact cretion failed: ');
+    }
+    return json.decode(response.body);
+  }
+
+  Future<void> deleteFunfact(funfactId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.delete(
+        Uri.parse("$api/api/v3/resources/facts/$funfactId/"),
+        headers: headers);
+    if (response.statusCode != 204) {
+      throw Exception('funcfact cretion failed: ');
+    }
+    return json.decode(response.body);
+  }
 }

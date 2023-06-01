@@ -1,7 +1,7 @@
 import random
 
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
@@ -29,7 +29,7 @@ class FactsListView(ListCreateAPIView):
     serializer_class = FactSerializer
 
 
-class FactRetrieveUpdateView(RetrieveUpdateAPIView):
+class FactRetrieveUpdateView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly, IsUserAdminOrReadOnly, ]
     queryset = Fact.objects.all()
     serializer_class = FactSerializer

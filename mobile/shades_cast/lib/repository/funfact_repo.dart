@@ -8,6 +8,8 @@ import 'database/podcast_database.dart';
 abstract class FunfactRepository {
   Future<Funfact> getFunfact();
   Future<void> addFunfact(dynamic funfact);
+  Future<void> updateFunfact(String funfactId, dynamic funfact);
+  Future<void> deleteFunfact(dynamic funfactId);
   Future<List<Funfact>> getFunfacts();
 }
 
@@ -61,5 +63,15 @@ class FunfactRepositoryImpl extends FunfactRepository {
       print(e);
       throw ("Couldn't add funfact in repository");
     }
+  }
+
+  @override
+  Future<void> updateFunfact(String funfactId, dynamic funfact) async {
+    await _apiClient.updateFunfact(funfactId, funfact);
+  }
+
+  @override
+  Future<void> deleteFunfact(funfactId) async {
+    await _apiClient.deleteFunfact(funfactId);
   }
 }

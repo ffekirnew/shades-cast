@@ -50,6 +50,8 @@ dependencies:
   shared_preferences: ^2.1.1
   # mockito: ^5.4.1
   sqflite_common_ffi: ^2.2.5
+  integration_test:
+    sdk: flutter
 # >>>>>>> master
 
 dev_dependencies:

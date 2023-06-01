@@ -48,6 +48,7 @@ class homepage extends StatelessWidget {
                         fit: BoxFit.contain, // set the BoxFit property here
                       ),
                       IconButton(
+                        key: Key('home_page_menu_button'),
                         icon: Icon(Icons.menu),
                         color: Colors.white, // add the menu icon here
                         onPressed: () {
@@ -58,9 +59,7 @@ class homepage extends StatelessWidget {
                       )
                     ],
                   ),
-                  searchBox(
-                    key: Key('home_page_search_button'),
-                  ),
+                  searchBox(),
                   funFact(
                     state: state,
                     context: context,
@@ -588,6 +587,7 @@ class searchBox extends StatelessWidget {
       child: Container(
         height: 50,
         child: TextField(
+          key: Key('home_page_search_text_field'),
           scrollPadding: EdgeInsets.all(0),
           onEditingComplete: () {
             searchFocusNode.unfocus();
@@ -599,6 +599,7 @@ class searchBox extends StatelessWidget {
           decoration: InputDecoration(
             hintText: '',
             suffixIcon: IconButton(
+              key: Key('home_page_search_button'),
               icon: Icon(Icons.search),
               color: Colors.blue,
               onPressed: () {
