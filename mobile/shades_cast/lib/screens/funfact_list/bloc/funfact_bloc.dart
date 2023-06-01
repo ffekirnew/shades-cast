@@ -28,6 +28,10 @@ class FunfactBloc extends Bloc<FunfactEvent, FunfactState> {
           print(e);
           emit(FunfactErrorState());
         }
+      } else if (event is DeleteFunfact) {
+        // try{
+        //   await
+        // }
       }
     });
   }

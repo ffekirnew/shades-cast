@@ -26,18 +26,10 @@ class _MyPodcastsPageState extends State<MyPodcastsPage> {
   @override
   void initState() {
     super.initState();
-    _loadPodcasts();
-  }
-
-  void _loadPodcasts() async {
-    setState(() {});
   }
 
   void _navigateToAddPodcast() async {
-    final result = await Navigator.pushNamed(context, '/add_podcast');
-    if (result == true) {
-      _loadPodcasts();
-    }
+    await Navigator.pushNamed(context, '/add_podcast');
   }
 
   @override

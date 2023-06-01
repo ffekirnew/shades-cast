@@ -48,12 +48,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   Future<void> _pickImage() async {
     final pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
-    setState(() {
-      if (pickedFile != null) {
-        _imageFile = File(pickedFile.path);
-        _isImageSelected = true;
-      }
-    });
+    if (pickedFile != null) {
+      _imageFile = File(pickedFile.path);
+      _isImageSelected = true;
+    }
   }
 
   void _submitForm() async {

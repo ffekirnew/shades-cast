@@ -2,15 +2,24 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:shades_cast/repository/user_repo.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'login_and_signup_event.dart';
 part 'login_and_signup_state.dart';
+
+void updateLoginStatus() async {
+  print('here to update login');
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', true);
+  final res = await prefs.getBool('isLoggedIn');
+  print('login updated');
+  print(res);
+}
 
 class LoginAndSignupBloc
     extends Bloc<LoginAndSignupEvent, LoginAndSignupState> {
   LoginAndSignupBloc() : super(LoginAndSignupInitial()) {
     on<LoginAndSignupEvent>((event, emit) async {
-      // TODO: implement event handler
       emit(LoginState(isLoading: true));
 
       if (event is ToLoginButtonClicked) {
@@ -23,6 +32,7 @@ class LoginAndSignupBloc
         if (res == "Failure") {
           emit(LoginState(failureNote: 'Login Failed. Try again'));
         } else if (res == "Success") {
+          updateLoginStatus();
           Navigator.pushReplacementNamed(event.context, '/home');
         } else {
           emit(LoginState());

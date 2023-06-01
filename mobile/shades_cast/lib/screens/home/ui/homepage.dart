@@ -58,7 +58,10 @@ class homepage extends StatelessWidget {
                     ],
                   ),
                   searchBox(),
-                  funFact(state: state),
+                  funFact(
+                    state: state,
+                    context: context,
+                  ),
                   Container(
                     padding: EdgeInsets.all(5),
                     alignment: Alignment.centerLeft,
@@ -139,7 +142,10 @@ class homepage extends StatelessWidget {
                   ],
                 ),
                 searchBox(),
-                funFact(state: state),
+                funFact(
+                  state: state,
+                  context: context,
+                ),
                 Container(
                   padding: EdgeInsets.all(5),
                   alignment: Alignment.centerLeft,
@@ -358,8 +364,11 @@ class sideMenu extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(20),
             child: ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   print("logout button pressed");
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  await prefs.remove('token');
 
                   Navigator.pushReplacementNamed(context, '/');
                   // Log user out
@@ -476,18 +485,17 @@ class _podcastListState extends State<podcastList> {
 //possible place holder possibly a place to put the the funfact
 class funFact extends StatefulWidget {
   final state;
-  funFact({required this.state});
+  final context;
+  funFact({required this.state, required this.context});
   @override
   State<funFact> createState() => _funFactState();
 }
 
 class _funFactState extends State<funFact> {
-  bool visibility = true;
-
   @override
   Widget build(BuildContext context) {
     return Visibility(
-        visible: visibility,
+        visible: widget.state.funfactVisibility,
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -497,7 +505,7 @@ class _funFactState extends State<funFact> {
             ),
           ),
           // padding: EdgeInsets.all(10),
-          margin: EdgeInsets.all(5),
+          margin: EdgeInsets.fromLTRB(5, 0, 5, 5),
           child: Column(
             children: [
               Row(
@@ -505,9 +513,8 @@ class _funFactState extends State<funFact> {
                 children: [
                   TextButton(
                       onPressed: () {
-                        setState(() {
-                          visibility = !visibility;
-                        });
+                        BlocProvider.of<HomeBloc>(context)
+                            .add(FunfactWindowClosed(context: widget.context));
                       },
                       child: Icon(Icons.close))
                 ],
@@ -572,7 +579,7 @@ class searchBox extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 25),
       child: Container(
-        height: 60,
+        height: 50,
         child: TextField(
           scrollPadding: EdgeInsets.all(0),
           onEditingComplete: () {
@@ -595,7 +602,7 @@ class searchBox extends StatelessWidget {
               },
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(15.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
             filled: true,
             fillColor: Color(0xFF040a11),

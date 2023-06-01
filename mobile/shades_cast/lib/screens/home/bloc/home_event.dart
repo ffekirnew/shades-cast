@@ -24,3 +24,8 @@ class PodcasUnFavorited extends HomeEvent {
 }
 
 class GetPodcasts extends HomeEvent {}
+
+class FunfactWindowClosed extends HomeEvent {
+  final context;
+  FunfactWindowClosed({required this.context});
+}
