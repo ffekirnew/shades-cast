@@ -6,4 +6,4 @@ from .models import Fact
 class FactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fact
-        fields = ('id', 'title', 'body')
+        fields = ('title', 'body')

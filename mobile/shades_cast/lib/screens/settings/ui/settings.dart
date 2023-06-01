@@ -16,7 +16,7 @@ class AccountSettingsScreen extends StatefulWidget {
 }
 
 class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
-  FunfactApiClient apiClient = FunfactApiClient();
+  UserApiClient apiClient = UserApiClient();
   // dynamic user;
 
   File? _imageFile;
@@ -64,13 +64,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       "email": _emailController.text,
     };
 
-    BlocProvider.of<SettingsBloc>(context)
-        .add(AccountDetailSubmitted(accountDetails: newUser));
-
     // if (_isImageSelected) {
     //   dynamic profile = {
     //     "profile_pic": _imageFile,
     //   };
+    //   apiClient.updateProfile(profile);
+    // }
+
+    BlocProvider.of<SettingsBloc>(context)
+        .add(AccountDetailSubmitted(accountDetails: newUser));
 
     //   // var res = await apiClient.userDetails();
     //   // var res = await apiClient.favoritePodcasts();

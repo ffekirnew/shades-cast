@@ -58,17 +58,6 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
   }
 
   void _submitForm() async {
-    // final AuthService authService = AuthService();
-    // String? token = await authService.getToken();
-
-    // var uri = Uri.parse('http://192.168.0.144:8000/api/v2/episodes/');
-    // var request = http.MultipartRequest('POST', uri);
-
-    // // request.headers['Authorization'] = 'Token $token';
-    // request.fields['title'] = _titleController.text;
-    // request.fields['tags'] = _descriptionController.text;
-    // request.fields['podcast'] = widget.podcastId.toString();
-
     if (_audioFile == null) {
       _audioFile =
           await _pickAudio(); // Use await to get the selected audio file
