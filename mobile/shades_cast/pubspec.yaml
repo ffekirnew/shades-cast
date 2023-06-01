@@ -48,11 +48,15 @@ dependencies:
   
   shared_preferences: ^2.1.1
   mockito: ^5.4.1
+  sqflite_common_ffi: ^2.2.5
 # >>>>>>> master
 
 dev_dependencies:
-  # flutter_test:
-  # sdk: flutter
+  flutter_test:
+    sdk: flutter
+  
+  integration_test:
+    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

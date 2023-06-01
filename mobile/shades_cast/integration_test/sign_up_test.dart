@@ -10,11 +10,10 @@ void main() {
 
   group('login test', () {
     testWidgets(
-      'Play episode test',
+      'sign up test',
       (tester) async {
         app.main();
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(Key('home_page_search_button')));
 
         await tester.enterText(
             find.byType(RegularTextField).at(0), 'new_user_01');

@@ -2,12 +2,11 @@ from django.contrib.postgres.search import TrigramSimilarity
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
 
 from taggit.models import Tag
 from podcasts.models import Episode, Podcast
@@ -85,7 +84,6 @@ class UserProfileAPIView(APIView):
         return Response(serializer.data)
 
     def put(self, request, format=None):
-        print('here put')
         user = get_object_or_404(get_user_model(), id=request.user.id)
         profile = user.profile
         serializer = self.serializer_class(profile, data=request.data)

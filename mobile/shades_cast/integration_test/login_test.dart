@@ -10,24 +10,18 @@ void main() {
 
   group('login test', () {
     testWidgets(
-      'Play episode test',
+      'sign up test',
       (tester) async {
         app.main();
         await tester.pumpAndSettle();
-        await tester.tap(find.byKey(Key('home_page_search_button')));
+        await tester.tap(find.byType(TextButton));
+        await tester.pumpAndSettle();
 
-        await tester.enterText(
-            find.byType(RegularTextField).at(0), 'new_user_01');
-        await tester.enterText(
-            find.byType(RegularTextField).at(1), 'new_user_01@gmail.com');
-        await tester.enterText(
-            find.byType(RegularTextField).at(2), 'shades_cast_01');
-        await tester.enterText(
-            find.byType(RegularTextField).at(3), 'shades_cast_01');
+        await tester.enterText(find.byType(RegularTextField).at(0), 'firaol');
+        await tester.enterText(find.byType(RegularTextField).at(1), 'admin');
 
         await tester.tap(find.byType(MaterialButton));
         await tester.pumpAndSettle();
-
         expect(find.byType(homepage), findsOneWidget);
       },
     );
