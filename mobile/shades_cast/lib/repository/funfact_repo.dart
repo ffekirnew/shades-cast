@@ -4,6 +4,7 @@ import 'package:shades_cast/Infrustructure_layer/api_clients/funfact_api_client.
 import 'package:shades_cast/domain_layer/funfact.dart';
 
 import 'database/podcast_database.dart';
+import 'dart:math';
 
 abstract class FunfactRepository {
   Future<Funfact> getFunfact();
@@ -26,16 +27,12 @@ class FunfactRepositoryImpl extends FunfactRepository {
     //   return funfact;
     // }
     final remoteFunfacts = await _apiClient.getFunfact();
-    print('funfact gotten');
-    print(remoteFunfacts);
+
     Funfact newFunfact = Funfact(title: 'title', body: 'body');
-    if (remoteFunfacts.length > 0) {
-      final fact = remoteFunfacts[0];
-      print(fact);
-      newFunfact = Funfact.fromMap(fact);
-    }
+    final fact = remoteFunfacts[Random().nextInt(remoteFunfacts.length)];
+    newFunfact = Funfact.fromMap(fact);
     // await _database.saveFunfact(newFunfact);
-    print('funfact processed');
+
     return newFunfact;
   }
 

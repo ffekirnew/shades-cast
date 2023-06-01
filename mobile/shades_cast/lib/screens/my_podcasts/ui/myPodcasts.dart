@@ -418,7 +418,8 @@ class DeleteConfirmationDialog extends StatelessWidget {
           child: Text('Delete'),
           onPressed: () {
             onConfirm();
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop(); // Close
+            BlocProvider.of<MyPodcastsBloc>(context).add(GetMyPodcasts());
           },
         ),
       ],

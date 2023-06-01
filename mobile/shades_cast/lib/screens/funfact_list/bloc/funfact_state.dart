@@ -15,3 +15,5 @@ class FunfactLoadedState extends FunfactState {
 class FunfactErrorState extends FunfactState {
   final List<Funfact> funfacts = [];
 }
+
+class FunfactLoadingState extends FunfactState {}

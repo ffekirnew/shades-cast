@@ -19,19 +19,17 @@ class FunfactBloc extends Bloc<FunfactEvent, FunfactState> {
     on<FunfactEvent>((event, emit) async {
       if (event is GetAllFunfacts) {
         try {
-          print("here to get funfacts in bloc");
+          emit(FunfactLoadingState());
+
           List<Funfact> funfacts = await funfactRepo.getFunfacts();
-          print("here...ere");
-          print(funfacts);
+
           emit(FunfactLoadedState(funfacts: funfacts));
         } catch (e) {
           print(e);
           emit(FunfactErrorState());
         }
       } else if (event is DeleteFunfact) {
-        // try{
-        //   await
-        // }
+        funfactRepo.deleteFunfact(event.funfactId);
       }
     });
   }
