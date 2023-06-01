@@ -34,6 +34,7 @@ abstract class PodcastRepository {
   Future<List<Podcast>> myPodcasts();
   Future<void> addToFavorite(String podcastId);
   Future<void> deleteFromFavorite(String podcastId);
+  Future<void> updatePodcast(dynamic podcast, String podcastId);
 }
 
 class PodcastRepositoryImpl implements PodcastRepository {
@@ -289,5 +290,18 @@ class PodcastRepositoryImpl implements PodcastRepository {
     print("new");
     print(podcasts);
     return podcasts;
+  }
+
+  @override
+  Future<void> updatePodcast(dynamic podcast, String podcastId) async {
+    final res = await _apiClient.UpdatePodcast(podcast, podcastId);
+    await _database.deletePodcast(podcastId);
+    // if (re != 201) {
+    //   throw Exception("error getting the created podcast");
+    // }
+    // var dynamicpodcast = json.decode(res.body);
+
+    // print('here too');
+    await _database.savePodcast(Podcast.fromMap(podcast));
   }
 }

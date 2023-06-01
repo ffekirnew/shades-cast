@@ -180,7 +180,7 @@ class _editPodcastsState extends State<editPodcasts> {
                     ),
                   ),
                   SizedBox(
-                    height: 150,
+                    height: 50,
                   ),
                   Container(
                     child: Center(

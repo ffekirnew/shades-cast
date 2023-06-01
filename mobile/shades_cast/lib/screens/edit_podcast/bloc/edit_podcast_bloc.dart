@@ -20,8 +20,9 @@ class EditPodcastBloc extends Bloc<EditPodcastEvent, EditPodcastState> {
               PodcastRepositoryImpl(_database, _apiClient);
           dynamic podcastModified = event.modifiedPodcast;
 
-          // await podRepo.EditPodcast(podcastModified, event.podcastId);
-          print('episodeModified');
+          await podRepo.updatePodcast(
+              podcastModified, event.podcastId.toString());
+          print('PodcastModified');
           //submit the podcast
           emit(EditPodcastSuccess());
         } catch (e) {
