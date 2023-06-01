@@ -218,9 +218,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
     });
 
     for (Podcast pod in favs) {
-      String tmp = (pod.imageUrl) ?? "";
-      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
-        pod.imageUrl = api + tmp;
+      if (!(pod.imageUrl == null)) {
+        String tmp = (pod.imageUrl) ?? "";
+        if ((pod.imageUrl != null) & (!(pod.imageUrl!.contains('http')))) {
+          pod.imageUrl = api + tmp;
+        }
       }
     }
     print("new fav");
@@ -282,9 +284,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
     });
 
     for (Podcast pod in podcasts) {
-      String tmp = (pod.imageUrl) ?? "";
-      if ((!(pod.imageUrl!.contains('http')) & (pod.imageUrl != null))) {
-        pod.imageUrl = api + tmp;
+      if (!(pod.imageUrl == null)) {
+        String tmp = (pod.imageUrl) ?? "";
+        if ((pod.imageUrl != null) & (!(pod.imageUrl!.contains('http')))) {
+          pod.imageUrl = api + tmp;
+        }
       }
     }
     print("new");
@@ -301,7 +305,7 @@ class PodcastRepositoryImpl implements PodcastRepository {
     // }
     // var dynamicpodcast = json.decode(res.body);
 
-    // print('here too');
+    print('here too');
     await _database.savePodcast(Podcast.fromMap(podcast));
   }
 }
