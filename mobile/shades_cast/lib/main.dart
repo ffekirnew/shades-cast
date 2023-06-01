@@ -110,7 +110,6 @@ void main() async {
                 podcastId: 1,
               ),
           '/myPodcasts': (context) => MyPodcastsPage(),
-          '/settings': (context) => AccountSettingsScreen(),
         },
       ),
     ),

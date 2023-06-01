@@ -13,6 +13,7 @@ import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart'
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shades_cast/screens/funfact_list/ui/funfact_list.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
+import 'package:shades_cast/domain_layer/user.dart';
 
 class homepage extends StatelessWidget {
   homepage({super.key});
@@ -328,6 +329,11 @@ class sideMenu extends StatelessWidget {
                 MaterialPageRoute(
                     builder: (context) => AccountSettingsScreen(
                           refresh: true,
+                          user: User(
+                              id: state.currentUser.id,
+                              name: state.currentUser.name,
+                              email: state.currentUser.email,
+                              password: ''),
                         )),
               );
             },
