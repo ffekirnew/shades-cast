@@ -495,10 +495,9 @@ class _funFactState extends State<funFact> {
               topLeft: Radius.circular(15),
               bottomLeft: Radius.circular(15),
             ),
-            color: Color.fromARGB(20, 160, 160, 160),
           ),
-          padding: EdgeInsets.all(20),
-          margin: EdgeInsets.all(20),
+          // padding: EdgeInsets.all(10),
+          margin: EdgeInsets.all(5),
           child: Column(
             children: [
               Row(
@@ -516,32 +515,42 @@ class _funFactState extends State<funFact> {
               ((widget.state is PodcastLoadedState) |
                       (widget.state is PodcastsErrorState))
                   ? Container(
-                      margin: EdgeInsets.all(20),
-                      padding: EdgeInsets.only(bottom: 50),
+                      color: Color.fromARGB(99, 0, 170, 255),
+                      // margin: EdgeInsets.all(10),
+                      padding: EdgeInsets.only(bottom: 30),
                       child: Center(
                         child: Column(
                           children: [
-                            Text(
-                              (widget.state is PodcastsErrorState)
-                                  ? ""
-                                  : widget.state.funFact.title,
-                              style: TextStyle(color: Colors.white),
+                            Container(
+                              // padding: EdgeInsets.only(left: 10),
+                              margin: EdgeInsets.only(bottom: 20, top: 20),
+                              child: Text(
+                                (widget.state is PodcastsErrorState)
+                                    ? ""
+                                    : widget.state.funFact.title,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
                             ),
-                            Text(
-                              (widget.state is PodcastsErrorState)
-                                  ? "An error Occured"
-                                  : widget.state.funFact.body,
-                              style: (widget.state is PodcastsErrorState)
-                                  ? TextStyle(color: Colors.red, fontSize: 18)
-                                  : TextStyle(
-                                      color: Colors.white, fontSize: 18),
+                            Container(
+                              // padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                (widget.state is PodcastsErrorState)
+                                    ? "An error Occured"
+                                    : widget.state.funFact.body,
+                                style: (widget.state is PodcastsErrorState)
+                                    ? TextStyle(color: Colors.red, fontSize: 16)
+                                    : TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     )
                   : Container(
-                      padding: EdgeInsets.only(bottom: 10),
+                      color: Color.fromARGB(129, 67, 160, 207),
+                      padding: EdgeInsets.only(bottom: 20, top: 20),
                       child: SpinKitFadingCircle(
                         color: Color.fromARGB(255, 37, 153, 255),
                       ),
@@ -561,9 +570,11 @@ class searchBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 15),
+      padding: EdgeInsets.symmetric(vertical: 25),
       child: Container(
+        height: 60,
         child: TextField(
+          scrollPadding: EdgeInsets.all(0),
           onEditingComplete: () {
             searchFocusNode.unfocus();
             BlocProvider.of<HomeBloc>(context)
@@ -584,7 +595,7 @@ class searchBox extends StatelessWidget {
               },
             ),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(25.0),
+              borderRadius: BorderRadius.circular(15.0),
             ),
             filled: true,
             fillColor: Color(0xFF040a11),

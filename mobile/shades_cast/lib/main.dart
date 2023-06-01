@@ -57,7 +57,9 @@ void main() {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData.dark(),
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: KBodyBgPrimaryColor,
+        ),
         initialRoute: '/',
         routes: {
           '/': (context) => LoginPage(),

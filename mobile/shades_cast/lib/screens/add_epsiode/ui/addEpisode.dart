@@ -123,6 +123,7 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF081624),
         title: Text("Add Episode"),
       ),
       body: BlocBuilder<AddEpisodeBloc, AddEpisodeState>(

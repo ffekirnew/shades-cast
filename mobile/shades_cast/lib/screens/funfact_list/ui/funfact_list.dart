@@ -61,6 +61,7 @@ class FunFactListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF081624),
         title: Row(
           children: [
             Text('FunFacts'),

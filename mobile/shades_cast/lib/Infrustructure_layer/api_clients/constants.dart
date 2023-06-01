@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const String api = 'http://10.4.192.7:8000';
 
-const KBodyBgPrimaryColor = Color(0xFFFFFFFF); // White
+const KBodyBgPrimaryColor = Color(0xFF09121C); // White
 const KBodyBgSecondaryColor = Color(0xFFF0F0F0); // Light Gray
 const KBodyBgTertiaryColor = Color(0xFFE0E0E0); // Gray
 

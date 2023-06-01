@@ -86,6 +86,7 @@ class _addPodcastsState extends State<addPodcasts> {
       ),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Color(0xFF081624),
           title: Text("Add Podcast"),
         ),
         body: SingleChildScrollView(
