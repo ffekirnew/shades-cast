@@ -23,6 +23,7 @@ import 'package:shades_cast/screens/add_funfact/bloc/add_funfact_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/authService.dart';
 
+import 'package:shades_cast/screens/edit_funfact/bloc/edit_funfact_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
@@ -89,6 +90,9 @@ void main() async {
         ),
         BlocProvider(
           create: (BuildContext context) => EditPodcastBloc(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => EditFunfactBloc(),
         ),
       ],
       child: MaterialApp(

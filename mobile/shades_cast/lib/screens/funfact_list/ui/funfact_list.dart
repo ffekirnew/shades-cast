@@ -4,6 +4,8 @@ import 'package:shades_cast/screens/add_funfact/ui/add_funfact.dart';
 import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shades_cast/screens/edit_funfact/bloc/edit_funfact_bloc.dart';
+import 'package:shades_cast/screens/edit_funfact/ui/editFunfact.dart';
 
 class FunFactCard extends StatelessWidget {
   final String title;
@@ -39,9 +41,29 @@ class FunFactCard extends StatelessWidget {
               body,
               style: bodySyle,
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: onDelete,
+            trailing: Container(
+              width: 100,
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editPodcasts(
+                                  fact: Funfact(title: title, body: body))),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      )),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: onDelete,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
