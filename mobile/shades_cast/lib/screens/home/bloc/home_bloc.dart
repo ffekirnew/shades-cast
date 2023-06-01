@@ -23,8 +23,8 @@ part 'home_state.dart';
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc()
       : super(HomeInitial(
-            currentUser:
-                User(id: 1, name: 'Shamil Bedru', email: '', password: ''))) {
+            currentUser: User(id: 1, name: '', email: '', password: ''))) {
+    print('ooooooooooo');
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
@@ -35,6 +35,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FunfactApiClient _apiClientFunFact = FunfactApiClient();
     FunfactRepository funFactRep =
         FunfactRepositoryImpl(_database, _apiClientFunFact);
+
     Funfact currentFunFact = Funfact(title: "", body: "");
     bool funfactVisibility = true;
 
@@ -42,6 +43,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (event, emit) async {
         if (event is GetPodcasts) {
           User user = await userRepo.getUserDetail();
+          print("at least here");
+          print(user.name);
           currentUser = user;
 
           emit(PodcastListerLoadingState(
@@ -51,17 +54,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           try {
             final List<Podcast> podcasts = await podcastRepo.getPodcasts();
+            print('here sfjkf');
             currentPodcasts = podcasts;
-            print('here');
 
             Funfact funfact = await funFactRep.getFunfact();
             currentFunFact = funfact;
 
             final List<Podcast> favPodcasts =
                 await podcastRepo.favoritePodcasts();
-
+            print('here 1');
+            print('here 2');
             favoritedIds = [];
             for (final pod in favPodcasts) {
+              print('herre surrrrr');
               favoritedIds.add(pod.id);
             }
 
