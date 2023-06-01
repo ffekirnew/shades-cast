@@ -16,6 +16,7 @@ abstract class PodcastRepository {
   Future<List<Podcast>> getMyPodcasts();
 
   Future<void> addPodcast(dynamic podcast);
+  Future<void> updatePodcast(dynamic podcast, String podcastId);
 
   Future<void> deletePodcast(String podcastId);
 
@@ -254,5 +255,18 @@ class PodcastRepositoryImpl implements PodcastRepository {
     });
     // await _database.savePodcasts(remotePodcasts);
     return podcasts;
+  }
+
+  @override
+  Future<void> updatePodcast(dynamic podcast, String podcastId) async {
+    final res = await _apiClient.UpdatePodcast(podcast, podcastId);
+    await _database.deletePodcast(podcastId);
+    // if (re != 201) {
+    //   throw Exception("error getting the created podcast");
+    // }
+    // var dynamicpodcast = json.decode(res.body);
+
+    // print('here too');
+    await _database.savePodcast(Podcast.fromMap(podcast));
   }
 }

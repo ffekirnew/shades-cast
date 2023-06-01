@@ -51,8 +51,3 @@ class PodcastsErrorState extends HomeState {
   PodcastsErrorState(
       {required this.currentUser, this.funfactVisibility = true});
 }
-
-// class PodcastFavoritedState extends HomeState {
-//   final int podcastId;
-//   PodcastFavoritedState({required this.podcastId});
-// }

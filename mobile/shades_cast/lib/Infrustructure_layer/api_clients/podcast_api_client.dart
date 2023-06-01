@@ -250,6 +250,58 @@ class PodcastApiClient {
     }
   }
 
+  //////////////////Method to handle updating the podcast
+  ///
+  ///
+  ///
+  Future<dynamic> UpdatePodcast(dynamic podcast, String podcastId) async {
+    File _imageFile = podcast["cover_image"];
+    String title = podcast["title"];
+    String description = podcast["description"];
+    String categories = podcast["categories"];
+
+    final AuthService authService = AuthService();
+
+    var stream = http.ByteStream(_imageFile.openRead());
+    stream.cast();
+    var length = await _imageFile.length();
+    var uri = Uri.parse('$api/api/v3/resources/podcasts/$podcastId');
+    var request = http.MultipartRequest('PATCH', uri);
+    String? token = await authService.getToken();
+    print(token);
+    request.headers['Authorization'] = 'Token $token';
+    request.fields['title'] = title;
+    request.fields['categories'] = categories;
+    request.fields['description'] = description;
+
+    var multipartFile = http.MultipartFile(
+      'cover_image',
+      stream,
+      length,
+      filename: path.basename(_imageFile.path), // Use the original filename
+    );
+    request.files.add(multipartFile);
+    request.fields['cover_image'] = path.basename(_imageFile.path);
+
+    try {
+      var response = await request.send();
+      if (response.statusCode != 201) {
+        print((response.statusCode));
+        print("Error sending the file");
+      } else {
+        // Retrieve the created podcast object from the response
+        var responseString = await response.stream.bytesToString();
+        var jsonResponse = jsonDecode(responseString);
+        // var createdPodcast = jsonResponse['body'];
+        // Return the created podcast object
+        return jsonResponse;
+      }
+      return response;
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
   //method to handle the deletion of a specific podcast by using its ID
   //////////////////////////////////
   ///
@@ -364,50 +416,3 @@ class PodcastApiClient {
     }
   }
 }
-
-
-
-  //method to add a new podcast
-  //////////////////////////////////
-  ///
-  ///
-  ///
-  ///
-  // Future<dynamic> addPodcast(dynamic podcast) async {
-  //   String? token = await authService.getToken();
-  //   if (token == null) {
-  //     throw Exception("cannot get token");
-  //   }
-  //   Map<String, String> headers = {'Authorization': 'Bearer $token'};
-  //   final response = await http.post(
-  //     Uri.parse('$api/api/podcasts'),
-  //     body: podcast,
-  //     headers: headers,
-  //   );
-  // }
-
-  //method to handle the deletion of a specific podcast by using its ID
-  //////////////////////////////////
-  ///
-  ///
-  ///
-  // Future<void> deletePodcast(String podcastId) async {
-  //   String? token = await authService.getToken();
-  //   if (token == null) {
-  //     throw Exception("cannot get token");
-  //   }
-  //   Map<String, String> headers = {'Authorization': 'Bearer $token'};
-  //   final response = await http.delete(
-  //     Uri.parse('$api/api/podcasts/' + podcastId),
-  //     headers: headers,
-  //   );
-
-  //   if (response.statusCode != 204) {
-  //     throw Exception('Failed to delete podcast with ID $podcastId');
-  //   }
-  // }
-
-  ////////////////////////////////
-  ///
-  ///
-  ///
