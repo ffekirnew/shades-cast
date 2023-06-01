@@ -619,5 +619,3 @@ class searchBox extends StatelessWidget {
     );
   }
 }
-// Color(0xFF081624)
-

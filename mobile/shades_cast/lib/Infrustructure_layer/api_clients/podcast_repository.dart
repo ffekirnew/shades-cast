@@ -93,14 +93,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
     print('here too');
     await _database.savePodcast(Podcast.fromMap(podcast));
   }
-  ////////////////////////////////////////////////////////////////
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
-  ///
 
   ////////////////////////////////////////////////////////////////
   ///
@@ -232,16 +224,11 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getMyPodcasts() async {
-    // final localPodcasts = await _database.getPodcasts();
-
-    // if (localPodcasts.isNotEmpty) {
-    //   return localPodcasts;
-    // } else {
     List<dynamic> remotePodcasts = await _apiClient.getMyPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
-    // await _database.savePodcasts(remotePodcasts);
+
     return podcasts;
     // }
   }
@@ -261,12 +248,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
   Future<void> updatePodcast(dynamic podcast, String podcastId) async {
     final res = await _apiClient.UpdatePodcast(podcast, podcastId);
     await _database.deletePodcast(podcastId);
-    // if (re != 201) {
-    //   throw Exception("error getting the created podcast");
-    // }
-    // var dynamicpodcast = json.decode(res.body);
-
-    // print('here too');
     await _database.savePodcast(Podcast.fromMap(podcast));
   }
 }

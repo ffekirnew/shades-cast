@@ -31,4 +31,17 @@ class FunfactApiClient {
     }
     return json.decode(response.body);
   }
+
+  ////////////////////////////////
+  ///
+  ///
+  Future<void> deleteFunfact(String funfactId) async {
+    String? token = await authService.getToken();
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.post(Uri.parse("$api/api/v3/resources/facts/"));
+  }
 }

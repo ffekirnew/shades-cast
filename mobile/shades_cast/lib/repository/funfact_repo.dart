@@ -26,7 +26,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
     final remoteFunfacts = await _apiClient.getFunfact();
     print('funfact gotten');
     print(remoteFunfacts);
-    Funfact newFunfact = Funfact(title: 'title', body: 'body');
+    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: "");
     if (remoteFunfacts.length > 0) {
       final fact = remoteFunfacts[0];
       print(fact);
@@ -42,7 +42,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
     final List<Funfact> facts = [];
     print('funfact gotten');
     print(remoteFunfacts);
-    Funfact newFunfact = Funfact(title: 'title', body: 'body');
+    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
     for (int i = 0; i < remoteFunfacts.length; i++) {
       final fact = remoteFunfacts[i];
       print(fact);
