@@ -114,24 +114,26 @@ class UserApiClient {
   ///
   Future<dynamic> updateProfile(dynamic profile) async {
     File profile_pic = profile["profile_pic"];
+    final AuthService authService = AuthService();
+
+    String? token = await authService.getToken();
+    print(token);
     // print(profile_pic);
     // print('got here');
     // String? token = await authService.getToken();
 
     // if (token == null) {}
 
-    final AuthService authService = AuthService();
-
     var stream = http.ByteStream(profile_pic.openRead());
     stream.cast();
     var length = await profile_pic.length();
-    var uri = Uri.parse('$api/api/v3/my-account/profile/');
-    var request = http.MultipartRequest('PUT', uri);
-    String? token = await authService.getToken();
+    var uri = Uri.parse('$api/api/v3/my-account/profile');
+    var request = http.MultipartRequest('PATCH', uri);
+    print('token : $token');
 
     request.headers['Authorization'] = 'Token $token';
     // request.fields['title'] = title;
-    request.fields['date_of_birth'] = "2020/12/10";
+    // request.fields['date_of_birth'] = "2020/12/10";
 
     var multipartFile = http.MultipartFile(
       'photo',
