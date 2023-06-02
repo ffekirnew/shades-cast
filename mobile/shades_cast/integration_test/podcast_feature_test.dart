@@ -51,6 +51,7 @@ void main() {
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(Key('home_page_menu_button')));
+        await Future.delayed(const Duration(milliseconds: 2000));
         await tester.pumpAndSettle();
 
         await tester.tap(find.byKey(Key('my_podcasts_button')));
