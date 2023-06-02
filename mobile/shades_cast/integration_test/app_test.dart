@@ -61,6 +61,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         await tester.tap(find.byKey(Key('logout_button')));
         await tester.pumpAndSettle();
 
