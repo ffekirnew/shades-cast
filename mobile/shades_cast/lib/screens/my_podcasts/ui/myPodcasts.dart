@@ -320,6 +320,7 @@ class _podcastListState extends State<podcastList> {
                   child: Row(
                     children: [
                       IconButton(
+                        key: Key("my_podcasts_edit_button"),
                         icon: Icon(
                           Icons.edit_outlined,
                           color: Colors.white,
@@ -335,6 +336,7 @@ class _podcastListState extends State<podcastList> {
                         },
                       ),
                       IconButton(
+                        key: Key("my_podcasts_delete_button"),
                         icon: Icon(
                           Icons.delete,
                           color: Colors.white,

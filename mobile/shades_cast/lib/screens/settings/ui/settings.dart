@@ -173,6 +173,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                   Container(
                     child: Center(
                       child: Text(
+                        key: Key('errorMessage'),
                         errorMessage,
                         style: TextStyle(
                             color: (errorMessage == 'Error occured. Try again')

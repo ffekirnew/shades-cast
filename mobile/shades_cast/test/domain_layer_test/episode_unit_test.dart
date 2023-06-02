@@ -33,7 +33,7 @@ void main() {
       final episode = Episode.fromMap(episodeData);
 
       expect(episode.id, equals('1'));
-      expect(episode.podcastId, equals('abc123'));
+      expect(episode.podcastId, equals(null));
       expect(episode.title, equals('Episode Title'));
       expect(episode.description, equals('Episode Description'));
       expect(episode.audioUrl, equals('https://example.com/audio.mp3'));

@@ -263,6 +263,7 @@ class sideMenu extends StatelessWidget {
           ),
 
           ListTile(
+            key: Key('my_podcasts_button'),
             leading: Icon(
               Icons.mic,
               color: Colors.white,
@@ -288,6 +289,7 @@ class sideMenu extends StatelessWidget {
             color: Color(0xFF040a11),
           ),
           ListTile(
+            key: Key('favorite_podcasts_button'),
             leading: Icon(
               Icons.favorite,
               color: Colors.white,
@@ -312,6 +314,7 @@ class sideMenu extends StatelessWidget {
             color: Color(0xFF040a11),
           ),
           ListTile(
+            key: Key('account_settings_button'),
             leading: Icon(
               Icons.settings,
               color: Colors.white,
@@ -338,6 +341,7 @@ class sideMenu extends StatelessWidget {
           ),
           (state.currentUser.name == 'admin')
               ? ListTile(
+                  key: Key('admin_funfacts_button'),
                   leading: Icon(
                     Icons.note,
                     color: Colors.white,
@@ -370,8 +374,8 @@ class sideMenu extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(20),
             child: ElevatedButton(
+                key: Key('logout_button'),
                 onPressed: () async {
-                  print("logout button pressed");
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.remove('token');
