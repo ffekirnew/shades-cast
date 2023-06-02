@@ -48,32 +48,19 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getPodcasts() async {
-<<<<<<< HEAD
-    // print('hereeeeeee 111111');
-=======
->>>>>>> 98b11d7 (final touhes)
     final localPodcasts = await _database.getPodcasts();
     print(localPodcasts);
     if (localPodcasts.isNotEmpty) {
       return localPodcasts;
     }
-<<<<<<< HEAD
-    // print('hereeeeeee 22222');
-=======
 
->>>>>>> 98b11d7 (final touhes)
     List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
-<<<<<<< HEAD
     // print(podcasts);
-    for (Podcast podcast in podcasts) {
-      // print('got hereeeeeeee');
-=======
 
     for (Podcast podcast in podcasts) {
->>>>>>> 98b11d7 (final touhes)
       await _database.savePodcast(podcast);
     }
 
@@ -106,11 +93,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<void> addPodcast(dynamic podcast) async {
     final res = await _apiClient.addPodcast(podcast);
-<<<<<<< HEAD
-    // print('printing');
-    // print(podcast);
-=======
->>>>>>> 98b11d7 (final touhes)
     if (res == null) {
       throw Exception("error getting the created podcast");
     }
@@ -162,16 +144,8 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<void> addEpisode(dynamic episode) async {
-<<<<<<< HEAD
-    // print('got here safeeee');
-    Episode saved_episode = Episode.fromMap(episode as Map<String, dynamic>);
-    // print(saved_episode);
-    // print('heere tooo');
-    // await _database.saveEpisode(saved_episode);
-=======
     Episode saved_episode = Episode.fromMap(episode as Map<String, dynamic>);
     await _database.saveEpisode(saved_episode);
->>>>>>> 98b11d7 (final touhes)
     await _apiClient.addEpisode(episode);
   }
 
@@ -193,10 +167,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
   @override
   Future<List<Episode>> getEpisodes(String podcastId) async {
     try {
-<<<<<<< HEAD
-      final remoteEpisodes = await _apiClient.getEpisodes(podcastId);
-      // print(remoteEpisodes);
-=======
       final localEpisodes = await _database.getEpisodes(podcastId);
       print(localEpisodes);
       if (localEpisodes.isNotEmpty) {
@@ -205,7 +175,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
 
       final remoteEpisdes = await _apiClient.getEpisodes(podcastId);
 
->>>>>>> 98b11d7 (final touhes)
       List<Episode> episodes = [];
 
       for (final episode in remoteEpisdes) {
@@ -213,11 +182,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
         await _database.saveEpisode(newEpisode);
         episodes.add(newEpisode);
       }
-<<<<<<< HEAD
-      // print(episodes);
-      // await _database.saveEpisodes(episodes);
-=======
->>>>>>> 98b11d7 (final touhes)
 
       return episodes;
     } catch (e) {
@@ -264,11 +228,6 @@ class PodcastRepositoryImpl implements PodcastRepository {
         }
       }
     }
-<<<<<<< HEAD
-    // print("new fav");
-    // print(favs);
-=======
->>>>>>> 98b11d7 (final touhes)
 
     return favs;
   }

@@ -68,23 +68,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
     BlocProvider.of<SettingsBloc>(context)
         .add(AccountDetailSubmitted(accountDetails: newUser));
-<<<<<<< HEAD
-
-    //   // var res = await apiClient.userDetails();
-    //   // var res = await apiClient.favoritePodcasts();
-    //   // // print(res);
-
-    //   final res = await apiClient.updateProfile(profile);
-    //   // print(res);
-    // }
-    // dynamic funfact = {
-    //   "title": "happy life",
-    //   "body": "it seems impossible until it's done"
-    // };
-    // var res = await apiClient.getFunfact();
-    // // print(res);
-=======
->>>>>>> 98b11d7 (final touhes)
   }
 
   @override

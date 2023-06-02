@@ -25,10 +25,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc()
       : super(HomeInitial(
             currentUser: User(id: 1, name: '', email: '', password: ''))) {
-<<<<<<< HEAD
-    // print('ooooooooooo');
-=======
->>>>>>> 98b11d7 (final touhes)
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
@@ -59,10 +55,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               PodcastRepositoryImpl(_database, _apiClient);
 
           try {
-<<<<<<< HEAD
-            // print('hereee maybe');
-=======
->>>>>>> 98b11d7 (final touhes)
             final List<Podcast> podcasts = await podcastRepo.getPodcasts();
 
             currentPodcasts = podcasts;
@@ -125,10 +117,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               PodcastRepositoryImpl(_database, _apiClient);
 
           try {
-<<<<<<< HEAD
-            // print('here to search');
-=======
->>>>>>> 98b11d7 (final touhes)
             final List<Podcast> podcasts =
                 await podcastRepo.searchPodcasts(event.searchTerm);
             currentPodcasts = podcasts;
@@ -159,10 +147,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             Navigator.pushReplacementNamed(event.context, '/');
             SharedPreferences pref = await SharedPreferences.getInstance();
             pref.remove('token');
-<<<<<<< HEAD
-            // print('here to delete acc success');
-=======
->>>>>>> 98b11d7 (final touhes)
           } catch (e) {
             // print(e);
           }
