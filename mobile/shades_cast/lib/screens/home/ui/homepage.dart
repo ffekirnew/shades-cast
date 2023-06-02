@@ -336,6 +336,7 @@ class sideMenu extends StatelessWidget {
                               id: state.currentUser.id,
                               name: state.currentUser.name,
                               email: state.currentUser.email,
+                              profile: state.currentUser.profile,
                               password: ''),
                         )),
               );

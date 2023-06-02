@@ -100,6 +100,14 @@ class UserRepo {
       throw ('update failed in user repo');
     }
   }
+
+  ////////////////////////////////////////////////
+  ///
+  ///
+  Future<void> deleteUser(String userId) async {
+    UserApiClient user = UserApiClient();
+    await user.deleteUser(userId);
+  }
 }
 
 // dont forget to clean it up by removing the creation of service out of the repo
