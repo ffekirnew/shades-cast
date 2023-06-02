@@ -42,14 +42,12 @@ class _editPodcastsState extends State<editPodcasts> {
   @override
   void initState() {
     super.initState();
-    // Initialize the controllers with the current user info
+
     _titleController = TextEditingController(text: widget.fact.title);
     _bodyController = TextEditingController(text: widget.fact.body);
   }
 
   void _submitForm() async {
-    // Get the form field values
-
     dynamic modifiedFunfact = {
       "title": _titleController.text,
       "body": _bodyController.text,
@@ -58,10 +56,6 @@ class _editPodcastsState extends State<editPodcasts> {
 
     BlocProvider.of<EditFunfactBloc>(context).add(EditFunfactSubmitted(
         modifiedFunfact: modifiedFunfact, FunfactId: widget.funfactId));
-    // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
-    // final res = await podRepo.searchPodcast('funny');
-    // print(res);
-    // print(res);
   }
 
   @override
