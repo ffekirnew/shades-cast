@@ -178,4 +178,26 @@ class UserApiClient {
       return jsonDecode(response.body);
     }
   }
+
+  ////////////////////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  ///
+  Future<void> deleteUser(String userId) async {
+    String? token = await authService.getToken();
+    // print(token);
+    if (token == null) {
+      throw Exception("cannot get token");
+    }
+    Map<String, String> headers = {'Authorization': 'Token $token'};
+    final response = await http.get(Uri.parse('$api/api/v3/users/$userId'),
+        headers: headers);
+
+    if (response.statusCode != 204) {
+      throw Exception("cannot update user");
+    } else {
+      return jsonDecode(response.body);
+    }
+  }
 }
