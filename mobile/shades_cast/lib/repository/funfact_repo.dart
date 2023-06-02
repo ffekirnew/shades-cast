@@ -20,13 +20,13 @@ class FunfactRepositoryImpl extends FunfactRepository {
   FunfactRepositoryImpl(this._database, this._apiClient);
   @override
   Future<Funfact> getFunfact() async {
-    final localFunfacts = await _database.getFunfact();
+    // final localFunfacts = await _database.getFunfact();
 
-    print(localFunfacts);
+    // // print(localFunfacts);
 
-    if (localFunfacts.isNotEmpty) {
-      return localFunfacts[Random().nextInt(localFunfacts.length)];
-    }
+    // if (localFunfacts.isNotEmpty) {
+    //   return localFunfacts[Random().nextInt(localFunfacts.length)];
+    // }
 
     final remoteFunfacts = await _apiClient.getFunfact();
     print('heree right');
@@ -42,11 +42,11 @@ class FunfactRepositoryImpl extends FunfactRepository {
   }
 
   Future<List<Funfact>> getFunfacts() async {
-    final localFunfacts = await _database.getFunfact();
-    print(localFunfacts);
-    if (localFunfacts.isNotEmpty) {
-      return localFunfacts;
-    }
+    // final localFunfacts = await _database.getFunfact();
+    // print(localFunfacts);
+    // if (localFunfacts.isNotEmpty) {
+    //   return localFunfacts;
+    // }
     final remoteFunfacts = await _apiClient.getFunfact();
     final List<Funfact> facts = [];
 
@@ -78,6 +78,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
 
   @override
   Future<void> deleteFunfact(funfactId) async {
+    // await _database.deleteFunfact(funfactId);
     await _apiClient.deleteFunfact(funfactId);
   }
 }

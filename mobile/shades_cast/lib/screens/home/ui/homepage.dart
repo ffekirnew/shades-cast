@@ -349,8 +349,7 @@ class sideMenu extends StatelessWidget {
             thickness: 2.0,
             color: Color(0xFF040a11),
           ),
-          // (state.currentUser.is_admin != null && state.currentUser.is_admin)
-          (state.currentUser.name == 'admin')
+          (state.currentUser.is_admin != null && state.currentUser.is_admin)
               ? ListTile(
                   key: Key('admin_funfacts_button'),
                   leading: Icon(
@@ -375,7 +374,7 @@ class sideMenu extends StatelessWidget {
                 )
               : Container(),
 
-          (state.currentUser.name == 'admin')
+          (state.currentUser.is_admin != null && state.currentUser.is_admin)
               ? Divider(
                   thickness: 2.0,
                   color: Color(0xFF040a11),

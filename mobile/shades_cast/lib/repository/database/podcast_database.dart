@@ -244,4 +244,12 @@ class PodcastDatabase {
     await db.insert('funfacts', funfact.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
+
+  ///////////////////
+  ///
+  ///
+  Future<void> deleteFunfact(String funfactId) async {
+    final db = await openDb();
+    db.delete('funfacts', where: 'id =?', whereArgs: [funfactId]);
+  }
 }

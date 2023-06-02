@@ -79,6 +79,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         await tester.tap(find.byKey(Key('account_settings_button')));
         await tester.pumpAndSettle();
 
@@ -101,6 +103,8 @@ void main() {
 
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
+
+        await Future.delayed(Duration(seconds: 2), () {});
 
         await tester.tap(find.byKey(Key('delete_account_button')));
         await tester.pumpAndSettle();
@@ -129,6 +133,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         expect(find.byKey(Key("admin_funfacts_button")), findsOneWidget);
       },
     );
@@ -151,6 +157,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         expect(find.byKey(Key("admin_funfacts_button")), findsNothing);
       },
     );
@@ -166,6 +174,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         await tester.tap(find.byKey(Key('my_podcasts_button')));
         await tester.pumpAndSettle();
 
@@ -180,6 +190,8 @@ void main() {
 
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
+
+        await Future.delayed(Duration(seconds: 2), () {});
 
         await tester.tap(find.byKey(Key('my_podcasts_button')));
         await tester.pumpAndSettle();
@@ -223,6 +235,8 @@ void main() {
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
 
+        await Future.delayed(Duration(seconds: 2), () {});
+
         await tester.tap(find.byKey(Key('my_podcasts_button')));
         await tester.pumpAndSettle();
 
@@ -240,6 +254,8 @@ void main() {
 
         await tester.tap(find.byKey(Key('home_page_menu_button')));
         await tester.pumpAndSettle();
+
+        await Future.delayed(Duration(seconds: 2), () {});
 
         await tester.tap(find.byKey(Key('my_podcasts_button')));
         await tester.pumpAndSettle();
