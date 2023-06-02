@@ -15,9 +15,9 @@ import '../../../repository/database/podcast_database.dart';
 
 class editPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
-  int podcastId;
+  Podcast podcast;
 
-  editPodcasts({required this.podcastId});
+  editPodcasts({required this.podcast});
 
   @override
   _editPodcastsState createState() => _editPodcastsState();
@@ -25,28 +25,22 @@ class editPodcasts extends StatefulWidget {
 
 class _editPodcastsState extends State<editPodcasts> {
   PodcastApiClient apiClient = PodcastApiClient();
-  PodcastApiClient _apiClient = PodcastApiClient();
-  PodcastDatabase _database = PodcastDatabase();
 
   late File _imageFile;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _usernameController;
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _categoryController;
 
   @override
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
     _imageFile = File('assets/logo.png');
-    _firstNameController = TextEditingController(text: "John");
-    _lastNameController = TextEditingController(text: "Doe");
-    _usernameController = TextEditingController(text: "johndoe");
-    _emailController = TextEditingController(text: "johndoe@example.com");
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _titleController = TextEditingController(text: widget.podcast.title);
+    _descriptionController =
+        TextEditingController(text: widget.podcast.description);
+
+    _categoryController = TextEditingController(text: '');
   }
 
   Future<void> _pickImage() async {
@@ -61,14 +55,14 @@ class _editPodcastsState extends State<editPodcasts> {
     // Get the form field values
 
     dynamic modifiedPodcast = {
-      "title": _firstNameController.text,
-      "description": _lastNameController.text,
-      "categories": _usernameController.text,
+      "title": _titleController.text,
+      "description": _descriptionController.text,
+      "categories": _categoryController.text,
       "cover_image": _imageFile
     };
 
     BlocProvider.of<EditPodcastBloc>(context).add(EditPodcastSubmitted(
-        modifiedPodcast: modifiedPodcast, podcastId: widget.podcastId));
+        modifiedPodcast: modifiedPodcast, podcastId: widget.podcast.id));
     // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
     // final res = await podRepo.searchPodcast('funny');
     // print(res);
@@ -124,7 +118,7 @@ class _editPodcastsState extends State<editPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _firstNameController,
+                    controller: _titleController,
                     decoration: InputDecoration(
                       labelText: "Title",
                       fillColor: Colors.blue,
@@ -136,7 +130,7 @@ class _editPodcastsState extends State<editPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _lastNameController,
+                    controller: _descriptionController,
                     decoration: InputDecoration(
                       labelText: "Description",
                       labelStyle: TextStyle(color: Colors.blue),
@@ -147,24 +141,11 @@ class _editPodcastsState extends State<editPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _usernameController,
+                    controller: _categoryController,
                     decoration: InputDecoration(
                       labelText: "Category",
                       labelStyle: TextStyle(color: Colors.blue),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    decoration: InputDecoration(
-                      fillColor:
-                          Colors.blue, // sets the background color to blue
-                      labelStyle: TextStyle(color: Colors.blue),
-                      labelText: "Email",
-                    ),
-                    controller: _emailController,
                   ),
                   SizedBox(height: 16.0),
                   SizedBox(height: 32.0),

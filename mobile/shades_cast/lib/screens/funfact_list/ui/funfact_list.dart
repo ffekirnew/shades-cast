@@ -23,26 +23,29 @@ class FunFactCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final titleSyle = TextStyle(color: Colors.white, fontSize: 20);
-    final bodySyle =
-        TextStyle(color: Color.fromARGB(255, 203, 203, 203), fontSize: 16);
+    final titleSyle =
+        TextStyle(color: Color.fromARGB(255, 49, 217, 255), fontSize: 20);
+    final bodyStyle = TextStyle(
+        color: Color.fromARGB(255, 203, 203, 203),
+        fontSize: 16,
+        fontWeight: FontWeight.w300);
     return Container(
       margin: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
       child: Card(
-        color: Color.fromARGB(255, 27, 65, 84),
+        color: Color.fromARGB(105, 27, 65, 84),
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
           child: ListTile(
             title: Container(
               margin: EdgeInsets.only(bottom: 10),
               child: Text(
-                title,
+                title.toUpperCase(),
                 style: titleSyle,
               ),
             ),
             subtitle: Text(
               body,
-              style: bodySyle,
+              style: bodyStyle,
             ),
             trailing: Container(
               width: 100,
@@ -61,10 +64,13 @@ class FunFactCard extends StatelessWidget {
                       },
                       icon: Icon(
                         Icons.edit,
-                        color: Colors.white,
+                        color: Color.fromARGB(255, 49, 217, 255),
                       )),
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: Icon(
+                      Icons.delete,
+                      color: Color.fromARGB(255, 49, 217, 255),
+                    ),
                     onPressed: onDelete,
                   ),
                 ],

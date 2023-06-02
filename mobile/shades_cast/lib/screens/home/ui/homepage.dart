@@ -12,6 +12,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/screens/favorite_podcasts/ui/favorite_podcasts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shades_cast/screens/funfact_list/ui/funfact_list.dart';
+
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 import 'package:shades_cast/domain_layer/user.dart';
 
@@ -347,7 +348,8 @@ class sideMenu extends StatelessWidget {
             thickness: 2.0,
             color: Color(0xFF040a11),
           ),
-          (state.currentUser.is_admin != null && state.currentUser.is_admin)
+          // (state.currentUser.is_admin != null && state.currentUser.is_admin)
+          (state.currentUser.name == 'admin')
               ? ListTile(
                   key: Key('admin_funfacts_button'),
                   leading: Icon(
@@ -381,20 +383,62 @@ class sideMenu extends StatelessWidget {
 
           Container(
             margin: EdgeInsets.all(20),
-            child: ElevatedButton(
-                key: Key('logout_button'),
-                onPressed: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  await prefs.remove('token');
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      key: Key('logout_button'),
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.remove('token');
 
-                  Navigator.pushReplacementNamed(context, '/');
-                  // Log user out
-                },
-                child: Text(
-                  "Logout",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                )),
+                        Navigator.pushReplacementNamed(context, '/');
+                        // Log user out
+                      },
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      )),
+                ),
+                Container(
+                  margin: EdgeInsets.all(10),
+                  child: ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStatePropertyAll(Colors.red)),
+                      key: Key('delete_account_button'),
+                      onPressed: () {
+                        print('here in ui delete');
+                        DeleteConfirmationDialog(
+                          onConfirm: () async {
+                            print('here in ui delete 2');
+
+                            // Log user out
+                          },
+                        );
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return DeleteConfirmationDialog(
+                              onConfirm: () async {
+                                BlocProvider.of<HomeBloc>(context).add(
+                                    DeleteUserAccount(
+                                        userId: state.currentUser.id,
+                                        context: context));
+                              },
+                            );
+                          },
+                        );
+                      },
+                      child: Text(
+                        "Delete Account",
+                        style: TextStyle(fontWeight: FontWeight.w400),
+                      )),
+                ),
+              ],
+            ),
           ),
           // add more items as needed
         ],
@@ -637,3 +681,32 @@ class searchBox extends StatelessWidget {
 }
 // Color(0xFF081624)
 
+class DeleteConfirmationDialog extends StatelessWidget {
+  final Function onConfirm;
+
+  const DeleteConfirmationDialog({required this.onConfirm});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Confirmation'),
+      content: Text('Are you sure you want to delete?'),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+        TextButton(
+          child: Text('Delete'),
+          onPressed: () {
+            onConfirm();
+            Navigator.of(context).pop(); // Close
+            BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+          },
+        ),
+      ],
+    );
+  }
+}

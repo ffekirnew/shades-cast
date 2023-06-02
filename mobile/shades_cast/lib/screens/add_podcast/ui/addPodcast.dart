@@ -27,24 +27,18 @@ class _addPodcastsState extends State<addPodcasts> {
   PodcastDatabase _database = PodcastDatabase();
 
   late File _imageFile;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _usernameController;
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
+  late TextEditingController _titleController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _categoryController;
 
   @override
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
     _imageFile = File('assets/logo.png');
-    _firstNameController = TextEditingController(text: "John");
-    _lastNameController = TextEditingController(text: "Doe");
-    _usernameController = TextEditingController(text: "johndoe");
-    _emailController = TextEditingController(text: "johndoe@example.com");
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _titleController = TextEditingController(text: "Podcast title");
+    _descriptionController = TextEditingController(text: "Podcast description");
+    _categoryController = TextEditingController(text: "Categories");
   }
 
   Future<void> _pickImage() async {
@@ -59,9 +53,9 @@ class _addPodcastsState extends State<addPodcasts> {
     // Get the form field values
 
     dynamic createdPodcast = {
-      "title": _firstNameController.text,
-      "description": _lastNameController.text,
-      "categories": _usernameController.text,
+      "title": _titleController.text,
+      "description": _descriptionController.text,
+      "categories": _categoryController.text,
       "cover_image": _imageFile
     };
 
@@ -122,7 +116,7 @@ class _addPodcastsState extends State<addPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _firstNameController,
+                    controller: _titleController,
                     decoration: InputDecoration(
                       labelText: "Title",
                       fillColor: Colors.blue,
@@ -134,7 +128,7 @@ class _addPodcastsState extends State<addPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _lastNameController,
+                    controller: _descriptionController,
                     decoration: InputDecoration(
                       labelText: "Description",
                       labelStyle: TextStyle(color: Colors.blue),
@@ -145,24 +139,11 @@ class _addPodcastsState extends State<addPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _usernameController,
+                    controller: _categoryController,
                     decoration: InputDecoration(
                       labelText: "Category",
                       labelStyle: TextStyle(color: Colors.blue),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    decoration: InputDecoration(
-                      fillColor:
-                          Colors.blue, // sets the background color to blue
-                      labelStyle: TextStyle(color: Colors.blue),
-                      labelText: "Email",
-                    ),
-                    controller: _emailController,
                   ),
                   SizedBox(height: 16.0),
                   SizedBox(height: 32.0),

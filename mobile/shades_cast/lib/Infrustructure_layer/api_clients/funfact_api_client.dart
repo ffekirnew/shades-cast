@@ -44,7 +44,8 @@ class FunfactApiClient {
         headers: headers,
         body: funfact);
     if (response.statusCode != 204) {
-      throw Exception('funcfact cretion failed: ');
+      print(response.body);
+      throw Exception('funcfact creation failed: ');
     }
     return json.decode(response.body);
   }

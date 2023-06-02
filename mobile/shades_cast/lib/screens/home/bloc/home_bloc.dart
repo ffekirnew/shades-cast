@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
@@ -126,7 +127,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   funfactVisibility: funfactVisibility),
             );
           } catch (e) {
-            print('error occured here in home bloc');
             print(e);
             emit(PodcastsErrorState(
               currentUser: currentUser,
@@ -136,6 +136,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         } else if (event is FunfactWindowClosed) {
           funfactVisibility = false;
           BlocProvider.of<HomeBloc>(event.context).add(GetPodcasts());
+        } else if (event is DeleteUserAccount) {
+          try {
+            await userRepo.deleteUser(event.userId.toString());
+            Navigator.pushReplacementNamed(event.context, '/');
+            SharedPreferences pref = await SharedPreferences.getInstance();
+            pref.remove('token');
+            print('here to delete acc success');
+          } catch (e) {
+            print(e);
+          }
         }
       },
     );

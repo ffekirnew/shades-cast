@@ -29,3 +29,9 @@ class FunfactWindowClosed extends HomeEvent {
   final context;
   FunfactWindowClosed({required this.context});
 }
+
+class DeleteUserAccount extends HomeEvent {
+  final int userId;
+  final context;
+  DeleteUserAccount({required this.userId, required this.context});
+}

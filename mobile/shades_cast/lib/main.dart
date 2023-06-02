@@ -32,6 +32,7 @@ void main() async {
   AuthService auth = AuthService();
   final token = await auth.getToken();
   bool isLoggedIn = (token != null);
+
   String initialRoute = isLoggedIn ? '/home' : '/';
 
   // final _router = GoRouter(
