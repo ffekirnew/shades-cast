@@ -75,6 +75,17 @@ class UserDetailAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UserDetailAccountData(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = UserSerializer(user)
+        serialized_data = serializer.data
+        serialized_data['isadmin'] = user.is_staff
+        return Response(serialized_data)
+
+
 class UserProfileAPIView(APIView):
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer

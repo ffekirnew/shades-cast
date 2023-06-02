@@ -13,7 +13,7 @@ urlpatterns = [
     path('users/', include('user_accounts.urls', namespace='users')),
     path('resources/facts/', include('facts.urls', namespace='facts')),
     path('search/<str:query>/', views.search, name='full_text_search'),
-    path('my-account/', views.UserDetailAPIView.as_view(), name='user_account'),
+    path('my-account/', views.UserDetailAccountData.as_view(), name='user_account'),
     path('my-account/profile', views.UserProfileAPIView.as_view(),
          name='user_account_profile'),
     path('my-account/podcasts/favorited', views.user_favorite_podcasts_list,
