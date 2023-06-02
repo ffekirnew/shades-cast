@@ -44,9 +44,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>(
       (event, emit) async {
         if (event is GetPodcasts) {
-          User user = await userRepo.getUserDetail();
-
-          currentUser = user;
+          if (currentUser.name == '') {
+            User user = await userRepo.getUserDetail();
+            currentUser = user;
+          }
 
           emit(PodcastListerLoadingState(
               currentUser: currentUser, funfactVisibility: funfactVisibility));
@@ -102,8 +103,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               currentUser: currentUser,
               funfactVisibility: funfactVisibility));
         } else if (event is PodcastSearched) {
-          User user = await userRepo.getUserDetail();
-          currentUser = user;
+          if (currentUser.name == '') {
+            User user = await userRepo.getUserDetail();
+            currentUser = user;
+          }
 
           emit(PodcastListerLoadingState(
               currentUser: currentUser, funfactVisibility: funfactVisibility));

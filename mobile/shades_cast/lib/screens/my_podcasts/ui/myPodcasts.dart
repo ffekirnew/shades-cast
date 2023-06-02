@@ -299,7 +299,7 @@ class _podcastListState extends State<podcastList> {
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          color: Color.fromARGB(255, 0, 0, 0),
+          color: Color.fromARGB(95, 0, 114, 179),
           child: Column(
             children: [
               ListTile(
@@ -314,7 +314,6 @@ class _podcastListState extends State<podcastList> {
                   currentPodcast.title,
                   style: TextStyle(color: Colors.white),
                 ),
-
                 trailing: Container(
                   width: 100,
                   child: Row(
@@ -359,20 +358,6 @@ class _podcastListState extends State<podcastList> {
                     ],
                   ),
                 ),
-                // trailing: IconButton(
-                //   onPressed: () {
-                //     BlocProvider.of<MyPodcastsBloc>(context)
-                //         .add(PodcasMyd(podcastId: currentPodcast.id));
-                //   },
-                //   icon: Icon(
-                //     (widget.currentState.MydPodcastId
-                //             .contains(currentPodcast.id))
-                //         ? Icons.My
-                //         : Icons.My_border,
-                //     color: Color.fromARGB(255, 71, 160, 255),
-                //     size: 25,
-                //   ),
-                // ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(vertical: 15, horizontal: 18),
@@ -407,8 +392,15 @@ class DeleteConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Confirmation'),
-      content: Text('Are you sure you want to delete?'),
+      backgroundColor: Color(0xFF081624),
+      title: Text(
+        'Confirmation',
+        style: TextStyle(color: Colors.white),
+      ),
+      content: Text(
+        'Are you sure you want to delete?',
+        style: TextStyle(color: Colors.white),
+      ),
       actions: <Widget>[
         TextButton(
           child: Text('Cancel'),

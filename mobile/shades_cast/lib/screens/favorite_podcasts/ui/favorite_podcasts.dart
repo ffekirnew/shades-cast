@@ -201,7 +201,7 @@ class _podcastListState extends State<podcastList> {
         child: Container(
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          color: Color.fromARGB(255, 0, 0, 0),
+          color: Color.fromARGB(95, 0, 114, 179),
           child: Column(
             children: [
               ListTile(

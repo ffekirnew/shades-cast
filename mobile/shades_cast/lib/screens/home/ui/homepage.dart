@@ -217,12 +217,13 @@ class sideMenu extends StatelessWidget {
                   color: Color(0xFF040a11),
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               child: Padding(
-                padding: const EdgeInsets.all(18.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Row(children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: const EdgeInsets.only(left: 28.0),
                     child: CircleAvatar(
-                      radius: 50.0,
+                      backgroundColor: Colors.white,
+                      radius: 22.0,
                       child: Icon(Icons.person),
                       // backgroundImage: state.currentUser.profile != null
                       //     ? NetworkImage(
@@ -383,61 +384,76 @@ class sideMenu extends StatelessWidget {
 
           Container(
             margin: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                      key: Key('logout_button'),
-                      onPressed: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.remove('token');
+            child: Container(
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                        key: Key('logout_button'),
+                        style: ButtonStyle(
+                            padding: MaterialStatePropertyAll(
+                                EdgeInsets.symmetric(vertical: 20)),
+                            backgroundColor: MaterialStatePropertyAll(
+                                Color.fromARGB(255, 0, 128, 168))),
+                        onPressed: () async {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.remove('token');
 
-                        Navigator.pushReplacementNamed(context, '/');
-                        // Log user out
-                      },
-                      child: Text(
-                        "Logout",
-                        style: TextStyle(fontWeight: FontWeight.w400),
-                      )),
-                ),
-                Container(
-                  margin: EdgeInsets.all(10),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStatePropertyAll(Colors.red)),
-                      key: Key('delete_account_button'),
-                      onPressed: () {
-                        print('here in ui delete');
-                        DeleteConfirmationDialog(
-                          onConfirm: () async {
-                            print('here in ui delete 2');
+                          Navigator.pushReplacementNamed(context, '/');
+                          // Log user out
+                        },
+                        child: Text(
+                          "Logout",
+                          style: TextStyle(fontWeight: FontWeight.w400),
+                        )),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                            style: ButtonStyle(
+                                padding: MaterialStatePropertyAll(
+                                    EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20)),
+                                backgroundColor:
+                                    MaterialStatePropertyAll(Colors.red)),
+                            key: Key('delete_account_button'),
+                            onPressed: () {
+                              print('here in ui delete');
+                              DeleteConfirmationDialog(
+                                onConfirm: () async {
+                                  print('here in ui delete 2');
 
-                            // Log user out
-                          },
-                        );
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return DeleteConfirmationDialog(
-                              onConfirm: () async {
-                                BlocProvider.of<HomeBloc>(context).add(
-                                    DeleteUserAccount(
-                                        userId: state.currentUser.id,
-                                        context: context));
-                              },
-                            );
-                          },
-                        );
-                      },
-                      child: Text(
-                        "Delete Account",
-                        style: TextStyle(fontWeight: FontWeight.w400),
-                      )),
-                ),
-              ],
+                                  // Log user out
+                                },
+                              );
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return DeleteConfirmationDialog(
+                                    onConfirm: () async {
+                                      BlocProvider.of<HomeBloc>(context).add(
+                                          DeleteUserAccount(
+                                              userId: state.currentUser.id,
+                                              context: context));
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                            child: Text(
+                              "Delete Account",
+                              style: TextStyle(fontWeight: FontWeight.w400),
+                            )),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           // add more items as needed
@@ -472,10 +488,6 @@ class _podcastListState extends State<podcastList> {
               MaterialPageRoute(
                   builder: (context) =>
                       PodcastPage(podcastId: currentPodcast.id)));
-          //   BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
-          //       EpisodeItemClicked(
-          //           selectedIndex: currentPodcast.id,
-          //           podcastId: currentPodcast.id));
           BlocProvider.of<PodcastDetailsAndPlayerBloc>(context).add(
               PodcastDetailPageOpened(
                   podcastId: currentPodcast.id, isFromMyPodcasts: false));
@@ -487,7 +499,7 @@ class _podcastListState extends State<podcastList> {
                 topRight: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
                 topLeft: Radius.circular(15)),
-            color: Color(0xFF040a11),
+            color: Color.fromARGB(95, 0, 114, 179),
           ),
           margin: EdgeInsets.only(bottom: 5),
           padding: EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -689,6 +701,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Color(0xFF081624),
       title: Text('Confirmation'),
       content: Text('Are you sure you want to delete?'),
       actions: <Widget>[

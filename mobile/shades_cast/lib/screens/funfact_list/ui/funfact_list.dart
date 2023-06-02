@@ -204,6 +204,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Color(0xFF081624),
       title: Text('Confirmation'),
       content: Text('Are you sure you want to delete?'),
       actions: <Widget>[

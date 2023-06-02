@@ -66,6 +66,7 @@ Widget getPage(BuildContext context, LoginAndSignupState state) {
                       ),
                       SizedBox(height: 5),
                       RegularTextField(
+                        disable: false,
                         hintText:
                             (state is LoginState) ? 'Password' : 'New Password',
                         controller: _passwordController,
@@ -74,6 +75,7 @@ Widget getPage(BuildContext context, LoginAndSignupState state) {
                       (state is LoginState)
                           ? Text('')
                           : RegularTextField(
+                              disable: false,
                               hintText: "Confirm Password",
                               controller: _newPasswordController,
                             ),
