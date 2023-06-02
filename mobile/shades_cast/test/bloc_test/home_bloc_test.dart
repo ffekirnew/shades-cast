@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_repository.dart';
+import 'package:shades_cast/repository/podcast_repository.dart';
 import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/repository/funfact_repo.dart';
 import 'package:shades_cast/repository/user_repo.dart';

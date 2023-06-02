@@ -54,11 +54,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               PodcastRepositoryImpl(_database, _apiClient);
 
           try {
+            print('hereee maybe');
             final List<Podcast> podcasts = await podcastRepo.getPodcasts();
 
             currentPodcasts = podcasts;
-
             Funfact funfact = await funFactRep.getFunfact();
+            print(funfact);
 
             currentFunFact = funfact;
             final List<Podcast> favPodcasts =

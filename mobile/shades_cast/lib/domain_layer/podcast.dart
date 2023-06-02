@@ -28,18 +28,20 @@ class Podcast {
   }
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
+      'id': id.toString(),
       'title': title,
       'description': description,
       'author': author ?? "",
       'imageUrl': imageUrl ?? "",
-      'categories': categories![0]
+      'categories': categories![0][0]
     };
   }
 
   static Podcast fromMap(Map<String, dynamic> map) {
     return Podcast(
-      id: map['id'],
+      id: 'fa'.runtimeType == map['id'].runtimeType
+          ? int.parse(map['id'])
+          : map['id'],
       title: map['title'],
       author: map['author'],
       description: map['description'],

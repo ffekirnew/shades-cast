@@ -9,6 +9,7 @@ import 'package:shades_cast/repository/database/podcast_database.dart';
 import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.dart';
 
 import 'package:shades_cast/Infrustructure_layer/api_clients/constants.dart';
+import 'package:shades_cast/screens/home/bloc/home_bloc.dart';
 
 abstract class PodcastRepository {
   Future<List<Podcast>> getPodcasts();
@@ -48,18 +49,22 @@ class PodcastRepositoryImpl implements PodcastRepository {
   ///
   @override
   Future<List<Podcast>> getPodcasts() async {
+    print('hereeeeeee 111111');
     final localPodcasts = await _database.getPodcasts();
     if (localPodcasts.isNotEmpty) {
       return localPodcasts;
     }
-
+    print('hereeeeeee 22222');
     List<dynamic> remotePodcasts = await _apiClient.getPodcasts();
     List<Podcast> podcasts = List.generate(remotePodcasts.length, (index) {
       return Podcast.fromMap(remotePodcasts[index]);
     });
     print(podcasts);
+    for (Podcast podcast in podcasts) {
+      print('got hereeeeeeee');
+      await _database.savePodcast(podcast);
+    }
 
-    // await _database.savePodcasts(remotePodcasts);
     return podcasts;
   }
   ////////////////////////////////////////////////////////////////
