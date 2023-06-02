@@ -47,6 +47,7 @@ void main() {
         expect(find.byType(homepage), findsOneWidget);
       },
     );
+
     testWidgets(
       'Log-out test',
       (tester) async {
@@ -62,6 +63,7 @@ void main() {
         expect(find.byType(LoginPage), findsOneWidget);
       },
     );
+
     testWidgets(
       'Change Username test',
       (tester) async {
@@ -81,6 +83,22 @@ void main() {
 
         await tester.tap(find.byType(ElevatedButton));
         await tester.pumpAndSettle();
+        expect(find.byKey(Key('errorMessage')), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'Delete user',
+      (tester) async {
+        app.main();
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(Key('home_page_menu_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(Key('delete_account_button')));
+        await tester.pumpAndSettle();
+
         expect(find.byKey(Key('errorMessage')), findsOneWidget);
       },
     );

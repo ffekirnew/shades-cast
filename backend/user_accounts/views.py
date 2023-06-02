@@ -9,7 +9,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 
-from podcasts.models import Podcast
 # Local app imports
 from .models import Contact
 from .serializers import UserSerializer, ProfileSerializer, ContactSerializer
@@ -17,10 +16,11 @@ from .permissions import IsOwnerOrReadOnly
 
 # Neighbor app imports
 from podcasts.serializers import PodcastSerializer
+from podcasts.models import Podcast
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwnerOrReadOnly,)
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
