@@ -326,6 +326,7 @@ class sideMenu extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
+              print(state.currentUser.toMap());
               // handle item 2 tap
               Navigator.push(
                 context,
@@ -346,7 +347,7 @@ class sideMenu extends StatelessWidget {
             thickness: 2.0,
             color: Color(0xFF040a11),
           ),
-          (state.currentUser.name == 'admin')
+          (state.currentUser.is_admin != null && state.currentUser.is_admin)
               ? ListTile(
                   key: Key('admin_funfacts_button'),
                   leading: Icon(

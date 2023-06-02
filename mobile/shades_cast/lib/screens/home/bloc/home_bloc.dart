@@ -36,7 +36,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     FunfactRepository funFactRep =
         FunfactRepositoryImpl(_database, _apiClientFunFact);
 
-    Funfact currentFunFact = Funfact(title: "", body: "");
+    Funfact currentFunFact = Funfact(title: "", body: "", id: "");
 
     bool funfactVisibility = true;
 

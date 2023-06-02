@@ -41,7 +41,8 @@ class FunfactApiClient {
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.patch(
         Uri.parse("$api/api/v3/resources/facts/$funfactId/"),
-        headers: headers);
+        headers: headers,
+        body: funfact);
     if (response.statusCode != 204) {
       throw Exception('funcfact cretion failed: ');
     }

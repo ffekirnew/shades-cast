@@ -11,9 +11,11 @@ import 'package:shades_cast/screens/edit_funfact/ui/editFunfact.dart';
 class FunFactCard extends StatelessWidget {
   final String title;
   final String body;
+  final String id;
   final VoidCallback onDelete;
 
   FunFactCard({
+    required this.id,
     required this.title,
     required this.body,
     required this.onDelete,
@@ -52,7 +54,9 @@ class FunFactCard extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => editPodcasts(
-                                  fact: Funfact(title: title, body: body))),
+                                    fact: Funfact(title: title, body: body),
+                                    funfactId: int.parse(id),
+                                  )),
                         );
                       },
                       icon: Icon(
@@ -135,6 +139,7 @@ class FunFactListScreen extends StatelessWidget {
                     onPressed: () {
                       BlocProvider.of<FunfactBloc>(context)
                           .add(GetAllFunfacts());
+                      print(funfacts);
                     },
                   )
                 ],
@@ -149,14 +154,15 @@ class FunFactListScreen extends StatelessWidget {
               return FunFactCard(
                 title: (state.funfacts.length > 0) ? funfact.title : "",
                 body: (state.funfacts.length > 0) ? funfact.body : "",
+                id: (state.funfacts.length > 0) ? funfact.id! : "",
                 onDelete: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return DeleteConfirmationDialog(
                         onConfirm: () {
-                          BlocProvider.of<FunfactBloc>(context)
-                              .add(DeleteFunfact(funfactId: 1));
+                          BlocProvider.of<FunfactBloc>(context).add(
+                              DeleteFunfact(funfactId: int.parse(funfact.id!)));
                         },
                       );
                     },

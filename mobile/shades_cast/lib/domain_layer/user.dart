@@ -4,13 +4,15 @@ class User {
   String email;
   String? password;
   Map<String, dynamic>? profile;
+  bool? is_admin;
 
   User(
       {required this.id,
       required this.name,
       required this.email,
       required this.password,
-      this.profile});
+      this.profile,
+      this.is_admin});
 
   Map<String, dynamic> toMap() {
     return {
@@ -19,6 +21,7 @@ class User {
       "email": email,
       "password": password,
       'profile': profile,
+      'is_admin': is_admin
     };
   }
 
@@ -28,6 +31,7 @@ class User {
         name: map['username'],
         email: map['email'],
         password: map['password'],
-        profile: map['profile']);
+        profile: map['profile'],
+        is_admin: map['isadmin']);
   }
 }

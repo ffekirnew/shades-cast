@@ -20,7 +20,7 @@ class editPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
   Funfact fact;
   int funfactId;
-  editPodcasts({required this.fact, this.funfactId = 1});
+  editPodcasts({required this.fact, required this.funfactId});
 
   @override
   _editPodcastsState createState() => _editPodcastsState();
@@ -54,6 +54,7 @@ class _editPodcastsState extends State<editPodcasts> {
       "title": _titleController.text,
       "body": _bodyController.text,
     };
+    print(widget.funfactId);
 
     BlocProvider.of<EditFunfactBloc>(context).add(EditFunfactSubmitted(
         modifiedFunfact: modifiedFunfact, FunfactId: widget.funfactId));

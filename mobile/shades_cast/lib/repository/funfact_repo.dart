@@ -28,7 +28,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
     // }
     final remoteFunfacts = await _apiClient.getFunfact();
 
-    Funfact newFunfact = Funfact(title: 'title', body: 'body');
+    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
     final fact = remoteFunfacts[Random().nextInt(remoteFunfacts.length)];
     newFunfact = Funfact.fromMap(fact);
     // await _database.saveFunfact(newFunfact);
@@ -41,7 +41,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
     final List<Funfact> facts = [];
     print('funfact gotten');
     print(remoteFunfacts);
-    Funfact newFunfact = Funfact(title: 'title', body: 'body');
+    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
     for (int i = 0; i < remoteFunfacts.length; i++) {
       final fact = remoteFunfacts[i];
       print(fact);
