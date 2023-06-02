@@ -32,28 +32,8 @@ void main() async {
   AuthService auth = AuthService();
   final token = await auth.getToken();
   bool isLoggedIn = (token != null);
-  String initialRoute = isLoggedIn ? '/home' : '/';
 
-  // final _router = GoRouter(
-  //   routes: [
-  //     GoRoute(
-  //       path: '/',
-  //       builder: (context, state) => LoginPage(),
-  //     ),
-  //     GoRoute(
-  //       path: '/home',
-  //       builder: (context, state) => homepage(),
-  //     ),
-  //     GoRoute(
-  //       path: '/myPodcasts',
-  //       builder: (context, state) => MyPodcastsPage(),
-  //     ),
-  //     GoRoute(
-  //       path: '/',
-  //       builder: (context, state) => homepage(),
-  //     ),
-  //   ],
-  // );
+  String initialRoute = isLoggedIn ? '/home' : '/';
 
   runApp(
     MultiBlocProvider(

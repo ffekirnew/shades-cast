@@ -216,7 +216,7 @@ class PodcastApiClient {
     var uri = Uri.parse('$api/api/v3/resources/podcasts/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
-    print(token);
+    // print(token);
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;

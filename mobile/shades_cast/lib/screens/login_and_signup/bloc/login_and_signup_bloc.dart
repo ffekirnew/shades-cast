@@ -20,7 +20,7 @@ class LoginAndSignupBloc
     extends Bloc<LoginAndSignupEvent, LoginAndSignupState> {
   LoginAndSignupBloc() : super(LoginAndSignupInitial()) {
     on<LoginAndSignupEvent>((event, emit) async {
-      emit(LoginState(isLoading: true));
+      // emit(LoginState(isLoading: true));
 
       if (event is ToLoginButtonClicked) {
         emit(LoginState());

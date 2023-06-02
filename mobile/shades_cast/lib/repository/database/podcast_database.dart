@@ -21,17 +21,6 @@ class PodcastDatabase {
     db = await openDb();
   }
 
-  Future testDb() async {
-    db = await openDb();
-    await db!.execute('INSERT INTO lists VALUES (0, "Fruit", 2)');
-    await db!.execute(
-        'INSERT INTO items VALUES (0, 0, "Apples", "2 Kg", "Better if they are green")');
-    List lists = await db!.rawQuery('select * from lists');
-    List items = await db!.rawQuery('select * from items');
-    print(lists[0].toString());
-    print(items[0].toString());
-  }
-
   Future<Database> openDb() async {
     if (db == null) {
       db = await openDatabase(join(await getDatabasesPath(), 'podcast.db'),
@@ -75,9 +64,7 @@ class PodcastDatabase {
   ///
   ///
 
-  Future<void> savePodcast(dynamic podcast) async {
-    // print((podcast.toMap()['id'].runtimeType));
-    // print('eheheeeheheheheh');
+  Future<void> savePodcast(Podcast podcast) async {
     final db = await openDb();
     await db.insert('podcasts', podcast.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
@@ -87,7 +74,7 @@ class PodcastDatabase {
   ///
   ///
   ///
-  Future<void> savePodcasts(List<dynamic> podcasts) async {
+  Future<void> savePodcasts(List<Podcast> podcasts) async {
     final db = await openDb();
     for (Podcast podcast in podcasts) {
       await db.insert('podcasts', podcast.toMap());

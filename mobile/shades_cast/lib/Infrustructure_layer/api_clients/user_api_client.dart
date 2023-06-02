@@ -32,9 +32,7 @@ class UserApiClient {
     );
 
     if (response.statusCode != 204) {
-      print(response.statusCode);
       Map resData = jsonDecode(response.body);
-      print("error here");
 
       if (resData.containsKey('username')) {
         return 'Invalid Username';
@@ -58,7 +56,6 @@ class UserApiClient {
       {required String email, required String password}) async {
     final url = '$api/api/auth/login/';
 
-    print("in login");
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
@@ -94,7 +91,6 @@ class UserApiClient {
       newUser['cover_image'] = '';
     }
 
-    print(newUser);
     final response = await http.patch(
       Uri.parse("$api/api/v3/my-account/"),
       body: newUser,
@@ -117,7 +113,6 @@ class UserApiClient {
     final AuthService authService = AuthService();
 
     String? token = await authService.getToken();
-    print(token);
     // print(profile_pic);
     // print('got here');
     // String? token = await authService.getToken();
@@ -145,10 +140,8 @@ class UserApiClient {
     request.fields['photo'] = path.basename(profile_pic.path);
 
     try {
-      print('trying to send user profile ');
       var response = await request.send();
       if (response.statusCode != 200) {
-        print(response.statusCode);
         print("Error sending the file of user");
       } else {
         print('Success');
@@ -190,14 +183,15 @@ class UserApiClient {
     if (token == null) {
       throw Exception("cannot get token");
     }
+    print('here 1');
     Map<String, String> headers = {'Authorization': 'Token $token'};
-    final response = await http.get(Uri.parse('$api/api/v3/users/$userId'),
+    final response = await http.delete(Uri.parse('$api/api/v3/users/$userId/'),
         headers: headers);
+
+    print(response.body);
 
     if (response.statusCode != 204) {
       throw Exception("cannot update user");
-    } else {
-      return jsonDecode(response.body);
     }
   }
 }

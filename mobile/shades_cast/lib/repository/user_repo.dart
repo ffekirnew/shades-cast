@@ -106,7 +106,9 @@ class UserRepo {
   ///
   Future<void> deleteUser(String userId) async {
     UserApiClient user = UserApiClient();
+    print('failure');
     await user.deleteUser(userId);
+    print('succ');
   }
 }
 

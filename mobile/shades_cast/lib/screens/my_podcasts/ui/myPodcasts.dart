@@ -330,7 +330,7 @@ class _podcastListState extends State<podcastList> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => editPodcasts(
-                                      podcastId: currentPodcast.id,
+                                      podcast: currentPodcast,
                                     )),
                           );
                         },
