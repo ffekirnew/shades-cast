@@ -65,11 +65,7 @@ class PodcastDatabase {
   ///
 
   Future<void> savePodcast(Podcast podcast) async {
-    // print((podcast.toMap()['id'].runtimeType));
-    // print('eheheeeheheheheh');
     final db = await openDb();
-    print('got here good sir');
-    // print(podcast.toMap());
     await db.insert('podcasts', podcast.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
