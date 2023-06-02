@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:shades_cast/domain_layer/funfact.dart';
 import 'package:shades_cast/screens/add_funfact/ui/add_funfact.dart';
 import 'package:shades_cast/screens/favorite_podcasts/bloc/favorite_podcasts_bloc.dart';
 import 'package:shades_cast/screens/funfact_list/bloc/funfact_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shades_cast/screens/edit_funfact/bloc/edit_funfact_bloc.dart';
+import 'package:shades_cast/screens/edit_funfact/ui/editFunfact.dart';
 
 class FunFactCard extends StatelessWidget {
   final String title;
@@ -39,9 +42,29 @@ class FunFactCard extends StatelessWidget {
               body,
               style: bodySyle,
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: onDelete,
+            trailing: Container(
+              width: 100,
+              child: Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => editPodcasts(
+                                  fact: Funfact(title: title, body: body))),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.edit,
+                        color: Colors.white,
+                      )),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: onDelete,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -87,6 +110,12 @@ class FunFactListScreen extends StatelessWidget {
           }
           if (state is FunfactInitial) {
             BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+          } else if (state is FunfactLoadingState) {
+            return Center(
+              child: SpinKitFadingCircle(
+                color: Color.fromARGB(255, 37, 153, 255),
+              ),
+            );
           } else if (state is FunfactErrorState) {
             return Container(
               child: Center(
@@ -121,9 +150,17 @@ class FunFactListScreen extends StatelessWidget {
                 title: (state.funfacts.length > 0) ? funfact.title : "",
                 body: (state.funfacts.length > 0) ? funfact.body : "",
                 onDelete: () {
-                  // Implement the delete functionality here
-                  // Call a method or use a BLoC to delete the funfact from the database
-                  // Example: onDeleteFunFact(funfact['id']);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return DeleteConfirmationDialog(
+                        onConfirm: () {
+                          BlocProvider.of<FunfactBloc>(context)
+                              .add(DeleteFunfact(funfactId: 1));
+                        },
+                      );
+                    },
+                  );
                 },
               );
             },
@@ -143,6 +180,36 @@ class FunFactListScreen extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class DeleteConfirmationDialog extends StatelessWidget {
+  final Function onConfirm;
+
+  const DeleteConfirmationDialog({required this.onConfirm});
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Confirmation'),
+      content: Text('Are you sure you want to delete?'),
+      actions: <Widget>[
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop(); // Close the dialog
+          },
+        ),
+        TextButton(
+          child: Text('Delete'),
+          onPressed: () {
+            onConfirm();
+            Navigator.of(context).pop(); // Close
+            BlocProvider.of<FunfactBloc>(context).add(GetAllFunfacts());
+          },
+        ),
+      ],
     );
   }
 }

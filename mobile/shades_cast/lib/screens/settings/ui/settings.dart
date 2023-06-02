@@ -7,10 +7,12 @@ import 'package:shades_cast/Infrustructure_layer/api_clients/podcast_api_client.
 import 'package:shades_cast/Infrustructure_layer/api_clients/user_api_client.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/screens/settings/bloc/settings_bloc.dart';
+import 'package:shades_cast/domain_layer/user.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   bool refresh;
-  AccountSettingsScreen({this.refresh = false});
+  User user;
+  AccountSettingsScreen({this.refresh = false, required this.user});
   @override
   _AccountSettingsScreenState createState() => _AccountSettingsScreenState();
 }
@@ -21,12 +23,9 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
   File? _imageFile;
   late bool _isImageSelected = false;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
   late TextEditingController _usernameController;
+  late TextEditingController _lastNameController;
   late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
 
   @override
   void initState() {
@@ -37,12 +36,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
     // _imageFile;
 
-    _firstNameController = TextEditingController(text: "John");
-    _lastNameController = TextEditingController(text: "Doe");
-    _usernameController = TextEditingController(text: "johndoe");
-    _emailController = TextEditingController(text: "johndoe@example.com");
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _usernameController = TextEditingController(text: widget.user.name);
+    _emailController = TextEditingController(text: widget.user.email);
   }
 
   Future<void> _pickImage() async {

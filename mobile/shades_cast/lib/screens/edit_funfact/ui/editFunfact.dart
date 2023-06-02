@@ -13,11 +13,14 @@ import 'package:shades_cast/domain_layer/podcast.dart';
 import '../../../Infrustructure_layer/api_clients/podcast_repository.dart';
 import '../../../repository/database/podcast_database.dart';
 
+import 'package:shades_cast/screens/edit_funfact/bloc/edit_funfact_bloc.dart';
+import 'package:shades_cast/domain_layer/funfact.dart';
+
 class editPodcasts extends StatefulWidget {
   // late final PodcastApiClient _apiClient;
-  int podcastId;
-
-  editPodcasts({required this.podcastId});
+  Funfact fact;
+  int funfactId;
+  editPodcasts({required this.fact, this.funfactId = 1});
 
   @override
   _editPodcastsState createState() => _editPodcastsState();
@@ -29,8 +32,8 @@ class _editPodcastsState extends State<editPodcasts> {
   PodcastDatabase _database = PodcastDatabase();
 
   late File _imageFile;
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
+  late TextEditingController _titleController;
+  late TextEditingController _bodyController;
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -40,35 +43,20 @@ class _editPodcastsState extends State<editPodcasts> {
   void initState() {
     super.initState();
     // Initialize the controllers with the current user info
-    _imageFile = File('assets/logo.png');
-    _firstNameController = TextEditingController(text: "John");
-    _lastNameController = TextEditingController(text: "Doe");
-    _usernameController = TextEditingController(text: "johndoe");
-    _emailController = TextEditingController(text: "johndoe@example.com");
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
-  }
-
-  Future<void> _pickImage() async {
-    final pickedFile =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      _imageFile = File(pickedFile.path);
-    }
+    _titleController = TextEditingController(text: widget.fact.title);
+    _bodyController = TextEditingController(text: widget.fact.body);
   }
 
   void _submitForm() async {
     // Get the form field values
 
-    dynamic modifiedPodcast = {
-      "title": _firstNameController.text,
-      "description": _lastNameController.text,
-      "categories": _usernameController.text,
-      "cover_image": _imageFile
+    dynamic modifiedFunfact = {
+      "title": _titleController.text,
+      "body": _bodyController.text,
     };
 
-    BlocProvider.of<EditPodcastBloc>(context).add(EditPodcastSubmitted(
-        modifiedPodcast: modifiedPodcast, podcastId: widget.podcastId));
+    BlocProvider.of<EditFunfactBloc>(context).add(EditFunfactSubmitted(
+        modifiedFunfact: modifiedFunfact, FunfactId: widget.funfactId));
     // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
     // final res = await podRepo.searchPodcast('funny');
     // print(res);
@@ -87,16 +75,16 @@ class _editPodcastsState extends State<editPodcasts> {
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF081624),
-          title: Text("Edit Podcast"),
+          title: Text("Edit Funfact"),
         ),
         body: SingleChildScrollView(
-          child: BlocBuilder<EditPodcastBloc, EditPodcastState>(
+          child: BlocBuilder<EditFunfactBloc, EditFunfactState>(
               builder: (context, state) {
             String errorMessage = '';
-            if (state is EditPodcastError) {
+            if (state is EditFunfactError) {
               errorMessage = 'Error occured. Try again';
-            } else if (state is EditPodcastSuccess) {
-              errorMessage = 'Podcast succesfully edited.';
+            } else if (state is EditFunfactSuccess) {
+              errorMessage = 'Funfact succesfully edited.';
             }
 
             return Padding(
@@ -104,27 +92,11 @@ class _editPodcastsState extends State<editPodcasts> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 60.0,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  Center(
-                    child: TextButton(
-                      onPressed: _pickImage,
-                      child: Text("Change Profile Picture"),
-                    ),
-                  ),
-                  SizedBox(height: 32.0),
                   TextFormField(
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _firstNameController,
+                    controller: _titleController,
                     decoration: InputDecoration(
                       labelText: "Title",
                       fillColor: Colors.blue,
@@ -136,44 +108,19 @@ class _editPodcastsState extends State<editPodcasts> {
                     style: TextStyle(
                       color: Colors.white, // sets the text color to white
                     ),
-                    controller: _lastNameController,
+                    controller: _bodyController,
                     decoration: InputDecoration(
-                      labelText: "Description",
+                      labelText: "Body",
                       labelStyle: TextStyle(color: Colors.blue),
                     ),
                   ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    controller: _usernameController,
-                    decoration: InputDecoration(
-                      labelText: "Category",
-                      labelStyle: TextStyle(color: Colors.blue),
-                    ),
-                  ),
-                  SizedBox(height: 16.0),
-                  TextFormField(
-                    style: TextStyle(
-                      color: Colors.white, // sets the text color to white
-                    ),
-                    decoration: InputDecoration(
-                      fillColor:
-                          Colors.blue, // sets the background color to blue
-                      labelStyle: TextStyle(color: Colors.blue),
-                      labelText: "Email",
-                    ),
-                    controller: _emailController,
-                  ),
-                  SizedBox(height: 16.0),
                   SizedBox(height: 32.0),
                   Container(
                     height: 45,
                     child: ElevatedButton(
                       onPressed: _submitForm,
                       child: Text(
-                        "Edit Podcast",
+                        "Edit Funfact",
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w400),
                       ),

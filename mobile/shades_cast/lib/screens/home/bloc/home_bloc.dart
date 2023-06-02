@@ -37,15 +37,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         FunfactRepositoryImpl(_database, _apiClientFunFact);
 
     Funfact currentFunFact = Funfact(title: "", body: "");
-    print(currentFunFact);
+
     bool funfactVisibility = true;
 
     on<HomeEvent>(
       (event, emit) async {
         if (event is GetPodcasts) {
           User user = await userRepo.getUserDetail();
-          print("at least here");
-          print(user.name);
+
           currentUser = user;
 
           emit(PodcastListerLoadingState(
@@ -55,20 +54,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
           try {
             final List<Podcast> podcasts = await podcastRepo.getPodcasts();
-            print('here sfjkf');
+
             currentPodcasts = podcasts;
 
-            print(' got here also');
             Funfact funfact = await funFactRep.getFunfact();
-            print(' for the love of god');
+
             currentFunFact = funfact;
             final List<Podcast> favPodcasts =
                 await podcastRepo.favoritePodcasts();
-            print('here 1');
-            print('here 2');
+
             favoritedIds = [];
             for (final pod in favPodcasts) {
-              print('herre surrrrr');
               favoritedIds.add(pod.id);
             }
 

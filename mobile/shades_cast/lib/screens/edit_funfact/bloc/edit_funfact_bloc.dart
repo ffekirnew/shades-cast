@@ -18,22 +18,22 @@ class EditFunfactBloc extends Bloc<EditFunfactEvent, EditFunfactState> {
     PodcastDatabase _database = PodcastDatabase();
 
     on<EditFunfactEvent>((event, emit) async {
-      // if (event is EditFunfactSubmitted) {
-      //   try {
-      //     FunfactRepository podRepo =
-      //         FunfactRepositoryImpl(_database, _apiClient);
-      //     dynamic podcastModified = event.modifiedPodcast;
+      if (event is EditFunfactSubmitted) {
+        try {
+          FunfactRepository funRepo =
+              FunfactRepositoryImpl(_database, _apiClient);
+          dynamic podcastModified = event.modifiedFunfact;
 
-      //     await podRepo.updatePodcast(
-      //         podcastModified, event.podcastId.toString());
-      //     print('PodcastModified');
-      //     //submit the podcast
-      //     emit(EditPodcastSuccess());
-      //   } catch (e) {
-      //     print(e);
-      //     emit(EditPodcastError());
-      //   }
-      // }
+          await funRepo.updateFunfact(
+              event.FunfactId.toString(), podcastModified);
+
+          //submit the podcast
+          emit(EditFunfactSuccess());
+        } catch (e) {
+          print(e);
+          emit(EditFunfactError());
+        }
+      }
     });
   }
 }
