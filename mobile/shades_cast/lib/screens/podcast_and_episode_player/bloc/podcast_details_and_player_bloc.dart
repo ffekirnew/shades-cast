@@ -44,18 +44,18 @@ class PodcastDetailsAndPlayerBloc
             PodcastRepositoryImpl(_database, _apiClient);
 
         try {
-          print('here first');
+          // print('here first');
           final Podcast pod =
               await podRepo.getPodcastById(event.podcastId.toString());
 
           currentPodcast = pod;
-          print('herreee');
+          // print('herreee');
           List<Episode> episodes =
               await podRepo.getEpisodes(event.podcastId.toString());
 
           currentEpisodes = episodes;
-          print(episodes);
-          print('ended');
+          // print(episodes);
+          // print('ended');
           emit(PodcastDetailEpisodes(
               episodes: currentEpisodes,
               currentPlayingEpisode:
@@ -63,7 +63,7 @@ class PodcastDetailsAndPlayerBloc
               podcast: pod,
               isFromMyPodcasts: isFromMyPodcasts));
         } catch (e) {
-          print(e);
+          // print(e);
           emit(PodcastDetailsAndPlayerErrorState());
         }
       } else if (event is SkipToNextButtonClicked) {
@@ -77,7 +77,7 @@ class PodcastDetailsAndPlayerBloc
             isFromMyPodcasts: isFromMyPodcasts));
       } else if (event is SkipToPreviousButtonClicked) {
         currentEpisode -= 1;
-        print(currentEpisode);
+        // print(currentEpisode);
 
         emit(PodcastDetailEpisodes(
             episodes: currentEpisodes,
@@ -100,70 +100,9 @@ class PodcastDetailsAndPlayerBloc
         try {
           await podcastRepo.deleteEpisode(event.episodeId.toString());
         } catch (e) {
-          print(e);
+          // print(e);
         }
       }
     });
   }
 }
-
-
-        // List<String> audioSrcs = await podcast_repo.getEpisodeSrcs();
-
-        //###############new###############################
-        // print('hill climbing');
-        // Map pd = await podcast_repo.getPodcast(podcastId: 0);
-        // Podcast podcast = Podcast(
-        //     id: pd['id'],
-        //     title: pd['title'],
-        //     author: pd['author'],
-        //     description: pd['description'],
-        //     imageUrl: pd['imageUrl'],
-        //     categories: pd['categories']);
-        // print('in bloc $podcast');
-        //###############new###############################
-
-
-
-
-          // List<String> audioSrcs = await podcast_repo.getEpisodeSrcs();
-
-          //###############new###############################
-          // print('hill climbing');
-          // Map pd = await podcast_repo.getPodcast(podcastId: 0);
-          // Podcast podcast = Podcast(
-          //     id: pd['id'],
-          //     title: pd['title'],
-          //     author: pd['author'],
-          //     description: pd['description'],
-          //     imageUrl: pd['imageUrl'],
-          //     categories: pd['categories']);
-          // print('in bloc $podcast');
-
-
-
-
-          //   PodcastRepo podcast_repo = PodcastRepo();
-          //   List<String> audioSrcs = await podcast_repo.getEpisodeSrcs();
-
-          //   List<EpisodeItem> episodes =
-          //       await podcast_repo.getEpisodes(selectedIndex: currentIndex - 1);
-
-          //   emit(PodcastDetailEpisodes(
-          //       episodes: episodes,
-          //       currentPlayingEpisode: currentIndex - 1,
-          //       audioUrls: audioSrcs));
-          // }
-
-
-                  // int currentIndex = event.selectedIndex;
-        // PodcastRepo podcast_repo = PodcastRepo();
-        // List<String> audioSrcs = await podcast_repo.getEpisodeSrcs();
-        // if (currentIndex < audioSrcs.length - 1) {
-        //   List<EpisodeItem> episodes =
-        //       await podcast_repo.getEpisodes(selectedIndex: currentIndex + 1);
-        //   emit(PodcastDetailEpisodes(
-        //       episodes: episodes,
-        //       currentPlayingEpisode: currentIndex + 1,
-        //       audioUrls: audioSrcs));
-        // }

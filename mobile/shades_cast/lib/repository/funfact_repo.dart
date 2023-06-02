@@ -20,44 +20,53 @@ class FunfactRepositoryImpl extends FunfactRepository {
   FunfactRepositoryImpl(this._database, this._apiClient);
   @override
   Future<Funfact> getFunfact() async {
-    print('in funfact repo');
-    // final funfact = await _database.getFunfact();
+    final localFunfacts = await _database.getFunfact();
 
-    // if (funfact != null) {
-    //   return funfact;
-    // }
+    print(localFunfacts);
+
+    if (localFunfacts.isNotEmpty) {
+      return localFunfacts[Random().nextInt(localFunfacts.length)];
+    }
+
     final remoteFunfacts = await _apiClient.getFunfact();
+    print('heree right');
+    for (final funfact in remoteFunfacts) {
+      _database.saveFunfact(Funfact.fromMap(funfact));
+    }
 
-    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
+    Funfact newFunfact = Funfact(title: 'title', body: 'body', id: '100');
     final fact = remoteFunfacts[Random().nextInt(remoteFunfacts.length)];
     newFunfact = Funfact.fromMap(fact);
-    // await _database.saveFunfact(newFunfact);
 
     return newFunfact;
   }
 
   Future<List<Funfact>> getFunfacts() async {
+    final localFunfacts = await _database.getFunfact();
+    print(localFunfacts);
+    if (localFunfacts.isNotEmpty) {
+      return localFunfacts;
+    }
     final remoteFunfacts = await _apiClient.getFunfact();
     final List<Funfact> facts = [];
-    print('funfact gotten');
-    print(remoteFunfacts);
+
     Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
     for (int i = 0; i < remoteFunfacts.length; i++) {
       final fact = remoteFunfacts[i];
-      print(fact);
+
       newFunfact = Funfact.fromMap(fact);
       facts.add(newFunfact);
     }
     // await _database.saveFunfact(newFunfact);
-    print('funfact processed');
     return facts;
   }
 
   Future<void> addFunfact(dynamic funfact) async {
     try {
-      await _apiClient.addFunfact(funfact);
+      final addedFunfact = await _apiClient.addFunfact(funfact);
+      await _database.saveFunfact(Funfact.fromMap(addedFunfact));
     } catch (e) {
-      print(e);
+      // print(e);
       throw ("Couldn't add funfact in repository");
     }
   }

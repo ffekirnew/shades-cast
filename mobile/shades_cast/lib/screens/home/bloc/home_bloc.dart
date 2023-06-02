@@ -25,7 +25,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   HomeBloc()
       : super(HomeInitial(
             currentUser: User(id: 1, name: '', email: '', password: ''))) {
-    print('ooooooooooo');
     List<Podcast> currentPodcasts = [];
     List<int> favoritedIds = [];
     PodcastApiClient _apiClient = PodcastApiClient();
@@ -45,6 +44,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (event, emit) async {
         if (event is GetPodcasts) {
           if (currentUser.name == '') {
+            print('called');
+            User user = await userRepo.getUserDetail();
+            currentUser = user;
+          }
+          if (currentUser.name == '') {
             User user = await userRepo.getUserDetail();
             currentUser = user;
           }
@@ -60,10 +64,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             currentPodcasts = podcasts;
 
             Funfact funfact = await funFactRep.getFunfact();
+            // print(funfact);
 
             currentFunFact = funfact;
             final List<Podcast> favPodcasts =
                 await podcastRepo.favoritePodcasts();
+            print('favs');
+            print(favPodcasts);
 
             favoritedIds = [];
             for (final pod in favPodcasts) {
@@ -79,8 +86,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   funfactVisibility: funfactVisibility),
             );
           } catch (e) {
-            print('error occured here in home bloc');
-            print(e);
+            // print('error occured here in home bloc');
+            // print(e);
             emit(PodcastsErrorState(
                 currentUser: currentUser,
                 funfactVisibility: funfactVisibility));
@@ -114,12 +121,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               PodcastRepositoryImpl(_database, _apiClient);
 
           try {
-            print('here to search');
             final List<Podcast> podcasts =
                 await podcastRepo.searchPodcasts(event.searchTerm);
             currentPodcasts = podcasts;
-            print('search result');
-            print(currentPodcasts);
+            // print('search result');
+            // print(currentPodcasts);
 
             emit(
               PodcastLoadedState(
@@ -130,7 +136,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
                   funfactVisibility: funfactVisibility),
             );
           } catch (e) {
-            print(e);
+            // print(e);
             emit(PodcastsErrorState(
               currentUser: currentUser,
               funfactVisibility: funfactVisibility,
@@ -145,9 +151,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             Navigator.pushReplacementNamed(event.context, '/');
             SharedPreferences pref = await SharedPreferences.getInstance();
             pref.remove('token');
-            print('here to delete acc success');
           } catch (e) {
-            print(e);
+            // print(e);
           }
         }
       },

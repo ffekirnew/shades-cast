@@ -25,14 +25,12 @@ class Episode {
       'title': title,
       'description': description,
       'audioUrl': audioUrl,
-      'publishedDate': publishedDate,
-      'durationInSeconds': durationInSeconds,
     };
   }
 
   factory Episode.fromMap(Map<String, dynamic> map) {
     return Episode(
-      id: map['id'],
+      id: int.parse(map['id']),
       podcastId: map['podcast'],
       title: map['title'],
       description: map['description'],
@@ -42,22 +40,3 @@ class Episode {
     );
   }
 }
-
-
-
-// [
-//   {
-//     "id": 0,
-//     "title": "string",
-//     "audio_file": "string",
-//     "audio_duration": 0,
-//     "audio_size": 0,
-//     "podcast": 0,
-//     "tags": [
-//       "string"
-//     ],
-//     "publish": "2023-05-11T18:59:26.758Z",
-//     "description": "string",
-//     "status": "draft"
-//   }
-// ]

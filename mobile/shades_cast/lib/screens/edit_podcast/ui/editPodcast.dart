@@ -10,7 +10,7 @@ import '../../../Infrustructure_layer/api_clients/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 
-import '../../../Infrustructure_layer/api_clients/podcast_repository.dart';
+import '../../../repository/podcast_repository.dart';
 import '../../../repository/database/podcast_database.dart';
 
 class editPodcasts extends StatefulWidget {
@@ -65,8 +65,8 @@ class _editPodcastsState extends State<editPodcasts> {
         modifiedPodcast: modifiedPodcast, podcastId: widget.podcast.id));
     // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
     // final res = await podRepo.searchPodcast('funny');
-    // print(res);
-    // print(res);
+    // // print(res);
+    // // print(res);
   }
 
   @override

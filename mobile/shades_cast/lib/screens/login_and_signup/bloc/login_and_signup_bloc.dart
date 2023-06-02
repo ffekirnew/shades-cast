@@ -8,12 +8,12 @@ part 'login_and_signup_event.dart';
 part 'login_and_signup_state.dart';
 
 void updateLoginStatus() async {
-  print('here to update login');
+  // print('here to update login');
   SharedPreferences prefs = await SharedPreferences.getInstance();
   await prefs.setBool('isLoggedIn', true);
   final res = await prefs.getBool('isLoggedIn');
-  print('login updated');
-  print(res);
+  // print('login updated');
+  // print(res);
 }
 
 class LoginAndSignupBloc

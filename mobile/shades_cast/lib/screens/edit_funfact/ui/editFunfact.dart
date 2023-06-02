@@ -10,7 +10,7 @@ import '../../../Infrustructure_layer/api_clients/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shades_cast/domain_layer/podcast.dart';
 
-import '../../../Infrustructure_layer/api_clients/podcast_repository.dart';
+import '../../../repository/podcast_repository.dart';
 import '../../../repository/database/podcast_database.dart';
 
 import 'package:shades_cast/screens/edit_funfact/bloc/edit_funfact_bloc.dart';
@@ -42,26 +42,20 @@ class _editPodcastsState extends State<editPodcasts> {
   @override
   void initState() {
     super.initState();
-    // Initialize the controllers with the current user info
+
     _titleController = TextEditingController(text: widget.fact.title);
     _bodyController = TextEditingController(text: widget.fact.body);
   }
 
   void _submitForm() async {
-    // Get the form field values
-
     dynamic modifiedFunfact = {
       "title": _titleController.text,
       "body": _bodyController.text,
     };
-    print(widget.funfactId);
+    // print(widget.funfactId);
 
     BlocProvider.of<EditFunfactBloc>(context).add(EditFunfactSubmitted(
         modifiedFunfact: modifiedFunfact, FunfactId: widget.funfactId));
-    // PodcastRepository podRepo = PodcastRepositoryImpl(_database, _apiClient);
-    // final res = await podRepo.searchPodcast('funny');
-    // print(res);
-    // print(res);
   }
 
   @override
@@ -151,17 +145,3 @@ class _editPodcastsState extends State<editPodcasts> {
     );
   }
 }
-
-
-// [
-//   {
-//     "creator": int,
-//     "title": "string",
-//     "slug": "string",
-//     "description": "string",
-//     "cover_image": "string",
-//     "category": "string",
-//     "publish": "2023-05-01T15:21:34.226Z",
-//     "status": "private"
-//   }
-// ]

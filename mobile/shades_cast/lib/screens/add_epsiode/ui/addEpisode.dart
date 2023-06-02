@@ -61,11 +61,11 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
     if (_audioFile == null) {
       _audioFile =
           await _pickAudio(); // Use await to get the selected audio file
-      print('pick file');
-      print(_audioFile);
+      // print('pick file');
+      // print(_audioFile);
     }
-    print('out');
-    print(_audioFile);
+    // print('out');
+    // print(_audioFile);
 
     dynamic episode = {
       "title": _titleController.text,
@@ -73,8 +73,8 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
       "podcast": widget.podcastId.toString(),
       "_audioFile": _audioFile,
     };
-    print('truth');
-    print(episode);
+    // print('truth');
+    // print(episode);
     BlocProvider.of<AddEpisodeBloc>(context)
         .add(EpsiodeSubmitted(createdEpsiode: episode));
 
@@ -95,16 +95,16 @@ class _AddEpisodeScreenState extends State<AddEpisodeScreen> {
     //   try {
     //     var response = await request.send();
     //     if (response.statusCode != 200) {
-    //       print((response.statusCode));
-    //       print("Error sending the file");
+    //       // print((response.statusCode));
+    //       // print("Error sending the file");
     //     } else {
-    //       print('Success');
+    //       // print('Success');
     //     }
     //   } catch (e) {
-    //     print("Error: $e");
+    //     // print("Error: $e");
     //   }
     // } else {
-    //   print("No audio file selected");
+    //   // print("No audio file selected");
     // }
   }
 

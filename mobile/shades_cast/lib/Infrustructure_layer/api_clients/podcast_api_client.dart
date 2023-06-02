@@ -37,12 +37,9 @@ class PodcastApiClient {
         await http.get(Uri.parse('$api/api/v3/resources/podcasts/'));
 
     //inspect the response
-
-    print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
-    // print(jsonDecode(response.body).runtimeType);
 
     return jsonDecode(response.body);
   }
@@ -59,12 +56,9 @@ class PodcastApiClient {
         await http.get(Uri.parse('$api/api/v3/resources/podcasts/'));
     //inspect the response
 
-    print(response.statusCode);
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
-    // print(jsonDecode(response.body).runtimeType);
-    // print(jsonDecode(response.body));
     return jsonDecode(response.body);
   }
 
@@ -86,7 +80,6 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       throw Exception('Failed to load podcasts');
     }
-    print(jsonDecode(response.body));
     return jsonDecode(response.body)['podcasts'];
   }
 
@@ -126,7 +119,7 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
-    print("api called successfully");
+
     return jsonDecode(response.body);
   }
 
@@ -151,8 +144,6 @@ class PodcastApiClient {
       throw Exception("cannot get podcasts");
     }
 
-    print("api called successfully");
-    // print(jsonDecode(response.body));
     return jsonDecode(response.body);
   }
 
@@ -175,7 +166,7 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
-    print("api called successfully");
+
     return jsonDecode(response.body);
   }
 
@@ -216,7 +207,7 @@ class PodcastApiClient {
     var uri = Uri.parse('$api/api/v3/resources/podcasts/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
-    print(token);
+
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;
@@ -234,19 +225,17 @@ class PodcastApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 201) {
-        print((response.statusCode));
-        print("Error sending the file");
+        throw Exception("error sendind file");
       } else {
         // Retrieve the created podcast object from the response
         var responseString = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseString);
-        // var createdPodcast = jsonResponse['body'];
-        // Return the created podcast object
+
         return jsonResponse;
       }
       return response;
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
 
@@ -268,7 +257,7 @@ class PodcastApiClient {
     var uri = Uri.parse('$api/api/v3/resources/podcasts/$podcastId/');
     var request = http.MultipartRequest('PATCH', uri);
     String? token = await authService.getToken();
-    print(token);
+
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;
@@ -286,19 +275,17 @@ class PodcastApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 201) {
-        print((response.statusCode));
-        print("Error sending the file");
+        throw Exception('error sending file');
       } else {
         // Retrieve the created podcast object from the response
         var responseString = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseString);
-        // var createdPodcast = jsonResponse['body'];
-        // Return the created podcast object
+
         return jsonResponse;
       }
       return response;
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
 
@@ -331,14 +318,13 @@ class PodcastApiClient {
   ///
 
   Future<dynamic> getEpisodes(String podcatId) async {
-    // .....................has to be commented back...................
     String? token = await authService.getToken();
-    print("in here get episodes");
+    // print("in here get episodes");
     if (token == null) {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Token $token'
     }; //podcasts/{id}/episodes
     final response = await http
         .get(Uri.parse("$api/api/v3/resources/podcasts/$podcatId/episodes"));
@@ -351,7 +337,7 @@ class PodcastApiClient {
   }
 
   Future<void> addEpisode(dynamic episode) async {
-    print(episode);
+    // print(episode);
     File _audioFile = episode["_audioFile"];
     String title = episode["title"];
     String description = episode["description"];
@@ -383,16 +369,16 @@ class PodcastApiClient {
       try {
         var response = await request.send();
         if (response.statusCode != 200) {
-          print((response.statusCode));
-          print("Error sending the file");
+          // print((response.statusCode));
+          // print("Error sending the file");
         } else {
-          print('Success');
+          // print('Success');
         }
       } catch (e) {
-        print("Error: $e");
+        // print("Error: $e");
       }
     } else {
-      print("No audio file selected");
+      // print("No audio file selected");
     }
   }
 

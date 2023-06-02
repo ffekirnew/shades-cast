@@ -54,7 +54,7 @@ class homepage extends StatelessWidget {
                         icon: Icon(Icons.menu),
                         color: Colors.white, // add the menu icon here
                         onPressed: () {
-                          print("it was pressed");
+                          // print("it was pressed");
                           Scaffold.of(context).openDrawer();
                           // add the onPressed callback here
                         },
@@ -86,7 +86,7 @@ class homepage extends StatelessWidget {
                             size: 25,
                           ),
                           onPressed: () {
-                            print('refreshed');
+                            // print('refreshed');
                             BlocProvider.of<HomeBloc>(context)
                                 .add(GetPodcasts());
                           },
@@ -139,7 +139,7 @@ class homepage extends StatelessWidget {
                       icon: Icon(Icons.menu),
                       color: Colors.white, // add the menu icon here
                       onPressed: () {
-                        print("it was pressed");
+                        // print("it was pressed");
                         Scaffold.of(context).openDrawer();
                         // add the onPressed callback here
                       },
@@ -328,7 +328,7 @@ class sideMenu extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             onTap: () {
-              print(state.currentUser.toMap());
+              // print(state.currentUser.toMap());
               // handle item 2 tap
               Navigator.push(
                 context,

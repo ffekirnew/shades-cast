@@ -9,7 +9,6 @@ class FunfactApiClient {
 
   Future<dynamic>? getFunfact() async {
     final response = await http.get(Uri.parse("$api/api/v3/resources/facts/"));
-    print(response.body);
     if (response.statusCode != 200) {
       throw ('cannot get funfact');
     }
@@ -44,7 +43,6 @@ class FunfactApiClient {
         headers: headers,
         body: funfact);
     if (response.statusCode != 204) {
-      print(response.body);
       throw Exception('funcfact creation failed: ');
     }
     return json.decode(response.body);

@@ -66,8 +66,8 @@ class UserApiClient {
       final responseBody = jsonDecode(response.body);
       final token = responseBody['key'];
       authService.storeToken(token);
-      print('token' + token);
-      print(authService.getToken());
+      // print('token' + token);
+      // print(authService.getToken());
       return token;
     } else {
       throw Exception('Failed to login user with email $email');
@@ -113,8 +113,8 @@ class UserApiClient {
     final AuthService authService = AuthService();
 
     String? token = await authService.getToken();
-    // print(profile_pic);
-    // print('got here');
+    // // print(profile_pic);
+    // // print('got here');
     // String? token = await authService.getToken();
 
     // if (token == null) {}
@@ -124,11 +124,9 @@ class UserApiClient {
     var length = await profile_pic.length();
     var uri = Uri.parse('$api/api/v3/my-account/profile');
     var request = http.MultipartRequest('PATCH', uri);
-    print('token : $token');
+    // print('token : $token');
 
     request.headers['Authorization'] = 'Token $token';
-    // request.fields['title'] = title;
-    // request.fields['date_of_birth'] = "2020/12/10";
 
     var multipartFile = http.MultipartFile(
       'photo',
@@ -142,12 +140,12 @@ class UserApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 200) {
-        print("Error sending the file of user");
+        // print("Error sending the file of user");
       } else {
-        print('Success');
+        // print('Success');
       }
     } catch (e) {
-      print("Error: $e");
+      // print("Error: $e");
     }
   }
 
@@ -157,7 +155,7 @@ class UserApiClient {
   ///
   Future<dynamic> userDetails() async {
     String? token = await authService.getToken();
-    print(token);
+    // print(token);
     if (token == null) {
       throw Exception("cannot get token");
     }
@@ -179,16 +177,16 @@ class UserApiClient {
   ///
   Future<void> deleteUser(String userId) async {
     String? token = await authService.getToken();
-    // print(token);
+    // // print(token);
     if (token == null) {
       throw Exception("cannot get token");
     }
-    print('here 1');
+    // print('here 1');
     Map<String, String> headers = {'Authorization': 'Token $token'};
     final response = await http.delete(Uri.parse('$api/api/v3/users/$userId/'),
         headers: headers);
 
-    print(response.body);
+    // print(response.body);
 
     if (response.statusCode != 204) {
       throw Exception("cannot update user");

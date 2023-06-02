@@ -21,7 +21,7 @@ class AddFunfactBloc extends Bloc<AddFunfactEvent, AddFunfactState> {
           await funRepo.addFunfact(fact);
           emit(AddFunfactSuccessState());
         } catch (e) {
-          print(e);
+          // print(e);
           emit(AddFunfactErrorState());
         }
       }

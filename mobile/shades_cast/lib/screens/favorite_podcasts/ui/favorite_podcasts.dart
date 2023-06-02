@@ -75,7 +75,7 @@ class _FavoritePodcastsPageState extends State<FavoritePodcastsPage> {
                               size: 25,
                             ),
                             onPressed: () {
-                              print('refreshed');
+                              // print('refreshed');
                               BlocProvider.of<FavoritePodcastsBloc>(context)
                                   .add(GetFavPodcasts());
                             },
@@ -182,7 +182,7 @@ class _podcastListState extends State<podcastList> {
 
     for (int index = 0; index < widget.podcasts.length; index++) {
       Podcast currentPodcast = widget.podcasts[index];
-      print(currentPodcast.imageUrl);
+      // print(currentPodcast.imageUrl);
       podcasts.add(GestureDetector(
         onTap: () {
           Navigator.push(

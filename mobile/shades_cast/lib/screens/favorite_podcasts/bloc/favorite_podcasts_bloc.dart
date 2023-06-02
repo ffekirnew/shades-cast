@@ -65,19 +65,19 @@ class FavoritePodcastsBloc
 
             currentPodcasts = favPodcasts;
           } catch (e) {
-            print(e);
+            // print(e);
           }
         }
-        print(favoritedIds);
+        // print(favoritedIds);
         if (!(favoritedIds.contains(event.podcastId))) {
           favoritedIds.add(event.podcastId);
           await podcastRepo.addToFavorite(event.podcastId.toString());
         } else {
           favoritedIds.remove(event.podcastId);
-          print('here');
+          // print('here');
           await podcastRepo.deleteFromFavorite(event.podcastId.toString());
         }
-        print(favoritedIds);
+        // print(favoritedIds);
       }
 
       emit(
