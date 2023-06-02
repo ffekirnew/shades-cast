@@ -106,6 +106,7 @@ class PodcastDetailsAndPlayerBloc
     });
   }
 }
+<<<<<<< HEAD
 
 
         // List<String> audioSrcs = await podcast_repo.getEpisodeSrcs();
@@ -167,3 +168,5 @@ class PodcastDetailsAndPlayerBloc
         //       currentPlayingEpisode: currentIndex + 1,
         //       audioUrls: audioSrcs));
         // }
+=======
+>>>>>>> 98b11d7 (final touhes)

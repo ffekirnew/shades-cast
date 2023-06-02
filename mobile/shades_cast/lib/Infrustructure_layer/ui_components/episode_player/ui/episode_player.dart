@@ -58,8 +58,13 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
     }
     // print(widget.audioUrls[currentAudioIndex]);
     if ((widget.audioUrls.length > 0) & (widget.audioUrls[0] != '')) {
+<<<<<<< HEAD
       // print(api + widget.audioUrls[currentAudioIndex]);
       // print('***');
+=======
+      print(api + widget.audioUrls[currentAudioIndex]);
+
+>>>>>>> 98b11d7 (final touhes)
       await audioPlayer.setUrl(api + widget.audioUrls[currentAudioIndex]);
       playAudio();
     }

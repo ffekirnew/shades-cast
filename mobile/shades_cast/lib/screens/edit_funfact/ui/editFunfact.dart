@@ -145,17 +145,3 @@ class _editPodcastsState extends State<editPodcasts> {
     );
   }
 }
-
-
-// [
-//   {
-//     "creator": int,
-//     "title": "string",
-//     "slug": "string",
-//     "description": "string",
-//     "cover_image": "string",
-//     "category": "string",
-//     "publish": "2023-05-01T15:21:34.226Z",
-//     "status": "private"
-//   }
-// ]

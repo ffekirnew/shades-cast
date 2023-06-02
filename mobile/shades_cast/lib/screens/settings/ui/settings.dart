@@ -59,15 +59,16 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       "email": _emailController.text,
     };
 
-    // if (_isImageSelected) {
-    //   dynamic profile = {
-    //     "profile_pic": _imageFile,
-    //   };
-    //   apiClient.updateProfile(profile);
-    // }
+    if (_isImageSelected) {
+      dynamic profile = {
+        "profile_pic": _imageFile,
+      };
+      await apiClient.updateProfile(profile);
+    }
 
     BlocProvider.of<SettingsBloc>(context)
         .add(AccountDetailSubmitted(accountDetails: newUser));
+<<<<<<< HEAD
 
     //   // var res = await apiClient.userDetails();
     //   // var res = await apiClient.favoritePodcasts();
@@ -82,6 +83,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     // };
     // var res = await apiClient.getFunfact();
     // // print(res);
+=======
+>>>>>>> 98b11d7 (final touhes)
   }
 
   @override

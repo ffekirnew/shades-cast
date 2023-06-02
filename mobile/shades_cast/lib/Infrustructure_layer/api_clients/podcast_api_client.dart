@@ -37,7 +37,6 @@ class PodcastApiClient {
         await http.get(Uri.parse('$api/api/v3/resources/podcasts/'));
 
     //inspect the response
-
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
@@ -120,6 +119,7 @@ class PodcastApiClient {
     if (response.statusCode != 200) {
       throw Exception("cannot get podcasts");
     }
+
     return jsonDecode(response.body);
   }
 
@@ -207,7 +207,7 @@ class PodcastApiClient {
     var uri = Uri.parse('$api/api/v3/resources/podcasts/');
     var request = http.MultipartRequest('POST', uri);
     String? token = await authService.getToken();
-    // // print(token);
+
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;
@@ -225,14 +225,12 @@ class PodcastApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 201) {
-        // print((response.statusCode));
-        // print("Error sending the file");
+        throw Exception("error sendind file");
       } else {
         // Retrieve the created podcast object from the response
         var responseString = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseString);
-        // var createdPodcast = jsonResponse['body'];
-        // Return the created podcast object
+
         return jsonResponse;
       }
       return response;
@@ -259,7 +257,7 @@ class PodcastApiClient {
     var uri = Uri.parse('$api/api/v3/resources/podcasts/$podcastId/');
     var request = http.MultipartRequest('PATCH', uri);
     String? token = await authService.getToken();
-    // print(token);
+
     request.headers['Authorization'] = 'Token $token';
     request.fields['title'] = title;
     request.fields['categories'] = categories;
@@ -277,14 +275,12 @@ class PodcastApiClient {
     try {
       var response = await request.send();
       if (response.statusCode != 201) {
-        // print((response.statusCode));
-        // print("Error sending the file");
+        throw Exception('error sending file');
       } else {
         // Retrieve the created podcast object from the response
         var responseString = await response.stream.bytesToString();
         var jsonResponse = jsonDecode(responseString);
-        // var createdPodcast = jsonResponse['body'];
-        // Return the created podcast object
+
         return jsonResponse;
       }
       return response;
@@ -322,14 +318,13 @@ class PodcastApiClient {
   ///
 
   Future<dynamic> getEpisodes(String podcatId) async {
-    // .....................has to be commented back...................
     String? token = await authService.getToken();
     // print("in here get episodes");
     if (token == null) {
       throw Exception("cannot get token");
     }
     Map<String, String> headers = {
-      'Authorization': 'Bearer $token'
+      'Authorization': 'Token $token'
     }; //podcasts/{id}/episodes
     final response = await http
         .get(Uri.parse("$api/api/v3/resources/podcasts/$podcatId/episodes"));

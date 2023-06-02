@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const String api = 'http://10.4.155.86:8000';
+const String api = 'http://192.168.0.144:8000';
 
 const KBodyBgPrimaryColor = Color(0xFF09121C); // White
 const KBodyBgSecondaryColor = Color(0xFFF0F0F0); // Light Gray
@@ -15,8 +15,3 @@ const KBodyTextSecondaryColor = Color(0xFF666666); // Gray
 const KBodyBoxItemPrimaryColor = Color(0xFFEAEAEA); // Light Gray
 const KBodyBoxItemSecondaryaryColor = Color(0xFFCCCCCC); // Gray
 
-// .copyWith(
-//           scaffoldBackgroundColor: KBodyBgPrimaryColor,
-//           cardColor: KBodyBoxItemPrimaryColor,
-//           primaryColor: KTitleTextPrimaryColor,
-//         )

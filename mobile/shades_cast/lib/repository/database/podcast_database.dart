@@ -54,6 +54,14 @@ class PodcastDatabase {
             categories TEXT
           )
         ''');
+        database.execute('''
+              CREATE TABLE funfacts(
+                id TEXT PRIMARY KEY,
+                title TEXT,
+                body TEXT
+              )
+
+''');
       }, version: version);
     }
     return db!;
@@ -108,13 +116,9 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>> getPodcasts() async {
-    // // print('heerrrrrrrrrrrro');
     final db = await openDb();
 
-    // print('got here');
-
     final List<Map<String, dynamic>> queryRows = await db.query('podcasts');
-    // print('got here too');
 
     return List.generate(queryRows.length, (index) {
       return Podcast.fromMap(queryRows[index]);
@@ -128,12 +132,17 @@ class PodcastDatabase {
   ///
   ///
   ///
-  Future<List<Podcast>?> getFavorites() async {
+  Future<List<Podcast>> getFavorites() async {
     final db = await openDb();
     final List<Map<String, dynamic>> queryRows = await db.query('favorites');
-    return List.generate(queryRows.length, (index) {
-      return Podcast.fromMap(queryRows[index]);
-    });
+
+    if (queryRows.isNotEmpty) {
+      return List.generate(queryRows.length, (index) {
+        return Podcast.fromMap(queryRows[index]);
+      });
+    }
+
+    return [];
   }
 
   ////////////////////////////////////////////////
@@ -149,27 +158,11 @@ class PodcastDatabase {
   ///
   ///
   ///
-  Future<void> saveFavorites(List<Podcast> favorites) async {
+  Future<void> saveFavorites(Podcast favorite) async {
     final db = await openDb();
-    Batch batch = db.batch();
 
-    for (Podcast podcast in favorites) {
-      batch.insert(
-        'favorites',
-        {
-          'id': podcast.id.toString(),
-          'title': podcast.title,
-          'description':
-              podcast.description ?? '', // Ensure description is not null
-          'author': podcast.author ?? '',
-          'imageUrl': podcast.imageUrl.toString(),
-          'categories': podcast.categories?.toList()[0][0],
-        },
-        conflictAlgorithm: ConflictAlgorithm.replace,
-      );
-    }
-
-    await batch.commit(noResult: true);
+    await db.insert('favorites', favorite.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   Future<void> saveEpisodes(List<Episode> episodes) async {
@@ -197,7 +190,13 @@ class PodcastDatabase {
     final db = await openDb();
     final List<Map<String, dynamic>> queryRows = await db
         .query('episodes', where: 'podcastId = ?', whereArgs: [podcastId]);
-    return queryRows.map((row) => Episode.fromMap(row)).toList();
+    if (queryRows.isNotEmpty) {
+      return List.generate(queryRows.length, (index) {
+        return Episode.fromMap(queryRows[index]);
+      });
+    }
+    return [];
+    // return queryRows.map((row) => Episode.fromMap(row)).toList();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -207,7 +206,8 @@ class PodcastDatabase {
 
   Future<void> saveEpisode(Episode episode) async {
     final db = await openDb();
-    await db.insert('episodes', episode.toMap());
+    await db.insert('episodes', episode.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
 ////////////////////////////////////////////////////////////////
@@ -223,16 +223,17 @@ class PodcastDatabase {
   ///
   ///
   ///
-  Future<Funfact?> getFunfact() async {
+  Future<List<Funfact>> getFunfact() async {
     final db = await openDb();
     List<Map<String, dynamic>> result = await db.query(
-      'funfacts',
-      limit: 1, // Limit the query to retrieve only one row
+      'funfacts', // Limit the query to retrieve only one row
     );
     if (result.isNotEmpty) {
-      return Funfact.fromMap(result.first);
+      return List.generate(result.length, (index) {
+        return Funfact.fromMap(result[index]);
+      });
     }
-    return null;
+    return [];
   }
 
   ////////////////////////////////////////////////////////////////

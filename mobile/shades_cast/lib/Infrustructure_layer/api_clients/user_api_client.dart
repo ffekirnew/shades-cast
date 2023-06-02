@@ -127,8 +127,6 @@ class UserApiClient {
     // print('token : $token');
 
     request.headers['Authorization'] = 'Token $token';
-    // request.fields['title'] = title;
-    // request.fields['date_of_birth'] = "2020/12/10";
 
     var multipartFile = http.MultipartFile(
       'photo',
