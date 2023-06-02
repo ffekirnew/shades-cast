@@ -26,7 +26,7 @@ class EpisodeItem extends StatefulWidget {
 class _EpisodeItemState extends State<EpisodeItem> {
   @override
   Widget build(BuildContext context) {
-    print('here in podcastitem');
+    // print('here in podcastitem');
     return BlocBuilder<PodcastDetailsAndPlayerBloc,
         PodcastDetailsAndPlayerState>(builder: (context, state) {
       return GestureDetector(

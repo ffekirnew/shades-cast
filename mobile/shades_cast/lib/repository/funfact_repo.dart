@@ -20,20 +20,20 @@ class FunfactRepositoryImpl extends FunfactRepository {
   FunfactRepositoryImpl(this._database, this._apiClient);
   @override
   Future<Funfact> getFunfact() async {
-    print('in funfact repo');
+    // print('in funfact repo');
     // final funfact = await _database.getFunfact();
 
     // if (funfact != null) {
     //   return funfact;
     // }
     final remoteFunfacts = await _apiClient.getFunfact();
-    // print(' got the fucking funfact');
+    // // print(' got the fucking funfact');
     Funfact newFunfact = Funfact(title: 'title', body: 'body', id: '100');
     final fact = remoteFunfacts[Random().nextInt(remoteFunfacts.length)];
     newFunfact = Funfact.fromMap(fact);
-    print(newFunfact);
+    // print(newFunfact);
 
-    // print('must get here');
+    // // print('must get here');
     // await _database.saveFunfact(newFunfact);
 
     return newFunfact;
@@ -42,17 +42,17 @@ class FunfactRepositoryImpl extends FunfactRepository {
   Future<List<Funfact>> getFunfacts() async {
     final remoteFunfacts = await _apiClient.getFunfact();
     final List<Funfact> facts = [];
-    print('funfact gotten');
-    print(remoteFunfacts);
+    // print('funfact gotten');
+    // print(remoteFunfacts);
     Funfact newFunfact = Funfact(title: 'title', body: 'body', id: 'id');
     for (int i = 0; i < remoteFunfacts.length; i++) {
       final fact = remoteFunfacts[i];
-      print(fact);
+      // print(fact);
       newFunfact = Funfact.fromMap(fact);
       facts.add(newFunfact);
     }
     // await _database.saveFunfact(newFunfact);
-    print('funfact processed');
+    // print('funfact processed');
     return facts;
   }
 
@@ -60,7 +60,7 @@ class FunfactRepositoryImpl extends FunfactRepository {
     try {
       await _apiClient.addFunfact(funfact);
     } catch (e) {
-      print(e);
+      // print(e);
       throw ("Couldn't add funfact in repository");
     }
   }

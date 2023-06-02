@@ -25,15 +25,15 @@ class FunfactBloc extends Bloc<FunfactEvent, FunfactState> {
 
           emit(FunfactLoadedState(funfacts: funfacts));
         } catch (e) {
-          print(e);
+          // print(e);
           emit(FunfactErrorState());
         }
       } else if (event is DeleteFunfact) {
         try {
           await funfactRepo.deleteFunfact(event.funfactId);
-          print('successfully deleted');
+          // print('successfully deleted');
         } catch (e) {
-          print(e);
+          // print(e);
         }
       }
     });

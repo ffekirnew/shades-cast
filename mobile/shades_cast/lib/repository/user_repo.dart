@@ -9,15 +9,15 @@ class UserRepo {
 
     // String res = await service.login(email: email, password: password);
     try {
-      print(email);
-      print(password);
+      // print(email);
+      // print(password);
       final res = await user.login(email: email, password: password);
     } catch (e) {
-      print("Error on logging");
-      print(e);
+      // print("Error on logging");
+      // print(e);
       return 'Failure';
     }
-    print("Success");
+    // print("Success");
     return 'Success';
   }
 
@@ -50,8 +50,8 @@ class UserRepo {
 
       return res;
     } catch (e) {
-      print('error occured');
-      print(e);
+      // print('error occured');
+      // print(e);
       return 'Failure';
     }
   }
@@ -63,8 +63,8 @@ class UserRepo {
   Future<User> getUserDetail() async {
     UserApiClient user = UserApiClient();
     final result = await user.userDetails();
-    print('user got called');
-    print(User.fromMap(result));
+    // print('user got called');
+    // print(User.fromMap(result));
     User current_user = User.fromMap(result);
 
     return current_user;
@@ -76,11 +76,11 @@ class UserRepo {
   Future<void> updateUser(dynamic userDetail) async {
     UserApiClient user = UserApiClient();
     try {
-      print('in user repo to update user');
+      // print('in user repo to update user');
       final result = await user.updateUser(userDetail);
-      print('user succuessfully updated');
+      // print('user succuessfully updated');
     } catch (er) {
-      print(er);
+      // print(er);
       throw ('update failed in user repo');
     }
   }
@@ -92,11 +92,11 @@ class UserRepo {
   Future<void> updateProfile(dynamic profile) async {
     UserApiClient user = UserApiClient();
     try {
-      print('in user repo to update user');
+      // print('in user repo to update user');
       final result = await user.updateUser(profile);
-      print('user succuessfully updated');
+      // print('user succuessfully updated');
     } catch (er) {
-      print(er);
+      // print(er);
       throw ('update failed in user repo');
     }
   }
@@ -106,9 +106,9 @@ class UserRepo {
   ///
   Future<void> deleteUser(String userId) async {
     UserApiClient user = UserApiClient();
-    print('failure');
+    // print('failure');
     await user.deleteUser(userId);
-    print('succ');
+    // print('succ');
   }
 }
 

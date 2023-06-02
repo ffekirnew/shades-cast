@@ -18,7 +18,7 @@ class AddEpisodeBloc extends Bloc<AddEpisodeEvent, AddEpisodeState> {
     on<AddEpisodeEvent>((event, emit) async {
       if (event is EpsiodeSubmitted) {
         try {
-          print('here in bloc of add episode');
+          // print('here in bloc of add episode');
 
           PodcastRepository podRepo =
               PodcastRepositoryImpl(_database, _apiClient);
@@ -26,11 +26,11 @@ class AddEpisodeBloc extends Bloc<AddEpisodeEvent, AddEpisodeState> {
           dynamic episodeCreated = event.createdEpsiode;
 
           await podRepo.addEpisode(episodeCreated);
-          print(episodeCreated);
+          // print(episodeCreated);
           //submit the episode
           emit(AddEpisodeSuccess());
         } catch (e) {
-          print(e);
+          // print(e);
           emit(AddEpisodeError());
         }
       }

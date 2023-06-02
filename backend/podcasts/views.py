@@ -27,7 +27,6 @@ class PodcastViewSet(viewsets.ModelViewSet):
     serializer_class = PodcastSerializer
 
     def perform_create(self, serializer):
-        print(serializer.validated_data['categories'])
         serializer.validated_data['creator'] = self.request.user
         serializer.validated_data['categories'] = serializer.validated_data['categories'][0].split(
             ", ")
@@ -59,7 +58,6 @@ class EpisodeViewSet(viewsets.ModelViewSet):
     serializer_class = EpisodeSerializer
 
     def perform_create(self, serializer):
-        print(serializer.validated_data['tags'])
         serializer.validated_data['tags'] = serializer.validated_data['tags'][0].split(
             ", ")
         serializer.save()
@@ -97,7 +95,6 @@ def podcast_delete_favorite(request, id):
 def podcast_favorited_by(request, id):
     podcast = get_object_or_404(Podcast, id=id)
     favorited_by = podcast.favorited_by
-    print(favorited_by)
     serializer = UserSerializer(favorited_by, many=True)
 
     return Response(serializer.data)

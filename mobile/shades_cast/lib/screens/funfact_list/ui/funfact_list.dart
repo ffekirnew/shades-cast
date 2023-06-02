@@ -145,7 +145,7 @@ class FunFactListScreen extends StatelessWidget {
                     onPressed: () {
                       BlocProvider.of<FunfactBloc>(context)
                           .add(GetAllFunfacts());
-                      print(funfacts);
+                      // print(funfacts);
                     },
                   )
                 ],

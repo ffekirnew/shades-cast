@@ -30,7 +30,7 @@ class EditFunfactBloc extends Bloc<EditFunfactEvent, EditFunfactState> {
           //submit the podcast
           emit(EditFunfactSuccess());
         } catch (e) {
-          print(e);
+          // print(e);
           emit(EditFunfactError());
         }
       }

@@ -56,10 +56,10 @@ class _EpisodePlayerState extends State<EpisodePlayer> {
     if (currentAudioIndex < 0) {
       currentAudioIndex = widget.audioUrls.length - 1;
     }
-    print(widget.audioUrls[currentAudioIndex]);
+    // print(widget.audioUrls[currentAudioIndex]);
     if ((widget.audioUrls.length > 0) & (widget.audioUrls[0] != '')) {
-      print(api + widget.audioUrls[currentAudioIndex]);
-      print('***');
+      // print(api + widget.audioUrls[currentAudioIndex]);
+      // print('***');
       await audioPlayer.setUrl(api + widget.audioUrls[currentAudioIndex]);
       playAudio();
     }

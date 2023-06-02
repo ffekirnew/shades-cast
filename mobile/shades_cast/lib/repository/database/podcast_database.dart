@@ -108,13 +108,13 @@ class PodcastDatabase {
   ///
   ///
   Future<List<Podcast>> getPodcasts() async {
-    // print('heerrrrrrrrrrrro');
+    // // print('heerrrrrrrrrrrro');
     final db = await openDb();
 
-    print('got here');
+    // print('got here');
 
     final List<Map<String, dynamic>> queryRows = await db.query('podcasts');
-    print('got here too');
+    // print('got here too');
 
     return List.generate(queryRows.length, (index) {
       return Podcast.fromMap(queryRows[index]);

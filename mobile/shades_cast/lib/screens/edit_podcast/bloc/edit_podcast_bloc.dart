@@ -22,11 +22,11 @@ class EditPodcastBloc extends Bloc<EditPodcastEvent, EditPodcastState> {
 
           await podRepo.updatePodcast(
               podcastModified, event.podcastId.toString());
-          print('PodcastModified');
+          // print('PodcastModified');
           //submit the podcast
           emit(EditPodcastSuccess());
         } catch (e) {
-          print(e);
+          // print(e);
           emit(EditPodcastError());
         }
       }

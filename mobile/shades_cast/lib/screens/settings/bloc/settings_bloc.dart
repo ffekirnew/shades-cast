@@ -10,13 +10,13 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   SettingsBloc() : super(SettingsInitial()) {
     on<AccountDetailSubmitted>((event, emit) async {
       try {
-        print('in bloc trying to update user');
+        // print('in bloc trying to update user');
         UserRepo userRepo = UserRepo();
         dynamic userCreated = event.accountDetails;
         await userRepo.updateUser(userCreated);
         emit(SettingsSuccess());
       } catch (e) {
-        print(e);
+        // print(e);
         emit(SettingsError());
       }
     });
