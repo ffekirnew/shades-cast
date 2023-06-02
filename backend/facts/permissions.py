@@ -8,4 +8,4 @@ class IsUserAdminOrReadOnly(permissions.BasePermission):
             return True
 
         # Return True if user is a legitimate admin/super user
-        return request.user.is_admin
+        return request.user.is_staff
