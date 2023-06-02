@@ -35,17 +35,20 @@ void main() {
 
     group('getFunfact', () {
       test('should return funfact on successful response', () async {
-        final responseMap = {'funfact': 'example'};
+        final responseMap = {
+          "id": 1,
+          "title": "fact 1",
+          "body": "some description"
+        };
         final responseJson = jsonEncode(responseMap);
         final response = http.Response(responseJson, 200);
 
-        // Move this 'when' call outside of the stub response block
         when(mockClient.get(Uri.parse('$api/api/v3/resources/facts/')))
             .thenAnswer((_) async => response);
 
         final result = await funfactApiClient.getFunfact();
 
-        expect(result, equals(responseMap));
+        expect(result, responseMap);
         verify(mockClient.get(Uri.parse('$api/api/v3/resources/facts/')));
       });
 
