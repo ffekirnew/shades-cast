@@ -85,5 +85,57 @@ void main() {
         expect(find.byType(Dialog), findsOneWidget);
       },
     );
+    testWidgets(
+      'Add episode integration test',
+      (tester) async {
+        app.main();
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(Key('home_page_menu_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byKey(Key('my_podcasts_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(ListTile).at(0));
+        await tester.pumpAndSettle();
+
+        await tester.enterText(
+            find.byType(TextFormField).at(0), 'The New Episode');
+        await tester.enterText(find.byType(TextFormField).at(1),
+            'This is a new description given by the integration test.');
+
+        await tester.tap(find.byType(ElevatedButton));
+        await tester.pumpAndSettle();
+        expect(find.byKey(Key('errorMessage')), findsOneWidget);
+      },
+    );
+    testWidgets(
+      'Search and Play episode test',
+      (tester) async {
+        app.main();
+        await tester.pumpAndSettle();
+
+        await tester.enterText(
+            find.byKey(Key('home_page_search_text_field')), 'Best');
+        await tester.tap(find.byKey(Key('home_page_search_button')));
+        await tester.pumpAndSettle();
+
+        await tester.tap(find.byType(ListTile).at(0));
+        await tester.pumpAndSettle();
+
+        expect(find.byType(PodcastPage), findsOneWidget);
+      },
+    );
+    testWidgets(
+      'Play episode test',
+      (tester) async {
+        app.main();
+        await tester.pumpAndSettle();
+        await tester.tap(find.byType(ListTile).at(0));
+
+        expect(find.byType(PodcastPage), findsOneWidget);
+      },
+    );
   });
 }
