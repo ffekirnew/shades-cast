@@ -8,6 +8,8 @@ from drf_yasg import openapi
 from django.conf import settings
 from django.conf.urls.static import static
 
+from api.views import CustomAuthToken
+
 API_TITLE = 'Blog API'
 API_DESCRIPTION = 'A Web API for creating and editing blog posts.'
 
@@ -27,6 +29,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v3/', include('api.urls', namespace='podcasts')),
+    path('api/token-auth/', CustomAuthToken.as_view()),
 
     # section for Adding log in to the browsable API - nothing fancy really
     path('api-auth/', include('rest_framework.urls')),
